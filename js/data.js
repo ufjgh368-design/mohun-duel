@@ -4,7 +4,7 @@
 
 const CHARACTERS = [
   {
-    id: 'chen-chengpo', name: '陳澄波', mono: '澄', img: 'assets/char/chen-chengpo.jpg',
+    id: 'chen-chengpo', name: '陳澄波', mono: '澄', img: 'assets/char/chen-chengpo.jpg', medium: '油畫',
     title: '油彩化身', era: '1895 – 1947', origin: '嘉義',
     tags: ['油畫家', '帝展先驅', '嘉義之子'],
     desc: '臺灣第一位以油畫入選日本帝展的畫家。筆觸熾熱奔放,一生以「油彩的化身」自許,將故鄉嘉義的街景與玉山畫進臺灣美術史,1947 年於二二八事件中殞落。',
@@ -22,7 +22,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'huang-tushui', name: '黃土水', mono: '土', img: 'assets/char/huang-tushui.jpg',
+    id: 'huang-tushui', name: '黃土水', mono: '土', img: 'assets/char/huang-tushui.jpg', medium: '雕塑與現代藝術',
     title: '雕魂鑿聖', era: '1895 – 1930', origin: '臺北艋舺',
     tags: ['雕塑家', '帝展第一人', '福爾摩沙'],
     desc: '臺灣首位入選帝展的藝術家(1920《蕃童》)。以鑿刀刻出《甘露水》《水牛群像》,呼喊「藝術上的福爾摩沙時代」,35 歲燃盡生命,是臺灣近代雕塑的開山者。',
@@ -40,7 +40,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'kuo-hsuehhu', name: '郭雪湖', mono: '雪', img: 'assets/char/kuo-hsuehhu.jpg',
+    id: 'kuo-hsuehhu', name: '郭雪湖', mono: '雪', img: 'assets/char/kuo-hsuehhu.jpg', medium: '膠彩',
     title: '膠彩繁華', era: '1908 – 2012', origin: '臺北大稻埕',
     tags: ['膠彩畫家', '臺展三少年', '百歲畫仙'],
     desc: '自學成才的膠彩大師,十九歲以《圓山附近》獲臺展特選,《南街殷賑》描繪大稻埕迪化街的節慶繁華,成為臺灣美術最著名的城市圖像。',
@@ -58,7 +58,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'chen-chin', name: '陳進', mono: '進', img: 'assets/char/chen-chin.jpg',
+    id: 'chen-chin', name: '陳進', mono: '進', img: 'assets/char/chen-chin.jpg', medium: '膠彩',
     title: '閨秀風華', era: '1907 – 1998', origin: '新竹香山',
     tags: ['膠彩畫家', '臺展三少年', '臺灣第一女畫家'],
     desc: '臺灣第一位女性畫家,亦是首位入選帝展的臺灣女性。筆下的女性優雅沉靜,《合奏》《悠閒》以細緻膠彩描繪時代女性之姿,溫柔而堅定。',
@@ -76,7 +76,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'li-meishu', name: '李梅樹', mono: '梅', img: 'assets/char/li-meishu.jpg',
+    id: 'li-meishu', name: '李梅樹', mono: '梅', img: 'assets/char/li-meishu.jpg', medium: '油畫',
     title: '廟宇司匠', era: '1902 – 1983', origin: '三峽',
     tags: ['油畫家', '寫實主義', '祖師廟推手'],
     desc: '寫實油畫大師,一生扎根三峽。1947 年起主持三峽祖師廟重建逾三十年,把廟宇當作藝術品雕琢,人稱「東方藝術殿堂」的總設計師。',
@@ -94,7 +94,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'li-tsefan', name: '李澤藩', mono: '澤', img: 'assets/char/li-tsefan.jpg',
+    id: 'li-tsefan', name: '李澤藩', mono: '澤', img: 'assets/char/li-tsefan.jpg', medium: '水彩',
     title: '風城彩匠', era: '1907 – 1989', origin: '新竹',
     tags: ['水彩畫家', '教育家', '風城'],
     desc: '新竹水彩大師與美術教育家,獨創反覆洗染的「洗畫法」,畫面厚實溫潤。長年任教於新竹師範,桃李滿門;其子李遠哲為諾貝爾化學獎得主。',
@@ -112,7 +112,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'liao-chichun', name: '廖繼春', mono: '繼', img: 'assets/char/liao-chichun.jpg',
+    id: 'liao-chichun', name: '廖繼春', mono: '繼', img: 'assets/char/liao-chichun.jpg', medium: '油畫',
     title: '色彩交響', era: '1902 – 1976', origin: '臺中豐原',
     tags: ['油畫家', '野獸派', '色彩大師'],
     desc: '臺灣色彩最鮮明的油畫家,受野獸派啟發,以大膽豔麗的色塊譜出南國陽光。《有香蕉樹的院子》入選帝展,晚年任教師大,啟迪無數後進。',
@@ -130,7 +130,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'ni-chianghuai', name: '倪蔣懷', mono: '蔣', img: 'assets/char/ni-chianghuai.jpg',
+    id: 'ni-chianghuai', name: '倪蔣懷', mono: '蔣', img: 'assets/char/ni-chianghuai.jpg', medium: '水彩',
     title: '藝道傳燈', era: '1894 – 1943', origin: '基隆瑞芳',
     tags: ['水彩先驅', '藝術贊助者', '礦業家'],
     desc: '臺灣第一代水彩畫家,石川欽一郎在臺首位學生。聽從老師建議投身礦業,以事業資助臺灣美術:創辦繪畫研究所、支持水彩畫會,是點燈的人。',
@@ -148,7 +148,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'pu-tiensheng', name: '蒲添生', mono: '添', img: 'assets/char/pu-tiensheng.jpg',
+    id: 'pu-tiensheng', name: '蒲添生', mono: '添', img: 'assets/char/pu-tiensheng.jpg', medium: '雕塑與現代藝術',
     title: '銅魂鑄魄', era: '1912 – 1996', origin: '嘉義',
     tags: ['雕塑家', '銅像宗師', '運動系列'],
     desc: '留日師事雕塑大師朝倉文夫,一生完成兩百餘座塑像,晚年「運動系列」捕捉體操選手的瞬間力與美。岳父為畫家陳澄波,翁婿同為臺灣美術巨匠。',
@@ -166,7 +166,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'lan-yinding', name: '藍蔭鼎', mono: '蔭', img: 'assets/char/lan-yinding.jpg',
+    id: 'lan-yinding', name: '藍蔭鼎', mono: '蔭', img: 'assets/char/lan-yinding.jpg', medium: '水彩',
     title: '田園詩人', era: '1903 – 1979', origin: '宜蘭羅東',
     tags: ['水彩畫家', '鄉土詩情', '豐年'],
     desc: '受石川欽一郎啟蒙的水彩大師,以淡彩渲染畫遍臺灣農村:竹林、水牛、養鴨人家。曾任《豐年》雜誌首任社長,把藝術帶進田野與民間。',
@@ -184,7 +184,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'li-shihchiao', name: '李石樵', mono: '石', img: 'assets/char/li-shihchiao.jpg',
+    id: 'li-shihchiao', name: '李石樵', mono: '石', img: 'assets/char/li-shihchiao.jpg', medium: '油畫',
     title: '時代之眼', era: '1908 – 1995', origin: '臺北新莊',
     tags: ['油畫家', '寫實群像', '社會觀察'],
     desc: '「畫家中的畫家」,素描功力冠絕同輩。戰後以《市場口》《建設》描繪時代與庶民群像,用畫布記錄社會的變遷,是最銳利的時代之眼。',
@@ -202,7 +202,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'hung-juilin', name: '洪瑞麟', mono: '瑞', img: 'assets/char/hung-juilin.jpg',
+    id: 'hung-juilin', name: '洪瑞麟', mono: '瑞', img: 'assets/char/hung-juilin.jpg', medium: '油畫',
     title: '礦坑之光', era: '1912 – 1996', origin: '臺北大稻埕',
     tags: ['礦工畫家', '速寫', '勞動之美'],
     desc: '一生與礦工同進退,在倪蔣懷經營的瑞芳礦場工作三十餘年,以炭筆與淡彩速寫坑道中的汗水與尊嚴,被稱為「礦工畫家」,畫出勞動者的靈魂。',
@@ -217,6 +217,330 @@ const CHARACTERS = [
       { title: '礦工頌', year: 1965, note: '坑道勞動群像' },
       { title: '入坑', year: 1955, note: '礦工日常速寫' },
       { title: '曠工洗澡', year: 1958, note: '勞動者的身體詩篇' },
+    ],
+  },
+  {
+    id: 'yen-shuilong', name: '顏水龍', mono: '龍', img: 'assets/char/yen-shuilong.jpg', medium: '油畫',
+    title: '工藝織光', era: '1903 – 1997', origin: '臺南下營',
+    tags: ['油畫家', '工藝之父', '馬賽克'],
+    desc: '跨越純藝術與應用美術的全才。畢生推動臺灣工藝振興,更以大型馬賽克壁畫妝點城市,劍潭公園《從農業社會到工業社會》即其名作,被尊為「臺灣工藝之父」。',
+    stats: { atk: 7, def: 8, spd: 7, wis: 9 }, difficulty: 2,
+    hue: 35, hue2: 180,
+    skills: {
+      light: { name: '蘭嶼晨光', desc: '南島陽光的溫暖速寫' },
+      heavy: { name: '工藝之心', desc: '千錘百鍊的手作之力' },
+      ultra: { name: '千磚日月', desc: '馬賽克拼出的永恆壁畫' },
+    },
+    works: [
+      { title: '從農業社會到工業社會', year: 1969, note: '劍潭公園的馬賽克壁畫地標' },
+      { title: '蘭嶼風景', year: 1975, note: '蘭嶼與原住民系列' },
+      { title: '臺灣工藝', year: 1952, note: '出版專書推動工藝運動' },
+    ],
+  },
+  {
+    id: 'yang-sanlang', name: '楊三郎', mono: '楊', img: 'assets/char/yang-sanlang.jpg', medium: '油畫',
+    title: '外光行者', era: '1907 – 1995', origin: '臺北永和',
+    tags: ['油畫家', '印象派', '台陽推手'],
+    desc: '少年瞞著家人赴日習畫,深受印象派外光技法影響,畢生堅持對景寫生。1934 年與陳澄波等共創臺陽美術協會,其網溪別墅今為楊三郎美術館。',
+    stats: { atk: 8, def: 7, spd: 8, wis: 7 }, difficulty: 2,
+    hue: 215, hue2: 45,
+    skills: {
+      light: { name: '外光寫生', desc: '追逐光影的迅疾筆觸' },
+      heavy: { name: '網溪春色', desc: '故園春光的飽滿一擊' },
+      ultra: { name: '台陽旗手', desc: '揭起民間美術的大旗' },
+    },
+    works: [
+      { title: '台陽美術協會', year: 1934, note: '與陳澄波等共同創辦' },
+      { title: '玉山連作', year: 1980, note: '晚年鍾情的高山曙色' },
+      { title: '網溪別墅', year: 1991, note: '今楊三郎美術館' },
+    ],
+  },
+  {
+    id: 'kuo-pochuan', name: '郭柏川', mono: '柏', img: 'assets/char/kuo-pochuan.jpg', medium: '油畫',
+    title: '宣紙油魂', era: '1901 – 1974', origin: '臺南',
+    tags: ['油畫家', '宣紙油彩', '府城導師'],
+    desc: '旅居北平十餘年,悟出以油彩繪於宣紙的獨門技法,融合書法線條與東方色感。戰後返臺南任教成功大學,創辦臺南美術研究會,深耕府城美術。',
+    stats: { atk: 8, def: 7, spd: 7, wis: 8 }, difficulty: 4,
+    hue: 0, hue2: 30,
+    skills: {
+      light: { name: '宣紙落彩', desc: '油彩滲入宣紙的奇技' },
+      heavy: { name: '赤崁朝暉', desc: '府城古蹟的朱紅烈焰' },
+      ultra: { name: '故都風華', desc: '融貫中西的巔峰一擊' },
+    },
+    works: [
+      { title: '北平故宮', year: 1939, note: '旅平時期的宮牆系列' },
+      { title: '赤崁樓', year: 1950, note: '戰後府城風景經典' },
+      { title: '臺南美術研究會', year: 1952, note: '創辦並培育南部人才' },
+    ],
+  },
+  {
+    id: 'liu-chihsiang', name: '劉啟祥', mono: '啟', img: 'assets/char/liu-chihsiang.jpg', medium: '油畫',
+    title: '南方紳士', era: '1910 – 1998', origin: '臺南柳營',
+    tags: ['油畫家', '留法', '優雅'],
+    desc: '出身柳營望族,早年留法臨摹名作,畫風優雅抒情如室內樂。戰後定居高雄小坪頂,推動南部美術展覽,是南臺灣油畫的領航者。',
+    stats: { atk: 6, def: 8, spd: 8, wis: 9 }, difficulty: 3,
+    hue: 165, hue2: 330,
+    skills: {
+      light: { name: '沙龍素描', desc: '巴黎沙龍的優雅筆意' },
+      heavy: { name: '柳營追想', desc: '故園記憶的深沉迴響' },
+      ultra: { name: '南方畫室', desc: '小坪頂的燦爛日光' },
+    },
+    works: [
+      { title: '魚店', year: 1940, note: '旅日時期代表作' },
+      { title: '小坪頂風景', year: 1960, note: '高雄山居歲月' },
+      { title: '南部美術展覽會', year: 1953, note: '推動南臺灣美術運動' },
+    ],
+  },
+  {
+    id: 'chen-chihchi', name: '陳植棋', mono: '棋', img: 'assets/char/chen-chihchi.jpg', medium: '油畫',
+    title: '狂飆天才', era: '1906 – 1931', origin: '臺北汐止',
+    tags: ['油畫家', '狂飆', '天才早逝'],
+    desc: '因學潮遭臺北師範退學,毅然赴日習畫;筆勢狂放、色彩熾烈,兩度入選帝展,卻在 25 歲便燃盡生命,是臺灣美術史上最耀眼的流星。',
+    stats: { atk: 10, def: 4, spd: 10, wis: 6 }, difficulty: 4,
+    hue: 350, hue2: 220,
+    skills: {
+      light: { name: '狂飆筆勢', desc: '無所畏懼的疾風連擊' },
+      heavy: { name: '夫人像', desc: '白衣身影的凜然之力' },
+      ultra: { name: '燃燒的青春', desc: '以生命為薪的最後烈焰' },
+    },
+    works: [
+      { title: '夫人像', year: 1927, note: '白衣夫人的經典肖像' },
+      { title: '臺灣風景', year: 1928, note: '首度入選帝展' },
+      { title: '淡水風景', year: 1930, note: '再度入選帝展之作' },
+    ],
+  },
+  {
+    id: 'chang-wanchuan', name: '張萬傳', mono: '傳', img: 'assets/char/chang-wanchuan.jpg', medium: '油畫',
+    title: '在野游魚', era: '1909 – 2003', origin: '臺北淡水',
+    tags: ['油畫家', '在野派', '畫魚'],
+    desc: '一生站在官展體制之外,與陳德旺等共組 MOUVE 美術集團;筆觸粗獷率性,最愛畫魚,一尾尾鮮魚在他筆下都是生命的吶喊。',
+    stats: { atk: 9, def: 6, spd: 8, wis: 6 }, difficulty: 3,
+    hue: 195, hue2: 0,
+    skills: {
+      light: { name: '野性速寫', desc: '不受拘束的粗獷線條' },
+      heavy: { name: '鮮魚之頌', desc: '躍出畫布的紅魚狂舞' },
+      ultra: { name: '在野之魂', desc: '體制之外的自由怒吼' },
+    },
+    works: [
+      { title: 'MOUVE 美術集團', year: 1938, note: '與陳德旺等共同創立' },
+      { title: '魚系列', year: 1970, note: '畢生鍾愛的主題' },
+      { title: '淡水教堂', year: 1960, note: '故鄉山城風景' },
+    ],
+  },
+  {
+    id: 'chen-tewang', name: '陳德旺', mono: '旺', img: 'assets/char/chen-tewang.jpg', medium: '油畫',
+    title: '色面哲人', era: '1910 – 1984', origin: '臺北大稻埕',
+    tags: ['油畫家', '塞尚信徒', '沉思'],
+    desc: '深研塞尚的理性構成,一生反覆推敲色彩與空間的關係;隱於市井、述而不作,觀音山系列把一座山畫成了哲學。',
+    stats: { atk: 6, def: 9, spd: 6, wis: 10 }, difficulty: 4,
+    hue: 205, hue2: 160,
+    skills: {
+      light: { name: '理性構成', desc: '精密計算的色塊布局' },
+      heavy: { name: '觀音山遠眺', desc: '反覆錘鍊的山形之力' },
+      ultra: { name: '色面交響', desc: '色彩與空間的終極和聲' },
+    },
+    works: [
+      { title: '觀音山系列', year: 1975, note: '反覆探索的畢生母題' },
+      { title: 'MOUVE 美術集團', year: 1938, note: '在野畫家的結盟' },
+      { title: '野柳海邊', year: 1980, note: '晚年色面實驗' },
+    ],
+  },
+  {
+    id: 'yeh-huocheng', name: '葉火城', mono: '火', img: 'assets/char/yeh-huocheng.jpg', medium: '油畫',
+    title: '豐原厚土', era: '1908 – 1993', origin: '臺中豐原',
+    tags: ['油畫家', '厚彩', '教育家'],
+    desc: '臺北師範受教於石川欽一郎,一生扎根豐原;以厚實筆觸堆疊臺灣山川的重量,長期擔任校長作育英才,是中部美術的重要推手。',
+    stats: { atk: 7, def: 9, spd: 5, wis: 8 }, difficulty: 2,
+    hue: 25, hue2: 45,
+    skills: {
+      light: { name: '厚彩堆疊', desc: '層層顏料的沉重打擊' },
+      heavy: { name: '豐原一隅', desc: '故鄉土地的厚實反擊' },
+      ultra: { name: '大地之火', desc: '葫蘆墩燃起的燎原之光' },
+    },
+    works: [
+      { title: '豐原風景', year: 1965, note: '故鄉街屋與山色' },
+      { title: '大甲溪畔', year: 1975, note: '中部山川的厚彩詮釋' },
+      { title: '中部美術協會', year: 1954, note: '推動中部美術教育' },
+    ],
+  },
+  {
+    id: 'liao-techeng', name: '廖德政', mono: '政', img: 'assets/char/liao-techeng.jpg', medium: '油畫',
+    title: '田園靜光', era: '1920 – 2015', origin: '臺中豐原',
+    tags: ['油畫家', '田園詩情', '靜謐'],
+    desc: '東京美術學校畢業,父親廖進平罹難於二二八;他將傷痛沉澱為畫布上恬靜的果物與觀音山四季,用最溫柔的筆觸守望土地。',
+    stats: { atk: 5, def: 10, spd: 6, wis: 9 }, difficulty: 3,
+    hue: 95, hue2: 60,
+    skills: {
+      light: { name: '靜物凝視', desc: '桌上果物的溫柔光暈' },
+      heavy: { name: '清秋', desc: '秋光澄澈的靜謐之力' },
+      ultra: { name: '觀音山四季', desc: '窗前山色的歲月輪迴' },
+    },
+    works: [
+      { title: '清秋', year: 1951, note: '靜物畫經典' },
+      { title: '觀音山連作', year: 1990, note: '自宅遠眺的四季' },
+      { title: '紀元美術會', year: 1954, note: '與張萬傳、陳德旺共創' },
+    ],
+  },
+  {
+    id: 'shen-chetsai', name: '沈哲哉', mono: '哲', img: 'assets/char/shen-chetsai.jpg', medium: '油畫',
+    title: '薔薇夢語', era: '1926 – 2017', origin: '臺南',
+    tags: ['油畫家', '浪漫', '芭蕾'],
+    desc: '師承廖繼春與郭柏川,以夢幻粉彩色調描繪芭蕾舞者、少女與薔薇;畫面浪漫柔美,是府城畫壇最溫柔的抒情詩人。',
+    stats: { atk: 6, def: 7, spd: 9, wis: 8 }, difficulty: 1,
+    hue: 320, hue2: 280,
+    skills: {
+      light: { name: '粉彩之夢', desc: '如霧般柔軟的色點' },
+      heavy: { name: '芭蕾旋舞', desc: '舞者躍動的優雅連擊' },
+      ultra: { name: '薔薇綻放', desc: '滿園薔薇的浪漫風暴' },
+    },
+    works: [
+      { title: '芭蕾舞者', year: 1975, note: '最鍾愛的舞台題材' },
+      { title: '薔薇', year: 1980, note: '浪漫色彩的代名詞' },
+      { title: '府城執教', year: 1950, note: '作育臺南美術學子' },
+    ],
+  },
+  {
+    id: 'lin-yushan', name: '林玉山', mono: '玉', img: 'assets/char/lin-yushan.jpg', medium: '膠彩',
+    title: '雙絕虎聖', era: '1907 – 2004', origin: '嘉義',
+    tags: ['膠彩畫家', '臺展三少年', '畫虎'],
+    desc: '「臺展三少年」之一,詩書畫俱佳;寫生功力深厚,筆下猛虎栩栩如生,《蓮池》更被指定為國寶,晚年執教師大,桃李天下。',
+    stats: { atk: 8, def: 8, spd: 8, wis: 9 }, difficulty: 3,
+    hue: 140, hue2: 45,
+    skills: {
+      light: { name: '寫生妙筆', desc: '格物致知的精準觀察' },
+      heavy: { name: '猛虎嘯谷', desc: '百獸之王破紙而出' },
+      ultra: { name: '蓮池', desc: '月下金蓮的國寶之光' },
+    },
+    works: [
+      { title: '蓮池', year: 1930, note: '指定國寶的膠彩經典' },
+      { title: '大南門', year: 1927, note: '首回臺展入選作' },
+      { title: '歸途', year: 1944, note: '水牛歸家的雋永身影' },
+    ],
+  },
+  {
+    id: 'lu-tiehchou', name: '呂鐵州', mono: '鐵', img: 'assets/char/lu-tiehchou.jpg', medium: '膠彩',
+    title: '花鳥泰斗', era: '1899 – 1942', origin: '桃園大溪',
+    tags: ['膠彩畫家', '臺展泰斗', '花鳥'],
+    desc: '大溪出身的東洋畫大家,花鳥畫精麗絕倫、屢獲臺展特選,人稱「臺展泰斗」;創設南溟繪畫研究所培育後進,惜英年而逝。',
+    stats: { atk: 7, def: 7, spd: 9, wis: 9 }, difficulty: 4,
+    hue: 210, hue2: 330,
+    skills: {
+      light: { name: '花鳥點睛', desc: '一筆喚醒紙上生靈' },
+      heavy: { name: '南國繁花', desc: '繁花齊放的絢爛攻勢' },
+      ultra: { name: '臺展泰斗', desc: '特選連霸的王者威光' },
+    },
+    works: [
+      { title: '梅', year: 1929, note: '臺展特選的成名作' },
+      { title: '南國', year: 1939, note: '花鳥屏風鉅作' },
+      { title: '南溟繪畫研究所', year: 1935, note: '培育膠彩後進' },
+    ],
+  },
+  {
+    id: 'lin-chihchu', name: '林之助', mono: '之', img: 'assets/char/lin-chihchu.jpg', medium: '膠彩',
+    title: '膠彩之父', era: '1915 – 2008', origin: '臺中大雅',
+    tags: ['膠彩之父', '典雅', '臺中'],
+    desc: '留日習畫即嶄露頭角,《朝涼》入選紀元二千六百年奉祝展;戰後為「膠彩畫」正名,執教臺中師範數十年,被尊為「臺灣膠彩畫之父」。',
+    stats: { atk: 6, def: 8, spd: 8, wis: 10 }, difficulty: 2,
+    hue: 175, hue2: 320,
+    skills: {
+      light: { name: '典雅彩筆', desc: '溫潤如玉的膠彩筆觸' },
+      heavy: { name: '朝涼', desc: '清晨微光的沁涼一擊' },
+      ultra: { name: '膠彩正名', desc: '為一個畫種立名的宣言' },
+    },
+    works: [
+      { title: '朝涼', year: 1940, note: '奉祝展入選的成名作' },
+      { title: '好日', year: 1943, note: '戰時膠彩的溫柔經典' },
+      { title: '膠彩畫正名', year: 1977, note: '確立「膠彩畫」名稱' },
+    ],
+  },
+  {
+    id: 'chen-huikun', name: '陳慧坤', mono: '坤', img: 'assets/char/chen-huikun.jpg', medium: '膠彩',
+    title: '三藝融通', era: '1907 – 2011', origin: '臺中龍井',
+    tags: ['膠彩畫家', '跨媒材', '百歲人瑞'],
+    desc: '橫跨膠彩、水墨與油畫三種媒材,以寫生走遍臺灣與歐洲;將塞尚的結構、水墨的氣韻與膠彩的麗色熔於一爐,以逾百歲高壽見證美術百年。',
+    stats: { atk: 7, def: 9, spd: 6, wis: 10 }, difficulty: 3,
+    hue: 45, hue2: 205,
+    skills: {
+      light: { name: '三藝合一', desc: '三種媒材的融會妙技' },
+      heavy: { name: '野柳岩韻', desc: '海蝕岩石的結構之力' },
+      ultra: { name: '玉山靈峰', desc: '聖山寫生的百年一擊' },
+    },
+    works: [
+      { title: '玉山靈峰', year: 1972, note: '高山寫生鉅作' },
+      { title: '野柳系列', year: 1965, note: '岩石結構的探索' },
+      { title: '淡水風景', year: 1980, note: '三媒材技法的交響' },
+    ],
+  },
+  {
+    id: 'hsiao-jusung', name: '蕭如松', mono: '松', img: 'assets/char/hsiao-jusung.jpg', medium: '水彩',
+    title: '澄澈幾何', era: '1922 – 1992', origin: '新竹竹東',
+    tags: ['水彩畫家', '幾何構成', '竹東'],
+    desc: '以幾何分割重組風景與靜物,色彩明亮清澈如晨光;一生執教竹東、嚴謹自律成傳奇,故居今闢為蕭如松藝術園區。',
+    stats: { atk: 6, def: 9, spd: 7, wis: 9 }, difficulty: 3,
+    hue: 190, hue2: 210,
+    skills: {
+      light: { name: '幾何構圖', desc: '光的稜線精準切割' },
+      heavy: { name: '窗前靜光', desc: '畫室窗光的澄澈斬擊' },
+      ultra: { name: '澄澈之境', desc: '萬象歸於純粹的光' },
+    },
+    works: [
+      { title: '畫室系列', year: 1970, note: '窗光與靜物的經典' },
+      { title: '竹東風景', year: 1975, note: '故鄉山城的幾何詩' },
+      { title: '蕭如松藝術園區', year: 2008, note: '故居活化保存' },
+    ],
+  },
+  {
+    id: 'chen-hsiayu', name: '陳夏雨', mono: '夏', img: 'assets/char/chen-hsiayu.jpg', medium: '雕塑與現代藝術',
+    title: '靜謐雕心', era: '1917 – 2000', origin: '臺中龍井',
+    tags: ['雕塑家', '完美主義', '靜謐'],
+    desc: '二十出頭即以《裸婦》入選日本新文展,戰後隱居臺中工作室,數十年如一日打磨小型塑像;作品簡練圓潤,靜謐中蘊含極致生命力。',
+    stats: { atk: 7, def: 10, spd: 5, wis: 9 }, difficulty: 4,
+    hue: 30, hue2: 180,
+    skills: {
+      light: { name: '靜謐塑形', desc: '不疾不徐的指尖功夫' },
+      heavy: { name: '裸婦', desc: '簡練圓潤的形體之美' },
+      ultra: { name: '完美之境', desc: '十年磨一件的極致' },
+    },
+    works: [
+      { title: '裸婦', year: 1938, note: '入選新文展的成名作' },
+      { title: '兔', year: 1946, note: '簡練圓潤的小品經典' },
+      { title: '詩人頭像', year: 1980, note: '晚年反覆推敲之作' },
+    ],
+  },
+  {
+    id: 'yang-yingfeng', name: '楊英風', mono: '風', img: 'assets/char/yang-yingfeng.jpg', medium: '雕塑與現代藝術',
+    title: '鋼之鳳凰', era: '1926 – 1997', origin: '宜蘭',
+    tags: ['雕塑家', '景觀藝術', '不鏽鋼'],
+    desc: '從《豐年》雜誌美編到國際景觀雕塑大師;晚年以不鏽鋼鏡面打造《鳳凰來儀》《東西門》,讓雕塑映照天地,開創臺灣公共藝術新紀元。',
+    stats: { atk: 9, def: 7, spd: 7, wis: 8 }, difficulty: 3,
+    hue: 185, hue2: 50,
+    skills: {
+      light: { name: '版畫刻痕', desc: '豐年歲月的鄉土刻刀' },
+      heavy: { name: '太魯閣之勢', desc: '山水峽谷的雄渾氣魄' },
+      ultra: { name: '鳳凰來儀', desc: '不鏽鋼鳳凰浴光降臨' },
+    },
+    works: [
+      { title: '鳳凰來儀', year: 1970, note: '大阪萬博的巨型地標' },
+      { title: '東西門', year: 1973, note: '紐約華爾街的不鏽鋼雕塑' },
+      { title: '太魯閣山水', year: 1973, note: '景觀雕塑系列原點' },
+    ],
+  },
+  {
+    id: 'chuang-shihho', name: '莊世和', mono: '世', img: 'assets/char/chuang-shihho.jpg', medium: '雕塑與現代藝術',
+    title: '前衛先聲', era: '1923 – 2020', origin: '屏東潮州',
+    tags: ['前衛藝術', '抽象', '屏東'],
+    desc: '早在 1940 年代便投身抽象與立體派探索,是臺灣前衛藝術的先鋒;戰後深耕屏東,創綠舍美術研究會,讓現代藝術在南國田野扎根。',
+    stats: { atk: 8, def: 6, spd: 9, wis: 8 }, difficulty: 5,
+    hue: 250, hue2: 170,
+    skills: {
+      light: { name: '立體解構', desc: '拆解萬物的幾何之眼' },
+      heavy: { name: '綠舍之夢', desc: '南國前衛的超現實一擊' },
+      ultra: { name: '前衛宣言', desc: '打破框架的抽象風暴' },
+    },
+    works: [
+      { title: '抽象構成系列', year: 1943, note: '1940 年代起的前衛探索' },
+      { title: '綠舍美術研究會', year: 1957, note: '在屏東播下現代藝術種子' },
+      { title: '潮州執教', year: 1946, note: '南臺灣現代藝術推手' },
     ],
   },
 ];
@@ -386,6 +710,9 @@ const AI_LEVELS = [
   { id: 'expert', name: 'Expert', label: '宗師',  acc: 0.86, thinkMin: 1.0, thinkMax: 2.4, ultraUse: 0.95 },
   { id: 'master', name: 'Master', label: '傳奇',  acc: 0.94, thinkMin: 0.8, thinkMax: 1.8, ultraUse: 1 },
 ];
+
+/* 創作媒材分類(選角與圖鑑的分組順序) */
+const MEDIUMS = ['油畫', '膠彩', '水彩', '雕塑與現代藝術'];
 
 /* 遊戲模式定義 */
 const MODES = [

@@ -1,5 +1,5 @@
 /* 墨魂對決 Service Worker — 離線快取 */
-const CACHE = 'mohun-v4';
+const CACHE = 'mohun-v5';
 const ASSETS = [
   '.', 'index.html', 'css/style.css',
   'js/data.js', 'js/audio.js', 'js/fx.js', 'js/game.js', 'js/ui.js',
@@ -10,6 +10,15 @@ const ASSETS = [
   'assets/char/liao-chichun.jpg', 'assets/char/ni-chianghuai.jpg',
   'assets/char/pu-tiensheng.jpg', 'assets/char/lan-yinding.jpg',
   'assets/char/li-shihchiao.jpg', 'assets/char/hung-juilin.jpg',
+  'assets/char/yen-shuilong.jpg', 'assets/char/yang-sanlang.jpg',
+  'assets/char/kuo-pochuan.jpg', 'assets/char/liu-chihsiang.jpg',
+  'assets/char/chen-chihchi.jpg', 'assets/char/chang-wanchuan.jpg',
+  'assets/char/chen-tewang.jpg', 'assets/char/yeh-huocheng.jpg',
+  'assets/char/liao-techeng.jpg', 'assets/char/shen-chetsai.jpg',
+  'assets/char/lin-yushan.jpg', 'assets/char/lu-tiehchou.jpg',
+  'assets/char/lin-chihchu.jpg', 'assets/char/chen-huikun.jpg',
+  'assets/char/hsiao-jusung.jpg', 'assets/char/chen-hsiayu.jpg',
+  'assets/char/yang-yingfeng.jpg', 'assets/char/chuang-shihho.jpg',
 ];
 
 self.addEventListener('install', e => {

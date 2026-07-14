@@ -80,11 +80,11 @@ const UI = {
     $('char-detail').classList.add('hidden');
 
     const grid = $('char-grid');
-    grid.innerHTML = CHARACTERS.map((c, i) => {
+    const cardHTML = (c, i) => {
       const picked = this.sel.picks.includes(c.id);
       const unlocked = this.unlocks[c.id];
       return `
-      <button class="char-card ${picked ? 'picked' : ''}" data-id="${c.id}" style="--h:${c.hue};--h2:${c.hue2};--d:${i * 0.05}s">
+      <button class="char-card ${picked ? 'picked' : ''}" data-id="${c.id}" style="--h:${c.hue};--h2:${c.hue2};--d:${Math.min(i * 0.04, 0.6)}s">
         ${picked ? `<span class="pick-badge">${mode === 'versus' && this.sel.picks[1] === c.id ? 'P2' : mode === 'versus' ? 'P1' : '出戰'}</span>` : ''}
         ${unlocked ? '<span class="char-star" title="已通關">✦</span>' : ''}
         <span class="char-portrait"><img src="${c.img}" alt="${c.name}" loading="lazy"></span>
@@ -94,7 +94,15 @@ const UI = {
         <span class="char-tags">${c.tags.slice(0, 2).map(t => `<i>${t}</i>`).join('')}</span>
         <span class="char-diff">${'◆'.repeat(c.difficulty)}${'◇'.repeat(5 - c.difficulty)}</span>
       </button>`;
-    }).join('');
+    };
+    let html = '', idx = 0;
+    for (const med of MEDIUMS) {
+      const group = CHARACTERS.filter(c => c.medium === med);
+      if (!group.length) continue;
+      html += `<div class="medium-header"><span>${med}</span><i>${group.length} 位</i></div>`;
+      html += group.map(c => cardHTML(c, idx++)).join('');
+    }
+    grid.innerHTML = html;
 
     grid.querySelectorAll('.char-card').forEach(card => {
       card.addEventListener('mouseenter', () => AudioEngine.play('hover'));
@@ -542,10 +550,10 @@ const UI = {
   renderGallery() {
     const unlockedCount = CHARACTERS.filter(c => this.unlocks[c.id]).length;
     $('gallery-progress').innerHTML = `<span class="prac-score">收藏進度 ${unlockedCount} / ${CHARACTERS.length}</span>`;
-    $('gallery-wrap').innerHTML = CHARACTERS.map((c, i) => {
+    const gCardHTML = (c, i) => {
       const un = this.unlocks[c.id];
       return `
-      <div class="gallery-card fade-up ${un ? 'unlocked' : ''}" style="--h:${c.hue};--h2:${c.hue2};--d:${i * 0.05}s" data-id="${c.id}">
+      <div class="gallery-card fade-up ${un ? 'unlocked' : ''}" style="--h:${c.hue};--h2:${c.hue2};--d:${Math.min(i * 0.04, 0.6)}s" data-id="${c.id}">
         <div class="g-head">
           <span class="g-mono"><img src="${c.img}" alt="${c.name}" loading="lazy"></span>
           <div><div class="g-name">${c.name} ${un ? '<i class="g-star">✦</i>' : ''}</div><div class="g-title">${c.title} · ${c.era}</div></div>
@@ -558,7 +566,15 @@ const UI = {
             </div>`).join('')}
         </div>
       </div>`;
-    }).join('');
+    };
+    let gHtml = '', gIdx = 0;
+    for (const med of MEDIUMS) {
+      const group = CHARACTERS.filter(c => c.medium === med);
+      if (!group.length) continue;
+      gHtml += `<div class="medium-header"><span>${med}</span><i>${group.length} 位</i></div>`;
+      gHtml += group.map(c => gCardHTML(c, gIdx++)).join('');
+    }
+    $('gallery-wrap').innerHTML = gHtml;
   },
 
   /* ── 排行榜 ── */

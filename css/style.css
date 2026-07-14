@@ -242,6 +242,23 @@ input, textarea, select { font-family: inherit; }
   padding: 0 clamp(16px, 4vw, 56px);
   max-width: 1320px; margin: 0 auto; width: 100%;
 }
+.medium-header {
+  grid-column: 1 / -1;
+  display: flex; align-items: baseline; gap: 14px;
+  margin: 18px 2px 2px;
+}
+.medium-header:first-child { margin-top: 0; }
+.medium-header span {
+  font-family: var(--serif); font-size: 20px; font-weight: 700;
+  letter-spacing: 0.3em; color: var(--gold-hi);
+  text-shadow: 0 0 18px rgba(217, 180, 91, 0.35);
+}
+.medium-header i { font-style: normal; font-size: 12px; letter-spacing: 0.2em; color: var(--paper-dim); }
+.medium-header::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(217, 180, 91, 0.45), transparent);
+}
+
 .char-card {
   --c1: hsl(var(--h), 55%, 46%);
   --c2: hsl(var(--h2), 60%, 38%);
