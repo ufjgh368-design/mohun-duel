@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0c14">
+<title>墨魂對決 — 臺灣藝術家知識格鬥 RPG</title>
+<meta name="description" content="臺灣藝術家知識格鬥 RPG:以答題為武器的回合制戰鬥,認識陳澄波、黃土水、郭雪湖等 12 位臺灣美術先驅。">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="preload" as="image" href="assets/hero-bg.jpg">
+</head>
+<body>
+
+<!-- 全域背景粒子 -->
+<canvas id="bg-canvas"></canvas>
+<div class="vignette"></div>
+<div class="fog fog-a"></div>
+<div class="fog fog-b"></div>
+
+<!-- ═══════════ 首頁 ═══════════ -->
+<section id="screen-home" class="screen active">
+  <div class="hero">
+    <div class="hero-art"></div>
+    <div class="hero-center">
+      <div class="logo-seal">藝</div>
+      <h1 class="logo-title">墨魂對決</h1>
+      <p class="logo-sub">臺灣藝術家 · 知識格鬥 RPG</p>
+      <div class="logo-divider"><span>◆</span></div>
+      <p class="hero-tag">以知識為刃 · 以藝術為魂 · 十二先驅 山河再會</p>
+      <div class="hero-actions">
+        <button class="btn btn-gold btn-xl" id="btn-start">開始遊戲</button>
+        <div class="hero-subactions">
+          <button class="btn btn-ghost" id="btn-gallery-home">角色圖鑑</button>
+          <button class="btn btn-ghost" id="btn-leaderboard">排行榜</button>
+          <button class="btn btn-ghost" id="btn-settings">設定</button>
+        </div>
+      </div>
+    </div>
+    <div class="hero-footer">
+      <button class="icon-btn" id="btn-bgm" title="背景音樂">♪</button>
+      <span class="hero-credit">臺灣美術教育專案 · 教學用途</span>
+      <button class="icon-btn" id="btn-sfx" title="音效">🔊</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 模式選擇 ═══════════ -->
+<section id="screen-modes" class="screen">
+  <header class="screen-header">
+    <button class="btn btn-back" data-back="screen-home">‹ 返回</button>
+    <h2 class="screen-title">選擇模式</h2>
+    <div class="header-spacer"></div>
+  </header>
+  <div id="mode-grid" class="mode-grid"></div>
+</section>
+
+<!-- ═══════════ 角色選擇 ═══════════ -->
+<section id="screen-select" class="screen">
+  <header class="screen-header">
+    <button class="btn btn-back" data-back="screen-modes">‹ 返回</button>
+    <h2 class="screen-title" id="select-title">選擇角色</h2>
+    <div class="header-spacer"></div>
+  </header>
+  <p class="select-hint" id="select-hint"></p>
+  <div id="char-grid" class="char-grid"></div>
+  <div id="char-detail" class="char-detail hidden"></div>
+  <div class="select-footer">
+    <div id="pick-status" class="pick-status"></div>
+    <div class="difficulty-row hidden" id="ai-difficulty-row">
+      <span class="diff-label">AI 難度</span>
+      <div class="diff-btns" id="diff-btns"></div>
+    </div>
+    <button class="btn btn-gold btn-lg hidden" id="btn-battle-start">進入戰鬥</button>
+  </div>
+</section>
+
+<!-- ═══════════ 戰鬥畫面 ═══════════ -->
+<section id="screen-battle" class="screen">
+  <div class="battle-stage" id="battle-stage">
+    <div class="stage-bg"></div>
+    <div class="stage-ground"></div>
+
+    <div class="battle-hud">
+      <div class="fighter-panel left" id="panel-p1">
+        <div class="fp-name-row"><span class="fp-name" id="name-p1"></span><span class="fp-tag" id="tag-p1"></span></div>
+        <div class="bar hp-bar"><div class="bar-fill" id="hp-p1"></div><span class="bar-text" id="hptext-p1"></span></div>
+        <div class="bar en-bar"><div class="bar-fill" id="en-p1"></div><span class="bar-label">氣</span></div>
+        <div class="fp-combo" id="combo-p1"></div>
+      </div>
+      <div class="battle-center">
+        <div class="round-label" id="round-label">ROUND 1</div>
+        <div class="timer-ring" id="timer-ring"><span id="timer-text">–</span></div>
+      </div>
+      <div class="fighter-panel right" id="panel-p2">
+        <div class="fp-name-row"><span class="fp-tag" id="tag-p2"></span><span class="fp-name" id="name-p2"></span></div>
+        <div class="bar hp-bar rtl"><div class="bar-fill" id="hp-p2"></div><span class="bar-text" id="hptext-p2"></span></div>
+        <div class="bar en-bar rtl"><div class="bar-fill" id="en-p2"></div><span class="bar-label">氣</span></div>
+        <div class="fp-combo" id="combo-p2"></div>
+      </div>
+    </div>
+
+    <div class="arena">
+      <div class="fighter fighter-left" id="fighter-p1"></div>
+      <div class="vs-mark">對</div>
+      <div class="fighter fighter-right" id="fighter-p2"></div>
+    </div>
+
+    <div class="battle-bottom" id="battle-bottom"></div>
+
+    <div class="fx-layer" id="fx-layer"></div>
+    <div class="announce" id="announce"></div>
+    <div class="ultra-overlay" id="ultra-overlay"></div>
+    <button class="btn btn-ghost btn-flee" id="btn-flee">離開戰鬥</button>
+  </div>
+</section>
+
+<!-- ═══════════ 練習模式 ═══════════ -->
+<section id="screen-practice" class="screen">
+  <header class="screen-header">
+    <button class="btn btn-back" data-back="screen-modes">‹ 返回</button>
+    <h2 class="screen-title">練習模式</h2>
+    <div class="header-spacer" id="practice-score"></div>
+  </header>
+  <div class="practice-wrap" id="practice-wrap"></div>
+</section>
+
+<!-- ═══════════ 教師模式 ═══════════ -->
+<section id="screen-teacher" class="screen">
+  <header class="screen-header">
+    <button class="btn btn-back" data-back="screen-modes">‹ 返回</button>
+    <h2 class="screen-title">教師模式 · 題庫管理</h2>
+    <div class="header-spacer"></div>
+  </header>
+  <div class="teacher-wrap" id="teacher-wrap"></div>
+</section>
+
+<!-- ═══════════ 圖鑑 ═══════════ -->
+<section id="screen-gallery" class="screen">
+  <header class="screen-header">
+    <button class="btn btn-back" data-back="screen-home">‹ 返回</button>
+    <h2 class="screen-title">藝術家圖鑑</h2>
+    <div class="header-spacer" id="gallery-progress"></div>
+  </header>
+  <div class="gallery-wrap" id="gallery-wrap"></div>
+</section>
+
+<!-- ═══════════ 勝負結算 ═══════════ -->
+<div class="modal-backdrop hidden" id="result-modal">
+  <div class="result-card" id="result-card"></div>
+</div>
+
+<!-- ═══════════ 通用 Modal ═══════════ -->
+<div class="modal-backdrop hidden" id="modal">
+  <div class="modal-card" id="modal-card"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/data.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/fx.js"></script>
+<script src="js/game.js"></script>
+<script src="js/ui.js"></script>
+<script>
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>
