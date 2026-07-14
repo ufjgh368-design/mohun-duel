@@ -1,9 +1,9 @@
 /* 墨魂對決 Service Worker — 離線快取 */
-const CACHE = 'mohun-v3';
+const CACHE = 'mohun-v4';
 const ASSETS = [
   '.', 'index.html', 'css/style.css',
   'js/data.js', 'js/audio.js', 'js/fx.js', 'js/game.js', 'js/ui.js',
-  'manifest.json', 'assets/hero-bg.jpg',
+  'manifest.json', 'assets/hero-bg.jpg', 'assets/audio/bgm.mp3',
   'assets/char/chen-chengpo.jpg', 'assets/char/huang-tushui.jpg',
   'assets/char/kuo-hsuehhu.jpg', 'assets/char/chen-chin.jpg',
   'assets/char/li-meishu.jpg', 'assets/char/li-tsefan.jpg',

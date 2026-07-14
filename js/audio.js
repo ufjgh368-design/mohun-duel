@@ -9,6 +9,18 @@ const AudioEngine = (() => {
   let sfxOn = JSON.parse(localStorage.getItem('mh_sfx') ?? 'true');
   let bgmTimer = null;
 
+  /* BGM 音樂檔(載入失敗時退回合成古箏循環) */
+  const BGM_VOLUME = 0.5;
+  const bgmEl = new Audio('assets/audio/bgm.mp3');
+  bgmEl.loop = true;
+  bgmEl.preload = 'auto';
+  bgmEl.volume = BGM_VOLUME;
+  let bgmFileOk = true;
+  bgmEl.addEventListener('error', () => {
+    bgmFileOk = false;
+    if (bgmOn && ctx) startBGM();
+  });
+
   function init() {
     if (ctx) return;
     ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -119,15 +131,27 @@ const AudioEngine = (() => {
     bgmStep++;
     bgmTimer = setTimeout(bgmLoop, beat * 8 * 1000);
   }
-  function startBGM() { stopBGMTimer(); bgmLoop(); }
+  function startBGM() {
+    stopBGMTimer();
+    if (bgmFileOk) {
+      bgmEl.volume = BGM_VOLUME;
+      bgmEl.play().catch(() => { bgmFileOk = false; bgmLoop(); });
+    } else {
+      bgmLoop();
+    }
+  }
   function stopBGMTimer() { if (bgmTimer) { clearTimeout(bgmTimer); bgmTimer = null; } }
 
   function toggleBGM() {
     bgmOn = !bgmOn;
     localStorage.setItem('mh_bgm', JSON.stringify(bgmOn));
-    if (ctx) {
-      bgmGain.gain.linearRampToValueAtTime(bgmOn ? 0.32 : 0, ctx.currentTime + 0.4);
-      if (bgmOn) startBGM(); else stopBGMTimer();
+    if (bgmOn) {
+      if (ctx) bgmGain.gain.linearRampToValueAtTime(0.32, ctx.currentTime + 0.4);
+      startBGM();
+    } else {
+      if (ctx) bgmGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.4);
+      stopBGMTimer();
+      bgmEl.pause();
     }
     return bgmOn;
   }
@@ -138,5 +162,10 @@ const AudioEngine = (() => {
     return sfxOn;
   }
 
-  return { init, play, toggleBGM, toggleSFX, get bgmOn() { return bgmOn; }, get sfxOn() { return sfxOn; } };
+  return {
+    init, play, toggleBGM, toggleSFX,
+    get bgmOn() { return bgmOn; },
+    get sfxOn() { return sfxOn; },
+    get bgmPlaying() { return bgmFileOk && !bgmEl.paused; },
+  };
 })();

@@ -585,7 +585,7 @@ const UI = {
     this.modal(`
       <h3 class="modal-title">設定</h3>
       <div class="settings-list">
-        <label class="switch-row"><input type="checkbox" id="set-bgm" ${AudioEngine.bgmOn ? 'checked' : ''}><span>背景音樂(古箏五聲即興)</span></label>
+        <label class="switch-row"><input type="checkbox" id="set-bgm" ${AudioEngine.bgmOn ? 'checked' : ''}><span>背景音樂</span></label>
         <label class="switch-row"><input type="checkbox" id="set-sfx" ${AudioEngine.sfxOn ? 'checked' : ''}><span>介面與戰鬥音效</span></label>
         <hr class="settings-hr">
         <button class="btn btn-danger btn-sm" id="set-reset">重置全部進度(圖鑑 / 排行榜 / 題庫)</button>
