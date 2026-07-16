@@ -20,6 +20,60 @@ function factionMult(atkChar, defChar) {
 const CHARACTERS = [
   /* ══ 文藝復興 ══ */
   {
+    id: 'giotto', name: '喬托', mono: '喬', img: '', medium: '文藝復興',
+    title: '破曉聖手', era: '1267 – 1337', origin: '義大利・佛羅倫斯近郊',
+    tags: ['文藝復興先驅', '濕壁畫', '喬托的O'],
+    desc: '中世紀與文藝復興之間的破曉之人。他讓聖像走下金色天國,有了重量、淚水與呼吸;帕多瓦斯克羅威尼禮拜堂的滿堂壁畫,是歐洲繪畫的黎明。',
+    stats: { atk: 7, def: 8, spd: 6, wis: 9 }, difficulty: 4,
+    hue: 30, hue2: 210,
+    skills: {
+      light: { name: '喬托的O', desc: '徒手正圓的絕對精準' },
+      heavy: { name: '猶大之吻', desc: '壁畫史上最沉重的擁抱' },
+      ultra: { name: '斯克羅威尼禮拜堂', desc: '滿堂壁畫,黎明震響' },
+    },
+    works: [
+      { title: '斯克羅威尼禮拜堂壁畫', year: 1305, note: '帕多瓦的濕壁畫鉅作' },
+      { title: '猶大之吻', year: 1305, note: '戲劇性的對峙瞬間' },
+      { title: '聖方濟接受聖痕', year: 1295, note: '阿西西傳說系列' },
+    ],
+  },
+  {
+    id: 'donatello', name: '多納太羅', mono: '納', img: '', medium: '文藝復興',
+    title: '青銅先鋒', era: '1386 – 1466', origin: '義大利・佛羅倫斯',
+    tags: ['早期文藝復興', '雕塑', '青銅'],
+    desc: '早期文藝復興的雕塑革命者。青銅《大衛》是古典時代之後第一件獨立裸身立像,他把透視與人體解剖帶回雕塑,為後來的米開朗基羅鋪好了路。',
+    stats: { atk: 9, def: 7, spd: 6, wis: 8 }, difficulty: 4,
+    hue: 170, hue2: 40,
+    skills: {
+      light: { name: '淺浮雕', desc: '薄如蟬翼的空間魔術' },
+      heavy: { name: '加塔梅拉塔', desc: '青銅騎士踏陣而來' },
+      ultra: { name: '青銅大衛', desc: '少年英雄,一擊定音' },
+    },
+    works: [
+      { title: '青銅大衛', year: 1440, note: '文藝復興雕塑的里程碑' },
+      { title: '加塔梅拉塔騎馬像', year: 1453, note: '帕多瓦的傭兵隊長' },
+      { title: '聖喬治', year: 1417, note: '佛羅倫斯行會壁龕之作' },
+    ],
+  },
+  {
+    id: 'vaneyck', name: '范艾克', mono: '艾', img: '', medium: '文藝復興',
+    title: '油彩鍊金師', era: '1390 – 1441', origin: '尼德蘭・馬斯艾克',
+    tags: ['北方文藝復興', '油畫先驅', '細節'],
+    desc: '北方文藝復興的開創者,把油彩層疊技法推向極致——凸面鏡、黃銅吊燈、每一根毛髮都纖毫畢現;《根特祭壇畫》與《阿諾菲尼夫婦》至今仍是寫實的極限。',
+    stats: { atk: 6, def: 9, spd: 6, wis: 10 }, difficulty: 4,
+    hue: 200, hue2: 120,
+    skills: {
+      light: { name: '細密筆觸', desc: '纖毫畢現的精描連擊' },
+      heavy: { name: '凸面鏡', desc: '鏡中世界的反射衝擊' },
+      ultra: { name: '根特祭壇畫', desc: '神祕羔羊,聖光全開' },
+    },
+    works: [
+      { title: '根特祭壇畫', year: 1432, note: '北方文藝復興的里程碑' },
+      { title: '阿諾菲尼夫婦', year: 1434, note: '凸面鏡與「范艾克在此」' },
+      { title: '包紅頭巾的男子', year: 1433, note: '疑似畫家自畫像' },
+    ],
+  },
+  {
     id: 'botticelli', name: '波提切利', mono: '波', img: 'assets/char/botticelli.png', medium: '文藝復興',
     title: '春之詩人', era: '1445 – 1510', origin: '義大利・佛羅倫斯',
     tags: ['佛羅倫斯畫派', '神話畫', '美第奇'],
@@ -130,6 +184,42 @@ const CHARACTERS = [
     ],
   },
   {
+    id: 'rubens', name: '魯本斯', mono: '魯', img: '', medium: '巴洛克與浪漫',
+    title: '動勢王子', era: '1577 – 1640', origin: '法蘭德斯・安特衛普',
+    tags: ['巴洛克', '豐滿動感', '外交官'],
+    desc: '佛蘭德斯巴洛克的王者。畫面豐滿、色彩流動如慶典,大畫室產量驚人;更身兼外交官促成英西和談,獲兩國冊封,是名副其實的「畫家中的王子」。',
+    stats: { atk: 9, def: 8, spd: 7, wis: 8 }, difficulty: 3,
+    hue: 350, hue2: 45,
+    skills: {
+      light: { name: '飛騰筆勢', desc: '斜對角動勢的速攻' },
+      heavy: { name: '瑪麗皇后組畫', desc: '廿四連畫排山倒海' },
+      ultra: { name: '巴洛克狂宴', desc: '血肉與色彩的漩渦' },
+    },
+    works: [
+      { title: '上十字架', year: 1610, note: '安特衛普大教堂祭壇鉅作' },
+      { title: '瑪麗・德・美第奇生平組畫', year: 1625, note: '羅浮宮專廳的廿四連作' },
+      { title: '三美神', year: 1635, note: '豐滿人體的頌歌' },
+    ],
+  },
+  {
+    id: 'velazquez', name: '委拉斯奎茲', mono: '委', img: '', medium: '巴洛克與浪漫',
+    title: '鏡中侍臣', era: '1599 – 1660', origin: '西班牙・塞維亞',
+    tags: ['西班牙黃金時代', '宮女', '光影'],
+    desc: '西班牙黃金時代的宮廷之眼。他以近乎印象派的鬆動筆觸捕捉空氣與光,《宮女》把畫家、公主與鏡中的國王織成藝術史上最深的謎。',
+    stats: { atk: 8, def: 8, spd: 7, wis: 9 }, difficulty: 3,
+    hue: 280, hue2: 30,
+    skills: {
+      light: { name: '鬆動筆觸', desc: '遠看即真的光之魔法' },
+      heavy: { name: '教宗肖像', desc: '「太真實了」的逼視' },
+      ultra: { name: '宮女', desc: '鏡中之鏡,空間反轉' },
+    },
+    works: [
+      { title: '宮女', year: 1656, note: '普拉多美術館的鎮館之謎' },
+      { title: '教宗英諾森十世肖像', year: 1650, note: '教宗驚呼「太真實了」' },
+      { title: '布雷達之降', year: 1635, note: '歷史畫裡的人性時刻' },
+    ],
+  },
+  {
     id: 'rembrandt', name: '林布蘭', mono: '林', img: 'assets/char/rembrandt.png', medium: '巴洛克與浪漫',
     title: '光影宗師', era: '1606 – 1669', origin: '荷蘭・萊頓',
     tags: ['荷蘭黃金時代', '夜巡', '自畫像'],
@@ -201,8 +291,80 @@ const CHARACTERS = [
       { title: '暴風雪—駛離港口的汽船', year: 1842, note: '據說綁上桅杆觀察風暴' },
     ],
   },
+  {
+    id: 'delacroix', name: '德拉克洛瓦', mono: '德', img: '', medium: '巴洛克與浪漫',
+    title: '浪漫旗手', era: '1798 – 1863', origin: '法國・巴黎近郊',
+    tags: ['浪漫主義', '色彩', '革命'],
+    desc: '法國浪漫主義的統帥。色彩先於線條、激情先於法則,《自由引導人民》高舉三色旗,把繪畫變成整個時代的吶喊。',
+    stats: { atk: 9, def: 6, spd: 8, wis: 8 }, difficulty: 3,
+    hue: 220, hue2: 0,
+    skills: {
+      light: { name: '激情色筆', desc: '奔放色彩的斬擊' },
+      heavy: { name: '薩丹納帕勒斯之死', desc: '華麗毀滅的暴風' },
+      ultra: { name: '自由引導人民', desc: '三色旗起,萬眾衝鋒' },
+    },
+    works: [
+      { title: '自由引導人民', year: 1830, note: '七月革命的精神圖騰' },
+      { title: '薩丹納帕勒斯之死', year: 1827, note: '浪漫主義的極致狂想' },
+      { title: '巧斯島的屠殺', year: 1824, note: '震動沙龍的控訴之作' },
+    ],
+  },
 
   /* ══ 印象與後印象 ══ */
+  {
+    id: 'millet', name: '米勒', mono: '勒', img: '', medium: '印象與後印象',
+    title: '大地牧歌', era: '1814 – 1875', origin: '法國・諾曼第',
+    tags: ['寫實主義', '巴比松', '農民'],
+    desc: '巴比松的農民畫家。《拾穗》與《晚禱》讓彎腰的身影有了神聖的重量,大地與勞動在他筆下成為無聲的頌歌,也為印象派鋪出走向自然之路。',
+    stats: { atk: 6, def: 9, spd: 6, wis: 9 }, difficulty: 2,
+    hue: 45, hue2: 100,
+    skills: {
+      light: { name: '播種者', desc: '揮臂撒種的大步弧線' },
+      heavy: { name: '拾穗', desc: '彎腰大地的沉默之力' },
+      ultra: { name: '晚禱', desc: '暮色鐘響,大地俯首' },
+    },
+    works: [
+      { title: '拾穗', year: 1857, note: '農婦拾穗的莊嚴詩篇' },
+      { title: '晚禱', year: 1859, note: '暮色中的無聲祈禱' },
+      { title: '播種者', year: 1850, note: '大步撒種的勞動英雄' },
+    ],
+  },
+  {
+    id: 'courbet', name: '庫爾貝', mono: '庫', img: '', medium: '印象與後印象',
+    title: '寫實鬥士', era: '1819 – 1877', origin: '法國・奧爾南',
+    tags: ['寫實主義', '在野', '勞動'],
+    desc: '寫實主義的先鋒鬥士:「給我看一個天使,我就畫一個。」他把石工與平民葬禮畫上歷史畫的尺幅,還在世博會旁自建展館,對抗整個官方沙龍。',
+    stats: { atk: 10, def: 7, spd: 6, wis: 7 }, difficulty: 4,
+    hue: 100, hue2: 25,
+    skills: {
+      light: { name: '調色刀', desc: '厚實顏料的直劈' },
+      heavy: { name: '採石工人', desc: '勞動重量的一擊' },
+      ultra: { name: '奧爾南的葬禮', desc: '巨幅現實,轟然展開' },
+    },
+    works: [
+      { title: '奧爾南的葬禮', year: 1850, note: '顛覆學院的巨幅平民葬禮' },
+      { title: '採石工人', year: 1849, note: '寫實主義的勞動宣言' },
+      { title: '畫室', year: 1855, note: '自稱「真實的寓言」' },
+    ],
+  },
+  {
+    id: 'manet', name: '馬奈', mono: '奈', img: '', medium: '印象與後印象',
+    title: '現代先聲', era: '1832 – 1883', origin: '法國・巴黎',
+    tags: ['印象派之父', '沙龍', '現代生活'],
+    desc: '從寫實走向印象的關鍵一人。《草地上的午餐》與《奧林匹亞》兩度震撼巴黎;年輕的印象派尊他為精神領袖,他卻終生嚮往官方沙龍的桂冠。',
+    stats: { atk: 8, def: 7, spd: 9, wis: 9 }, difficulty: 3,
+    hue: 60, hue2: 220,
+    skills: {
+      light: { name: '平塗黑', desc: '優雅銳利的黑色塊' },
+      heavy: { name: '奧林匹亞', desc: '直視觀者的挑釁' },
+      ultra: { name: '草地上的午餐', desc: '驚世野餐,輿論炸裂' },
+    },
+    works: [
+      { title: '草地上的午餐', year: 1863, note: '落選者沙龍的世紀醜聞' },
+      { title: '奧林匹亞', year: 1863, note: '直視時代的裸女' },
+      { title: '女神遊樂廳的吧檯', year: 1882, note: '鏡像謎題的絕唱' },
+    ],
+  },
   {
     id: 'monet', name: '莫內', mono: '莫', img: 'assets/char/monet.png', medium: '印象與後印象',
     title: '自然光法師', era: '1840 – 1926', origin: '法國・巴黎',
