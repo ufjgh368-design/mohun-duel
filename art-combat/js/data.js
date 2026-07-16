@@ -20,7 +20,7 @@ function factionMult(atkChar, defChar) {
 const CHARACTERS = [
   /* ══ 文藝復興 ══ */
   {
-    id: 'giotto', name: '喬托', mono: '喬', img: '', medium: '文藝復興',
+    id: 'giotto', name: '喬托', mono: '喬', img: 'assets/char/giotto.png', medium: '文藝復興',
     title: '破曉聖手', era: '1267 – 1337', origin: '義大利・佛羅倫斯近郊',
     tags: ['文藝復興先驅', '濕壁畫', '喬托的O'],
     desc: '中世紀與文藝復興之間的破曉之人。他讓聖像走下金色天國,有了重量、淚水與呼吸;帕多瓦斯克羅威尼禮拜堂的滿堂壁畫,是歐洲繪畫的黎明。',
@@ -38,7 +38,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'donatello', name: '多納太羅', mono: '納', img: '', medium: '文藝復興',
+    id: 'donatello', name: '多納太羅', mono: '納', img: 'assets/char/donatello.png', medium: '文藝復興',
     title: '青銅先鋒', era: '1386 – 1466', origin: '義大利・佛羅倫斯',
     tags: ['早期文藝復興', '雕塑', '青銅'],
     desc: '早期文藝復興的雕塑革命者。青銅《大衛》是古典時代之後第一件獨立裸身立像,他把透視與人體解剖帶回雕塑,為後來的米開朗基羅鋪好了路。',
@@ -56,7 +56,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'vaneyck', name: '范艾克', mono: '艾', img: '', medium: '文藝復興',
+    id: 'vaneyck', name: '范艾克', mono: '艾', img: 'assets/char/vaneyck.png', medium: '文藝復興',
     title: '油彩鍊金師', era: '1390 – 1441', origin: '尼德蘭・馬斯艾克',
     tags: ['北方文藝復興', '油畫先驅', '細節'],
     desc: '北方文藝復興的開創者,把油彩層疊技法推向極致——凸面鏡、黃銅吊燈、每一根毛髮都纖毫畢現;《根特祭壇畫》與《阿諾菲尼夫婦》至今仍是寫實的極限。',
@@ -184,7 +184,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'rubens', name: '魯本斯', mono: '魯', img: '', medium: '巴洛克與浪漫',
+    id: 'rubens', name: '魯本斯', mono: '魯', img: 'assets/char/rubens.png', medium: '巴洛克與浪漫',
     title: '動勢王子', era: '1577 – 1640', origin: '法蘭德斯・安特衛普',
     tags: ['巴洛克', '豐滿動感', '外交官'],
     desc: '佛蘭德斯巴洛克的王者。畫面豐滿、色彩流動如慶典,大畫室產量驚人;更身兼外交官促成英西和談,獲兩國冊封,是名副其實的「畫家中的王子」。',
@@ -202,7 +202,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'velazquez', name: '委拉斯奎茲', mono: '委', img: '', medium: '巴洛克與浪漫',
+    id: 'velazquez', name: '委拉斯奎茲', mono: '委', img: 'assets/char/velazquez.png', medium: '巴洛克與浪漫',
     title: '鏡中侍臣', era: '1599 – 1660', origin: '西班牙・塞維亞',
     tags: ['西班牙黃金時代', '宮女', '光影'],
     desc: '西班牙黃金時代的宮廷之眼。他以近乎印象派的鬆動筆觸捕捉空氣與光,《宮女》把畫家、公主與鏡中的國王織成藝術史上最深的謎。',
@@ -292,7 +292,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'delacroix', name: '德拉克洛瓦', mono: '德', img: '', medium: '巴洛克與浪漫',
+    id: 'delacroix', name: '德拉克洛瓦', mono: '德', img: 'assets/char/delacroix.png', medium: '巴洛克與浪漫',
     title: '浪漫旗手', era: '1798 – 1863', origin: '法國・巴黎近郊',
     tags: ['浪漫主義', '色彩', '革命'],
     desc: '法國浪漫主義的統帥。色彩先於線條、激情先於法則,《自由引導人民》高舉三色旗,把繪畫變成整個時代的吶喊。',
@@ -312,7 +312,7 @@ const CHARACTERS = [
 
   /* ══ 印象與後印象 ══ */
   {
-    id: 'millet', name: '米勒', mono: '勒', img: '', medium: '印象與後印象',
+    id: 'millet', name: '米勒', mono: '勒', img: 'assets/char/millet.png', medium: '印象與後印象',
     title: '大地牧歌', era: '1814 – 1875', origin: '法國・諾曼第',
     tags: ['寫實主義', '巴比松', '農民'],
     desc: '巴比松的農民畫家。《拾穗》與《晚禱》讓彎腰的身影有了神聖的重量,大地與勞動在他筆下成為無聲的頌歌,也為印象派鋪出走向自然之路。',
@@ -330,7 +330,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'courbet', name: '庫爾貝', mono: '庫', img: '', medium: '印象與後印象',
+    id: 'courbet', name: '庫爾貝', mono: '庫', img: 'assets/char/courbet.png', medium: '印象與後印象',
     title: '寫實鬥士', era: '1819 – 1877', origin: '法國・奧爾南',
     tags: ['寫實主義', '在野', '勞動'],
     desc: '寫實主義的先鋒鬥士:「給我看一個天使,我就畫一個。」他把石工與平民葬禮畫上歷史畫的尺幅,還在世博會旁自建展館,對抗整個官方沙龍。',
@@ -348,7 +348,7 @@ const CHARACTERS = [
     ],
   },
   {
-    id: 'manet', name: '馬奈', mono: '奈', img: '', medium: '印象與後印象',
+    id: 'manet', name: '馬奈', mono: '奈', img: 'assets/char/manet.png', medium: '印象與後印象',
     title: '現代先聲', era: '1832 – 1883', origin: '法國・巴黎',
     tags: ['印象派之父', '沙龍', '現代生活'],
     desc: '從寫實走向印象的關鍵一人。《草地上的午餐》與《奧林匹亞》兩度震撼巴黎;年輕的印象派尊他為精神領袖,他卻終生嚮往官方沙龍的桂冠。',

@@ -1,5 +1,5 @@
 /* Canvas Combat Service Worker — 離線快取 */
-const CACHE = 'art-combat-v3';
+const CACHE = 'art-combat-v4';
 const ASSETS = [
   '.', 'index.html', 'css/style.css',
   'js/data.js', 'js/questions.js', 'js/audio.js', 'js/fx.js', 'js/game.js', 'js/ui.js',
@@ -12,6 +12,9 @@ const ASSETS = [
   'assets/char/kandinsky.png', 'assets/char/klimt.png',
   'assets/char/botticelli.png', 'assets/char/renoir.png', 'assets/char/gauguin.png',
   'assets/char/munch.png', 'assets/char/matisse.png', 'assets/char/pollock.png', 'assets/char/titian.png',
+  'assets/char/giotto.png', 'assets/char/donatello.png', 'assets/char/vaneyck.png',
+  'assets/char/rubens.png', 'assets/char/velazquez.png', 'assets/char/delacroix.png',
+  'assets/char/courbet.png', 'assets/char/manet.png', 'assets/char/millet.png',
 ];
 
 self.addEventListener('install', e => {
