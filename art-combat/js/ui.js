@@ -65,6 +65,8 @@ const UI = {
     if (id === 'teacher') { this.renderTeacher(); this.show('screen-teacher'); return; }
     if (id === 'gallery') { this.renderGallery(); this.show('screen-gallery'); return; }
     if (id === 'practice') { this.renderPracticeSetup(); this.show('screen-practice'); return; }
+    if (id === 'story') { this.renderStory(); this.show('screen-story'); return; }
+    if (id === 'museum') { this.renderMuseum(); this.show('screen-museum'); return; }
     this.renderCharSelect();
     this.show('screen-select');
   },
@@ -72,8 +74,13 @@ const UI = {
   /* ── 角色選擇 ── */
   renderCharSelect() {
     const mode = this.sel.mode;
-    const titles = { solo: '選擇你的藝術家', versus: '雙人選角', survival: '生存試煉 · 選角', boss: '討伐空白畫布 · 選角' };
+    const titles = { solo: '選擇你的藝術家', versus: '雙人選角', survival: '生存試煉 · 選角', boss: '討伐空白畫布 · 選角', story: '故事模式 · 選擇你的英雄' };
     $('select-title').textContent = titles[mode] || '選擇角色';
+    if (mode === 'story') {
+      const st = STORY_STAGES[this.sel.stage];
+      const en = st.boss ? BOSS_CHAR : CHARACTERS.find(c => c.id === st.enemyId);
+      $('select-hint').textContent = `第 ${this.sel.stage + 1} 關「${st.name}」 — 對手:${en.name}(${AI_LEVELS.find(l => l.id === st.aiLevel).label}) — ${st.intro}`;
+    } else
     $('select-hint').textContent = mode === 'versus'
       ? (this.sel.pickIndex === 0 ? '— P1 請選擇角色 —' : '— P2 請選擇角色 —')
       : '點選角色卡查看詳情並選定出戰者 · 流派相剋:🏛 ▶ 🔥 ▶ 🌿 ▶ 💥 ▶ 🏛(剋制方傷害 +15%)';
@@ -196,6 +203,13 @@ const UI = {
     let p2Char, aiLevel = this.sel.aiLevel;
     if (mode === 'versus') p2Char = CHARACTERS.find(c => c.id === this.sel.picks[1]);
     else if (mode === 'boss') { p2Char = BOSS_CHAR; aiLevel = this.sel.aiLevel; }
+    else if (mode === 'story') {
+      const stage = STORY_STAGES[this.sel.stage];
+      p2Char = stage.boss ? BOSS_CHAR : CHARACTERS.find(c => c.id === stage.enemyId);
+      if (p2Char.id === p1Char.id) p2Char = this.randomEnemy(p1Char.id);
+      Battle.start({ mode: 'story', stage: this.sel.stage, p1Char, p2Char, aiLevel: stage.aiLevel, p2Hp: stage.boss ? 240 : undefined });
+      return;
+    }
     else if (mode === 'survival') {
       p2Char = this.randomEnemy(p1Char.id);
       aiLevel = AI_LEVELS[0].id;
@@ -216,6 +230,12 @@ const UI = {
     const p1 = state.p[0], p2 = state.p[1];
     const playerWon = !win.isCPU;
     const isVersus = state.mode === 'versus';
+    const isStory = state.mode === 'story';
+    if (isStory && playerWon) {
+      const enemy = state.p[1].char;
+      if (enemy.id !== 'boss-blank' && !this.unlocks[enemy.id]) { this.unlocks[enemy.id] = true; localStorage.setItem('cc_unlocks', JSON.stringify(this.unlocks)); }
+      if (state.stage === this.storyProgress()) this.setStoryProgress(state.stage + 1);
+    }
 
     const acc = f => f.st.total ? Math.round(f.st.correct / f.st.total * 100) : 0;
     const avgT = f => f.st.total ? (f.st.timeSum / f.st.total).toFixed(1) : '0.0';
@@ -262,9 +282,12 @@ const UI = {
       <div class="result-title ${playerWon || isVersus ? 'win' : 'lose'}">${title}</div>
       <div class="result-sub">${survival ? `第 ${state.wave + 1} 陣 ${playerWon ? '通過' : '止步'}` : isVersus ? '雙人對決結束' : playerWon ? win.char.skills.ultra.name + ' · 藝魂長存' : '莫氣餒,再讀再戰!'}</div>
       ${unlockMsg}
+      ${isStory && playerWon && this.storyProgress() >= STORY_STAGES.length ? '<div class="unlock-banner">👑 全章通關!你已重繪整部西洋藝術史!</div>' : ''}
       <div class="result-cols">${statCol(p1, isVersus ? 'P1' : '玩家')}${isVersus || true ? statCol(p2, isVersus ? 'P2' : '對手') : ''}</div>
       <div class="result-actions">
         ${survival && playerWon ? '<button class="btn btn-gold btn-lg" id="btn-next-wave">下一陣 ▸</button>' : ''}
+        ${isStory && playerWon && this.storyProgress() < STORY_STAGES.length ? '<button class="btn btn-gold btn-lg" id="btn-next-stage">下一關 ▸</button>' : ''}
+        ${isStory ? '<button class="btn btn-ghost" id="btn-story-map">回章節地圖</button>' : ''}
         <button class="btn btn-gold" id="btn-rematch">${survival && playerWon ? '見好就收' : '再戰一場'}</button>
         <button class="btn btn-ghost" id="btn-to-modes">返回模式</button>
         <button class="btn btn-ghost" id="btn-to-home">回首頁</button>
@@ -294,6 +317,18 @@ const UI = {
         AudioEngine.play('confirm'); close();
         this.renderCharSelect(); this.show('screen-select');
       };
+    }
+    if (isStory) {
+      const nb = $('btn-next-stage');
+      if (nb) nb.onclick = () => {
+        AudioEngine.play('confirm'); close();
+        const idx = this.storyProgress();
+        const stage = STORY_STAGES[idx];
+        let p2 = stage.boss ? BOSS_CHAR : CHARACTERS.find(c => c.id === stage.enemyId);
+        if (p2.id === p1.char.id) p2 = this.randomEnemy(p1.char.id);
+        Battle.start({ mode: 'story', stage: idx, p1Char: p1.char, p2Char: p2, aiLevel: stage.aiLevel, p2Hp: stage.boss ? 240 : undefined });
+      };
+      $('btn-story-map').onclick = () => { AudioEngine.play('click'); close(); this.renderStory(); this.show('screen-story'); };
     }
     $('btn-to-modes').onclick = () => { AudioEngine.play('click'); close(); this.show('screen-modes'); };
     $('btn-to-home').onclick = () => { AudioEngine.play('click'); close(); this.show('screen-home'); };
@@ -577,9 +612,178 @@ const UI = {
     $('gallery-wrap').innerHTML = gHtml;
   },
 
+  /* ── 故事模式 ── */
+  storyProgress() { return parseInt(localStorage.getItem('cc_story') || '0', 10); },
+  setStoryProgress(n) { localStorage.setItem('cc_story', String(n)); },
+
+  renderStory() {
+    const prog = this.storyProgress();
+    $('story-progress').innerHTML = `<span class="prac-score">進度 ${Math.min(prog, STORY_STAGES.length)} / ${STORY_STAGES.length}</span>`;
+    const wrap = $('story-wrap');
+    let html = prog >= STORY_STAGES.length ? '<div class="unlock-banner">👑 全章通關!你已重繪整部西洋藝術史!仍可回味任一關卡。</div>' : '';
+    let lastCh = '';
+    STORY_STAGES.forEach((st, i) => {
+      if (st.ch !== lastCh) { html += `<div class="medium-header"><span>${st.ch}</span></div>`; lastCh = st.ch; }
+      const enemy = st.boss ? BOSS_CHAR : CHARACTERS.find(c => c.id === st.enemyId);
+      const state = i < prog ? 'cleared' : i === prog ? 'current' : 'locked';
+      const lvl = AI_LEVELS.find(l => l.id === st.aiLevel).label;
+      html += `
+        <div class="stage-card ${state} fade-up" style="--h:${enemy.hue};--h2:${enemy.hue2};--d:${Math.min(i * 0.05, 0.5)}s">
+          <div class="stage-no">${i + 1}</div>
+          <div class="stage-portrait">${enemy.img ? `<img src="${enemy.img}" alt="${enemy.name}" loading="lazy">` : `<span class="g-mono-letter">${enemy.mono}</span>`}</div>
+          <div class="stage-info">
+            <b>${st.name}</b>
+            <span>VS ${enemy.name} · ${lvl}</span>
+            <p>${st.intro}</p>
+          </div>
+          <div class="stage-state">${
+            state === 'locked' ? '🔒' :
+            state === 'cleared' ? `<span class="stage-clear">✦ 已通關</span><button class="btn btn-ghost btn-tiny" data-stage="${i}">再戰</button>` :
+            `<button class="btn btn-gold btn-sm" data-stage="${i}">挑戰</button>`
+          }</div>
+        </div>`;
+    });
+    wrap.innerHTML = html;
+    wrap.querySelectorAll('[data-stage]').forEach(b => b.onclick = () => {
+      AudioEngine.play('confirm');
+      this.sel = { mode: 'story', picks: [], aiLevel: 'normal', pickIndex: 0, stage: +b.dataset.stage };
+      this.renderCharSelect();
+      this.show('screen-select');
+    });
+  },
+
+  /* ── 作品辨識(名作鑑定) ── */
+  museum: { qs: [], idx: 0, score: 0, correct: 0, streak: 0, timer: null },
+
+  stopMuseumTimer() { if (this.museum.timer) { clearInterval(this.museum.timer); this.museum.timer = null; } },
+
+  museumBest() { return parseInt(localStorage.getItem('cc_museum_best') || '0', 10); },
+
+  renderMuseum() {
+    this.stopMuseumTimer();
+    const best = this.museumBest();
+    $('museum-score').innerHTML = best ? `<span class="prac-score">最佳紀錄 ${best}</span>` : '';
+    $('museum-wrap').innerHTML = `
+      <div class="practice-setup fade-up">
+        <h3>名作鑑定 · 十件真跡</h3>
+        <p class="hint-text" style="text-align:center;max-width:520px;margin:0 auto 22px">
+          藝術之神從 ${CHARACTERS.length} 位大師的收藏中取出十件名作。<br>
+          每件限時 12 秒,鑑定它出自哪位大師之手——答得越快、連對越多,分數越高!
+        </p>
+        <div class="practice-diff-row" style="max-width:380px;margin:0 auto">
+          <button class="mode-card sm" id="museum-start"><span class="mode-icon">🏺</span><span class="mode-name">開始鑑定</span><span class="mode-desc">10 件 · 每件 12 秒</span></button>
+        </div>
+      </div>`;
+    $('museum-start').onclick = () => { AudioEngine.play('confirm'); this.museumStart(); };
+  },
+
+  museumStart() {
+    const pool = [];
+    CHARACTERS.forEach(c => c.works.forEach(w => pool.push({ artist: c, w })));
+    const m = this.museum;
+    m.qs = shuffled(pool).slice(0, 10);
+    m.idx = 0; m.score = 0; m.correct = 0; m.streak = 0;
+    this.museumNext();
+  },
+
+  museumNext() {
+    const m = this.museum;
+    if (m.idx >= m.qs.length) return this.museumEnd();
+    const { artist, w } = m.qs[m.idx];
+    const sameEra = shuffled(CHARACTERS.filter(c => c.id !== artist.id && c.medium === artist.medium)).slice(0, 2);
+    const others = shuffled(CHARACTERS.filter(c => c.id !== artist.id && c.medium !== artist.medium));
+    const decoys = sameEra.concat(others).slice(0, 3);
+    const choices = shuffled([artist].concat(decoys));
+
+    const hud = () => { $('museum-score').innerHTML = `<span class="prac-score">第 ${m.idx + 1} / 10 件 · 分數 ${m.score} · 連對 ${m.streak}</span>`; };
+    hud();
+    $('museum-wrap').innerHTML = `
+      <div class="q-panel practice-q fade-up">
+        <div class="q-meta">
+          <span class="q-cat">名作鑑定</span>
+          <span class="q-diff" id="museum-timer">⏱ 12</span>
+        </div>
+        <div class="q-text">《${w.title}》<span style="color:var(--paper-dim)">(${w.year})</span><br>
+          <span style="font-size:.72em;color:var(--paper-dim)">這件作品出自哪位大師之手?</span></div>
+        <div class="q-choices">
+          ${choices.map((c, idx) => `
+            <button class="q-choice" data-ok="${c.id === artist.id ? 1 : 0}">
+              <span class="q-key">${'ABCD'[idx]}</span>
+              <span>${c.name}<i style="font-style:normal;color:var(--paper-dim);font-size:.85em"> · ${c.medium}</i></span>
+            </button>`).join('')}
+        </div>
+        <div class="q-exp hidden" id="museum-exp"></div>
+        <div class="prac-next hidden" id="museum-next"><button class="btn btn-gold">下一件 ▸</button></div>
+      </div>`;
+
+    let left = 12, done = false;
+    const finish = (btn) => {
+      if (done) return; done = true;
+      this.stopMuseumTimer();
+      const ok = btn && +btn.dataset.ok === 1;
+      $('museum-wrap').querySelectorAll('.q-choice').forEach(b => {
+        b.disabled = true;
+        if (+b.dataset.ok === 1) b.classList.add('reveal-correct');
+        if (b === btn && !ok) b.classList.add('reveal-wrong');
+      });
+      if (ok) { m.correct++; m.streak++; m.score += 100 + left * 5 + (m.streak - 1) * 20; }
+      else m.streak = 0;
+      AudioEngine.play(ok ? 'correct' : 'wrong');
+      const exp = $('museum-exp');
+      exp.textContent = `${ok ? '✦' : '✧'} 《${w.title}》— ${artist.name},${w.year}。${w.note}`;
+      exp.classList.remove('hidden');
+      hud();
+      const nx = $('museum-next');
+      nx.classList.remove('hidden');
+      nx.querySelector('button').onclick = () => { AudioEngine.play('click'); m.idx++; this.museumNext(); };
+    };
+
+    $('museum-wrap').querySelectorAll('.q-choice').forEach(b => {
+      b.addEventListener('mouseenter', () => AudioEngine.play('hover'));
+      b.addEventListener('click', () => { AudioEngine.play('click'); finish(b); });
+    });
+    this.museum.timer = setInterval(() => {
+      if (!document.getElementById('screen-museum').classList.contains('active')) { this.stopMuseumTimer(); return; }
+      left--;
+      const t = $('museum-timer');
+      if (t) t.textContent = '⏱ ' + Math.max(0, left);
+      if (left <= 3 && left > 0) AudioEngine.play('tick');
+      if (left <= 0) finish(null);
+    }, 1000);
+  },
+
+  museumEnd() {
+    const m = this.museum;
+    this.stopMuseumTimer();
+    const isBest = m.score > this.museumBest();
+    if (isBest) localStorage.setItem('cc_museum_best', String(m.score));
+    this.board.push({ name: '鑑定師', mode: 'museum', score: m.score, date: new Date().toISOString().slice(0, 10) });
+    this.board.sort((a, b) => b.score - a.score);
+    this.board = this.board.slice(0, 20);
+    localStorage.setItem('cc_board', JSON.stringify(this.board));
+    AudioEngine.play(m.correct >= 6 ? 'victory' : 'defeat');
+    $('museum-score').innerHTML = '';
+    const grade = m.correct === 10 ? '傳奇鑑定師 👑' : m.correct >= 8 ? '首席策展人' : m.correct >= 6 ? '資深鑑定師' : m.correct >= 4 ? '見習鑑定師' : '美術館訪客';
+    $('museum-wrap').innerHTML = `
+      <div class="practice-setup fade-up">
+        <h3>鑑定結果 — ${grade}</h3>
+        <div class="glass-box" style="max-width:440px;margin:0 auto">
+          <div class="rc-stat"><span>鑑定成功</span><b>${m.correct} / 10 件</b></div>
+          <div class="rc-stat score"><span>總分(已寫入排行榜)</span><b>${m.score}</b></div>
+          ${isBest ? '<div class="unlock-banner" style="margin-top:14px">✦ 個人新紀錄!</div>' : ''}
+          <div class="result-actions" style="margin-top:18px">
+            <button class="btn btn-gold" id="museum-again">再鑑定一輪</button>
+            <button class="btn btn-ghost" id="museum-back">返回模式</button>
+          </div>
+        </div>
+      </div>`;
+    $('museum-again').onclick = () => { AudioEngine.play('confirm'); this.museumStart(); };
+    $('museum-back').onclick = () => { AudioEngine.play('cancel'); this.renderModes(); this.show('screen-modes'); };
+  },
+
   /* ── 排行榜 ── */
   showLeaderboard() {
-    const modeName = { solo: '單人', versus: '雙人', survival: '生存', boss: 'BOSS' };
+    const modeName = { solo: '單人', versus: '雙人', survival: '生存', boss: 'BOSS', story: '故事', museum: '鑑定' };
     const rows = this.board.slice(0, 10).map((r, i) => `
       <tr class="${i < 3 ? 'top' + (i + 1) : ''}">
         <td>${i + 1}</td><td>${r.name}</td>
@@ -640,6 +844,7 @@ const UI = {
     document.querySelectorAll('[data-back]').forEach(b => {
       b.addEventListener('click', () => {
         AudioEngine.play('cancel');
+        this.stopMuseumTimer();
         const target = b.dataset.back;
         if (target === 'screen-modes') this.renderModes();
         this.show(target);

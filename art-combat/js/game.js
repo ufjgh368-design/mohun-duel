@@ -57,9 +57,10 @@ const Battle = {
     let p2hp = 100;
     if (config.mode === 'boss') p2hp = 240;
     if (config.mode === 'survival') p2hp = 100 + wave * 18;
+    if (config.p2Hp) p2hp = config.p2Hp;
 
     this.s = {
-      mode: config.mode, wave,
+      mode: config.mode, wave, stage: config.stage,
       round: 1, turn: 0, over: false,
       p: [mkFighter(config.p1Char, false, config.p1Hp || 100), mkFighter(config.p2Char, config.mode !== 'versus', p2hp)],
     };
@@ -70,7 +71,7 @@ const Battle = {
     this.renderFighters();
     this.updateHUD();
     $('battle-bottom').innerHTML = '';
-    this.announce(config.mode === 'boss' ? 'BOSS 降臨' : config.mode === 'survival' ? `第 ${wave + 1} 陣` : '對決開始', 'big');
+    this.announce(config.mode === 'boss' || config.p2Char.id === 'boss-blank' ? 'BOSS 降臨' : config.mode === 'survival' ? `第 ${wave + 1} 陣` : '對決開始', 'big');
     AudioEngine.play('turn');
     setTimeout(() => this.beginTurn(), 1400);
   },
@@ -96,7 +97,7 @@ const Battle = {
         <div class="fighter-shadow"></div>`;
       el.classList.toggle('boss-size', c.id === 'boss-blank');
       $(i === 0 ? 'name-p1' : 'name-p2').textContent = c.name;
-      $(i === 0 ? 'tag-p1' : 'tag-p2').textContent = f.isCPU ? (this.s.mode === 'boss' ? 'BOSS' : `CPU · ${AI_LEVELS.find(l => l.id === f.aiLevel)?.label || ''}`) : (this.s.mode === 'versus' ? `P${i + 1}` : '玩家');
+      $(i === 0 ? 'tag-p1' : 'tag-p2').textContent = f.isCPU ? (c.id === 'boss-blank' ? 'BOSS' : `CPU · ${AI_LEVELS.find(l => l.id === f.aiLevel)?.label || ''}`) : (this.s.mode === 'versus' ? `P${i + 1}` : '玩家');
     });
   },
 
