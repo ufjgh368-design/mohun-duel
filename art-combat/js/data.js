@@ -32,9 +32,9 @@ const CHARACTERS = [
       ultra: { name: '斯克羅威尼禮拜堂', desc: '滿堂壁畫,黎明震響' },
     },
     works: [
-      { title: '斯克羅威尼禮拜堂壁畫', year: 1305, note: '帕多瓦的濕壁畫鉅作' },
-      { title: '猶大之吻', year: 1305, note: '戲劇性的對峙瞬間' },
-      { title: '聖方濟接受聖痕', year: 1295, note: '阿西西傳說系列' },
+      { title: '斯克羅威尼禮拜堂壁畫', year: 1305, note: '帕多瓦的濕壁畫鉅作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Padova%20Cappella%20degli%20Scrovegni%20Innen%20Langhaus%20West%205.jpg' },
+      { title: '猶大之吻', year: 1305, note: '戲劇性的對峙瞬間', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Giotto%20-%20Scrovegni%20-%20-31-%20-%20Kiss%20of%20Judas.jpg' },
+      { title: '聖方濟接受聖痕', year: 1295, note: '阿西西傳說系列', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Giotto%20-%20Saint%20Francis%20Receiving%20the%20Stigmata.jpg' },
     ],
   },
   {
@@ -50,9 +50,9 @@ const CHARACTERS = [
       ultra: { name: '青銅大衛', desc: '少年英雄,一擊定音' },
     },
     works: [
-      { title: '青銅大衛', year: 1440, note: '文藝復興雕塑的里程碑' },
-      { title: '加塔梅拉塔騎馬像', year: 1453, note: '帕多瓦的傭兵隊長' },
-      { title: '聖喬治', year: 1417, note: '佛羅倫斯行會壁龕之作' },
+      { title: '青銅大衛', year: 1440, note: '文藝復興雕塑的里程碑', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Florence%20-%20David%20by%20Donatello.jpg' },
+      { title: '加塔梅拉塔騎馬像', year: 1453, note: '帕多瓦的傭兵隊長', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Gattamelata.jpg' },
+      { title: '聖喬治', year: 1417, note: '佛羅倫斯行會壁龕之作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/St.%20Georg%2C%20Donatello%2C%201416-17%2C%20Bargello%20Florenz-01.jpg' },
     ],
   },
   {
@@ -68,9 +68,9 @@ const CHARACTERS = [
       ultra: { name: '根特祭壇畫', desc: '神祕羔羊,聖光全開' },
     },
     works: [
-      { title: '根特祭壇畫', year: 1432, note: '北方文藝復興的里程碑' },
-      { title: '阿諾菲尼夫婦', year: 1434, note: '凸面鏡與「范艾克在此」' },
-      { title: '包紅頭巾的男子', year: 1433, note: '疑似畫家自畫像' },
+      { title: '根特祭壇畫', year: 1432, note: '北方文藝復興的里程碑', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Lamgods%20open.jpg' },
+      { title: '阿諾菲尼夫婦', year: 1434, note: '凸面鏡與「范艾克在此」', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Van%20Eyck%20-%20Arnolfini%20Portrait.jpg' },
+      { title: '包紅頭巾的男子', year: 1433, note: '疑似畫家自畫像', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Portrait%20of%20a%20Man%20in%20a%20red%20turban%20%28by%20Jan%20van%20Eyck%29.jpg' },
     ],
   },
   {
@@ -86,9 +86,9 @@ const CHARACTERS = [
       ultra: { name: '維納斯的誕生', desc: '貝殼綻放,愛與美降臨' },
     },
     works: [
-      { title: '春', year: 1482, note: '維納斯花園中的神話群像' },
-      { title: '維納斯的誕生', year: 1485, note: '文藝復興最著名的神話畫' },
-      { title: '誹謗', year: 1495, note: '晚期的寓意告白' },
+      { title: '春', year: 1482, note: '維納斯花園中的神話群像', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Sandro%20Botticelli%20-%20La%20Primavera%20-%20Google%20Art%20Project.jpg' },
+      { title: '維納斯的誕生', year: 1485, note: '文藝復興最著名的神話畫', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Sandro%20Botticelli%20-%20La%20nascita%20di%20Venere%20-%20Google%20Art%20Project%20-%20edited.jpg' },
+      { title: '誹謗', year: 1495, note: '晚期的寓意告白', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Sandro%20Botticelli%20La%20calumnia%20de%20Apeles.jpg' },
     ],
   },
   {
@@ -104,9 +104,9 @@ const CHARACTERS = [
       ultra: { name: '萬能天才・維特魯威人', desc: '圓與方之中,人是萬物的尺度' },
     },
     works: [
-      { title: '蒙娜麗莎', year: 1503, note: '羅浮宮鎮館之寶' },
-      { title: '最後的晚餐', year: 1498, note: '米蘭恩寵聖母修道院壁畫' },
-      { title: '維特魯威人', year: 1490, note: '人體比例的傳世素描' },
+      { title: '蒙娜麗莎', year: 1503, note: '羅浮宮鎮館之寶', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Mona%20Lisa%2C%20by%20Leonardo%20da%20Vinci%2C%20from%20C2RMF%20retouched.jpg' },
+      { title: '最後的晚餐', year: 1498, note: '米蘭恩寵聖母修道院壁畫', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Leonardo%20da%20Vinci%20%281452-1519%29%20-%20The%20Last%20Supper%20%281495-1498%29.jpg' },
+      { title: '維特魯威人', year: 1490, note: '人體比例的傳世素描', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Da%20Vinci%20Vitruve%20Luc%20Viatour.jpg' },
     ],
   },
   {
@@ -122,9 +122,9 @@ const CHARACTERS = [
       ultra: { name: '大衛覺醒', desc: '大理石巨人睜眼的一擊' },
     },
     works: [
-      { title: '聖殤', year: 1499, note: '聖彼得大教堂的悲憫之作' },
-      { title: '大衛像', year: 1504, note: '佛羅倫斯學院美術館鎮館' },
-      { title: '創世紀天頂畫', year: 1512, note: '西斯汀禮拜堂的曠世穹頂' },
+      { title: '聖殤', year: 1499, note: '聖彼得大教堂的悲憫之作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Michelangelo%27s%20Piet%C3%A0%20Saint%20Peter%27s%20Basilica%20Vatican%20City.jpg' },
+      { title: '大衛像', year: 1504, note: '佛羅倫斯學院美術館鎮館', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Michelangelo%27s%20David%20-%20right%20view%202.jpg' },
+      { title: '創世紀天頂畫', year: 1512, note: '西斯汀禮拜堂的曠世穹頂', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Sistine%20Chapel%20ceiling%2002.jpg' },
     ],
   },
   {
@@ -140,9 +140,9 @@ const CHARACTERS = [
       ultra: { name: '雅典學院', desc: '群賢降臨,智慧共鳴' },
     },
     works: [
-      { title: '雅典學院', year: 1511, note: '梵蒂岡簽字廳壁畫' },
-      { title: '西斯汀聖母', year: 1512, note: '畫底兩位小天使聞名於世' },
-      { title: '草地上的聖母', year: 1506, note: '聖母像的溫柔典範' },
+      { title: '雅典學院', year: 1511, note: '梵蒂岡簽字廳壁畫', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/%22The%20School%20of%20Athens%22%20by%20Raffaello%20Sanzio%20da%20Urbino.jpg' },
+      { title: '西斯汀聖母', year: 1512, note: '畫底兩位小天使聞名於世', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Raphael%20-%20The%20Sistine%20Madonna%20-%20Google%20Art%20Project.jpg' },
+      { title: '草地上的聖母', year: 1506, note: '聖母像的溫柔典範', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Raphael%20-%20Madonna%20in%20the%20Meadow%20-%20Google%20Art%20Project.jpg' },
     ],
   },
   {
@@ -158,9 +158,9 @@ const CHARACTERS = [
       ultra: { name: '酒神的狂歡', desc: '色彩傾瀉的神話盛宴' },
     },
     works: [
-      { title: '聖母升天', year: 1518, note: '威尼斯榮耀聖母教堂祭壇畫' },
-      { title: '烏爾比諾的維納斯', year: 1538, note: '斜臥維納斯的經典' },
-      { title: '酒神與亞里阿德涅', year: 1523, note: '神話色彩的鉅作' },
+      { title: '聖母升天', year: 1518, note: '威尼斯榮耀聖母教堂祭壇畫', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Tizian%20041.jpg' },
+      { title: '烏爾比諾的維納斯', year: 1538, note: '斜臥維納斯的經典', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Tiziano%20-%20Venere%20di%20Urbino%20-%20Google%20Art%20Project.jpg' },
+      { title: '酒神與亞里阿德涅', year: 1523, note: '神話色彩的鉅作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Titian%20Bacchus%20and%20Ariadne.jpg' },
     ],
   },
 
@@ -178,9 +178,9 @@ const CHARACTERS = [
       ultra: { name: '光與影的審判', desc: '極限明暗,靈魂現形' },
     },
     works: [
-      { title: '聖馬太蒙召', year: 1600, note: '戲劇性光線的代表作' },
-      { title: '酒神', year: 1596, note: '青年時期的微醺自況' },
-      { title: '大衛與歌利亞', year: 1610, note: '以自己的臉畫下巨人首級' },
+      { title: '聖馬太蒙召', year: 1600, note: '戲劇性光線的代表作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Caravaggio%2C%20Michelangelo%20Merisi%20da%20-%20The%20Calling%20of%20Saint%20Matthew%20-%201599-1600%20%28hi%20res%29.jpg' },
+      { title: '酒神', year: 1596, note: '青年時期的微醺自況', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Bacchus%20by%20Caravaggio%201.jpg' },
+      { title: '大衛與歌利亞', year: 1610, note: '以自己的臉畫下巨人首級', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/David%20with%20the%20Head%20of%20Goliath-Caravaggio%20%281610%29.jpg' },
     ],
   },
   {
@@ -196,9 +196,9 @@ const CHARACTERS = [
       ultra: { name: '巴洛克狂宴', desc: '血肉與色彩的漩渦' },
     },
     works: [
-      { title: '上十字架', year: 1610, note: '安特衛普大教堂祭壇鉅作' },
-      { title: '瑪麗・德・美第奇生平組畫', year: 1625, note: '羅浮宮專廳的廿四連作' },
-      { title: '三美神', year: 1635, note: '豐滿人體的頌歌' },
+      { title: '上十字架', year: 1610, note: '安特衛普大教堂祭壇鉅作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Peter%20Paul%20Rubens%20-%20Raising%20of%20the%20Cross%20-%20WGA20204.jpg' },
+      { title: '瑪麗・德・美第奇生平組畫', year: 1625, note: '羅浮宮專廳的廿四連作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Rubens%20medici%20cycle%20meeting%20at%20Lyon.jpg' },
+      { title: '三美神', year: 1635, note: '豐滿人體的頌歌', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/The%20Three%20Graces%2C%20by%20Peter%20Paul%20Rubens%2C%20from%20Prado%20in%20Google%20Earth.jpg' },
     ],
   },
   {
@@ -214,9 +214,9 @@ const CHARACTERS = [
       ultra: { name: '宮女', desc: '鏡中之鏡,空間反轉' },
     },
     works: [
-      { title: '宮女', year: 1656, note: '普拉多美術館的鎮館之謎' },
-      { title: '教宗英諾森十世肖像', year: 1650, note: '教宗驚呼「太真實了」' },
-      { title: '布雷達之降', year: 1635, note: '歷史畫裡的人性時刻' },
+      { title: '宮女', year: 1656, note: '普拉多美術館的鎮館之謎', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Las%20Meninas%2C%20by%20Diego%20Vel%C3%A1zquez%2C%20from%20Prado%20in%20Google%20Earth.jpg' },
+      { title: '教宗英諾森十世肖像', year: 1650, note: '教宗驚呼「太真實了」', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Portrait%20of%20Innocentius%20X%20by%20Diego%20Vel%C3%A1zquez%20in%20Galleria%20Doria%20Pamphilj%20%28Rome%29.jpg' },
+      { title: '布雷達之降', year: 1635, note: '歷史畫裡的人性時刻', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Velazquez-The%20Surrender%20of%20Breda.jpg' },
     ],
   },
   {
@@ -232,9 +232,9 @@ const CHARACTERS = [
       ultra: { name: '夜巡', desc: '巡守隊自黑暗中開步走來' },
     },
     works: [
-      { title: '夜巡', year: 1642, note: '阿姆斯特丹國家博物館鎮館' },
-      { title: '杜爾普醫師的解剖課', year: 1632, note: '一舉成名的群像畫' },
-      { title: '猶太新娘', year: 1665, note: '梵谷願折十年壽命換兩週凝視的傑作' },
+      { title: '夜巡', year: 1642, note: '阿姆斯特丹國家博物館鎮館', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/The%20Night%20Watch%20-%20HD.jpg' },
+      { title: '杜爾普醫師的解剖課', year: 1632, note: '一舉成名的群像畫', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Rembrandt%20-%20The%20Anatomy%20Lesson%20of%20Dr%20Nicolaes%20Tulp.jpg' },
+      { title: '猶太新娘', year: 1665, note: '梵谷願折十年壽命換兩週凝視的傑作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Rembrandt%20Harmensz.%20van%20Rijn%20-%20Portret%20van%20een%20paar%20als%20oudtestamentische%20figuren%2C%20genaamd%20%27Het%20Joodse%20bruidje%27%20-%20Google%20Art%20Project.jpg' },
     ],
   },
   {
@@ -250,9 +250,9 @@ const CHARACTERS = [
       ultra: { name: '戴珍珠耳環的少女', desc: '回眸一瞬,時間停止' },
     },
     works: [
-      { title: '戴珍珠耳環的少女', year: 1665, note: '「北方的蒙娜麗莎」' },
-      { title: '倒牛奶的女僕', year: 1658, note: '荷蘭風俗畫經典' },
-      { title: '臺夫特一景', year: 1661, note: '故鄉上空的天光' },
+      { title: '戴珍珠耳環的少女', year: 1665, note: '「北方的蒙娜麗莎」', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/1665%20Girl%20with%20a%20Pearl%20Earring.jpg' },
+      { title: '倒牛奶的女僕', year: 1658, note: '荷蘭風俗畫經典', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Johannes%20Vermeer%20-%20Het%20melkmeisje%20-%20Google%20Art%20Project.jpg' },
+      { title: '臺夫特一景', year: 1661, note: '故鄉上空的天光', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Vermeer-view-of-delft.jpg' },
     ],
   },
   {
@@ -268,9 +268,9 @@ const CHARACTERS = [
       ultra: { name: '1808年5月3日', desc: '白衣者張臂,槍聲中的怒吼' },
     },
     works: [
-      { title: '1808年5月3日', year: 1814, note: '控訴戰爭的不朽之作' },
-      { title: '裸體的瑪哈', year: 1800, note: '西班牙繪畫的傳奇' },
-      { title: '農神吞噬其子', year: 1823, note: '黑色繪畫系列' },
+      { title: '1808年5月3日', year: 1814, note: '控訴戰爭的不朽之作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/El%20Tres%20de%20Mayo%2C%20by%20Francisco%20de%20Goya%2C%20from%20Prado%20thin%20black%20margin.jpg' },
+      { title: '裸體的瑪哈', year: 1800, note: '西班牙繪畫的傳奇', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Goya%20Maja%20naga2.jpg' },
+      { title: '農神吞噬其子', year: 1823, note: '黑色繪畫系列', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Francisco%20de%20Goya%2C%20Saturno%20devorando%20a%20su%20hijo%20%281819-1823%29.jpg' },
     ],
   },
   {
@@ -286,9 +286,9 @@ const CHARACTERS = [
       ultra: { name: '無畏號的落日', desc: '金色餘暉中的最後航程' },
     },
     works: [
-      { title: '被拖去解體的無畏號', year: 1839, note: '英國人票選最愛名畫' },
-      { title: '雨、蒸汽和速度', year: 1844, note: '工業時代的光之詩' },
-      { title: '暴風雪—駛離港口的汽船', year: 1842, note: '據說綁上桅杆觀察風暴' },
+      { title: '被拖去解體的無畏號', year: 1839, note: '英國人票選最愛名畫', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/The%20Fighting%20Temeraire%2C%20JMW%20Turner%2C%20National%20Gallery.jpg' },
+      { title: '雨、蒸汽和速度', year: 1844, note: '工業時代的光之詩', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Rain%20Steam%20and%20Speed%20the%20Great%20Western%20Railway.jpg' },
+      { title: '暴風雪—駛離港口的汽船', year: 1842, note: '據說綁上桅杆觀察風暴', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Joseph%20Mallord%20William%20Turner%20-%20Snow%20Storm%20-%20Steam-Boat%20off%20a%20Harbour%27s%20Mouth%20-%20WGA23178.jpg' },
     ],
   },
   {
@@ -304,9 +304,9 @@ const CHARACTERS = [
       ultra: { name: '自由引導人民', desc: '三色旗起,萬眾衝鋒' },
     },
     works: [
-      { title: '自由引導人民', year: 1830, note: '七月革命的精神圖騰' },
-      { title: '薩丹納帕勒斯之死', year: 1827, note: '浪漫主義的極致狂想' },
-      { title: '巧斯島的屠殺', year: 1824, note: '震動沙龍的控訴之作' },
+      { title: '自由引導人民', year: 1830, note: '七月革命的精神圖騰', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Eug%C3%A8ne%20Delacroix%20-%20Le%2028%20Juillet.%20La%20Libert%C3%A9%20guidant%20le%20peuple.jpg' },
+      { title: '薩丹納帕勒斯之死', year: 1827, note: '浪漫主義的極致狂想', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Eug%C3%A8ne%20Delacroix%20-%20La%20Mort%20de%20Sardanapale.jpg' },
+      { title: '巧斯島的屠殺', year: 1824, note: '震動沙龍的控訴之作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Sc%C3%A8ne%20des%20massacres%20de%20Scio.jpg' },
     ],
   },
 
@@ -324,9 +324,9 @@ const CHARACTERS = [
       ultra: { name: '晚禱', desc: '暮色鐘響,大地俯首' },
     },
     works: [
-      { title: '拾穗', year: 1857, note: '農婦拾穗的莊嚴詩篇' },
-      { title: '晚禱', year: 1859, note: '暮色中的無聲祈禱' },
-      { title: '播種者', year: 1850, note: '大步撒種的勞動英雄' },
+      { title: '拾穗', year: 1857, note: '農婦拾穗的莊嚴詩篇', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Jean-Fran%C3%A7ois%20Millet%20-%20Gleaners%20-%20Google%20Art%20Project%202.jpg' },
+      { title: '晚禱', year: 1859, note: '暮色中的無聲祈禱', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Jean-Fran%C3%A7ois%20Millet%20-%20The%20Angelus%20-%20Google%20Art%20Project.jpg' },
+      { title: '播種者', year: 1850, note: '大步撒種的勞動英雄', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Jean-Fran%C3%A7ois%20Millet%20-%20The%20Sower%20-%20Google%20Art%20Project.jpg' },
     ],
   },
   {
@@ -342,9 +342,9 @@ const CHARACTERS = [
       ultra: { name: '奧爾南的葬禮', desc: '巨幅現實,轟然展開' },
     },
     works: [
-      { title: '奧爾南的葬禮', year: 1850, note: '顛覆學院的巨幅平民葬禮' },
-      { title: '採石工人', year: 1849, note: '寫實主義的勞動宣言' },
-      { title: '畫室', year: 1855, note: '自稱「真實的寓言」' },
+      { title: '奧爾南的葬禮', year: 1850, note: '顛覆學院的巨幅平民葬禮', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Gustave%20Courbet%20-%20A%20Burial%20at%20Ornans%20-%20Google%20Art%20Project%202.jpg' },
+      { title: '採石工人', year: 1849, note: '寫實主義的勞動宣言', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Gustave%20Courbet%20-%20The%20Stonebreakers%20-%20WGA05457.jpg' },
+      { title: '畫室', year: 1855, note: '自稱「真實的寓言」', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Courbet%20LAtelier%20du%20peintre.jpg' },
     ],
   },
   {
@@ -360,9 +360,9 @@ const CHARACTERS = [
       ultra: { name: '草地上的午餐', desc: '驚世野餐,輿論炸裂' },
     },
     works: [
-      { title: '草地上的午餐', year: 1863, note: '落選者沙龍的世紀醜聞' },
-      { title: '奧林匹亞', year: 1863, note: '直視時代的裸女' },
-      { title: '女神遊樂廳的吧檯', year: 1882, note: '鏡像謎題的絕唱' },
+      { title: '草地上的午餐', year: 1863, note: '落選者沙龍的世紀醜聞', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Edouard%20Manet%20-%20Luncheon%20on%20the%20Grass%20-%20Google%20Art%20Project.jpg' },
+      { title: '奧林匹亞', year: 1863, note: '直視時代的裸女', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Edouard%20Manet%20-%20Olympia%20-%20Google%20Art%20Project%203.jpg' },
+      { title: '女神遊樂廳的吧檯', year: 1882, note: '鏡像謎題的絕唱', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Edouard%20Manet%2C%20A%20Bar%20at%20the%20Folies-Berg%C3%A8re.jpg' },
     ],
   },
   {
@@ -378,9 +378,9 @@ const CHARACTERS = [
       ultra: { name: '睡蓮・光之池', desc: '水面綻放,包圍全場' },
     },
     works: [
-      { title: '印象・日出', year: 1872, note: '為整個畫派命名之作' },
-      { title: '睡蓮', year: 1916, note: '橘園美術館的環形巨作' },
-      { title: '乾草堆', year: 1891, note: '光的連作實驗' },
+      { title: '印象・日出', year: 1872, note: '為整個畫派命名之作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Claude%20Monet%2C%20Impression%2C%20soleil%20levant.jpg' },
+      { title: '睡蓮', year: 1916, note: '橘園美術館的環形巨作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Mus%C3%A9e%20de%20L%27Orangerie%20Water%20Lilies%20Pano%201.jpg' },
+      { title: '乾草堆', year: 1891, note: '光的連作實驗', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Claude%20Monet%20-%20Haystacks%2C%20end%20of%20Summer%20-%20Google%20Art%20Project.jpg' },
     ],
   },
   {
@@ -396,9 +396,9 @@ const CHARACTERS = [
       ultra: { name: '煎餅磨坊的舞會', desc: '滿場舞影與陽光傾瀉' },
     },
     works: [
-      { title: '煎餅磨坊的舞會', year: 1876, note: '奧塞美術館的印象派經典' },
-      { title: '船上的午宴', year: 1881, note: '友人歡聚的光之盛宴' },
-      { title: '彈鋼琴的少女', year: 1892, note: '溫柔的家庭題材' },
+      { title: '煎餅磨坊的舞會', year: 1876, note: '奧塞美術館的印象派經典', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Auguste%20Renoir%20-%20Dance%20at%20Le%20Moulin%20de%20la%20Galette%20-%20Google%20Art%20Project.jpg' },
+      { title: '船上的午宴', year: 1881, note: '友人歡聚的光之盛宴', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pierre-Auguste%20Renoir%20-%20Luncheon%20of%20the%20Boating%20Party%20-%20Google%20Art%20Project.jpg' },
+      { title: '彈鋼琴的少女', year: 1892, note: '溫柔的家庭題材', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Auguste%20Renoir%20-%20Young%20Girls%20at%20the%20Piano%20-%20Google%20Art%20Project.jpg' },
     ],
   },
   {
@@ -414,9 +414,9 @@ const CHARACTERS = [
       ultra: { name: '十四歲的小舞者', desc: '青銅少女躍出展櫃' },
     },
     works: [
-      { title: '舞蹈課', year: 1874, note: '芭蕾題材代表作' },
-      { title: '十四歲的小舞者', year: 1881, note: '穿著真紗裙的雕塑' },
-      { title: '苦艾酒', year: 1876, note: '都會孤寂的寫照' },
+      { title: '舞蹈課', year: 1874, note: '芭蕾題材代表作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Edgar%20Germain%20Hilaire%20Degas%20021.jpg' },
+      { title: '十四歲的小舞者', year: 1881, note: '穿著真紗裙的雕塑', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Petite%20danseuse%20de%20quatorze%20ans%2C%201921-1931%20%28cire%20originale%201881%29%2C%20bronze%20patin%C3%A9%2C%20tutu%20en%20tulle%2C%20ruban%20de%20satin%2C%20socle%20en%20bois%2C%20Edgar%20Degas%2C%20Paris%2C%20Mus%C3%A9e%20d%27Orsay%20RF2137%20%281%29.jpg' },
+      { title: '苦艾酒', year: 1876, note: '都會孤寂的寫照', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Edgar%20Degas%20-%20In%20a%20Caf%C3%A9%20-%20Google%20Art%20Project%202.jpg' },
     ],
   },
   {
@@ -432,9 +432,9 @@ const CHARACTERS = [
       ultra: { name: '聖維克多山', desc: '山體解構,大地重組' },
     },
     works: [
-      { title: '聖維克多山', year: 1904, note: '畢生反覆探索的母題' },
-      { title: '玩紙牌的人', year: 1893, note: '曾創世界最高價名畫紀錄' },
-      { title: '蘋果籃靜物', year: 1893, note: '顛覆透視的靜物' },
+      { title: '聖維克多山', year: 1904, note: '畢生反覆探索的母題', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Paul%20C%C3%A9zanne%2C%20Mont%20Sainte-Victoire.jpg' },
+      { title: '玩紙牌的人', year: 1893, note: '曾創世界最高價名畫紀錄', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Les%20Joueurs%20de%20cartes%2C%20par%20Paul%20C%C3%A9zanne.jpg' },
+      { title: '蘋果籃靜物', year: 1893, note: '顛覆透視的靜物', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Paul%20C%C3%A9zanne%20-%20The%20Basket%20of%20Apples%20-%201926.252%20-%20Art%20Institute%20of%20Chicago.jpg' },
     ],
   },
   {
@@ -450,9 +450,9 @@ const CHARACTERS = [
       ultra: { name: '星夜', desc: '星空旋渦吞沒天地' },
     },
     works: [
-      { title: '星夜', year: 1889, note: '紐約現代藝術博物館鎮館' },
-      { title: '向日葵', year: 1888, note: '阿爾勒時期的陽光連作' },
-      { title: '麥田群鴉', year: 1890, note: '最後時期的悲愴之作' },
+      { title: '星夜', year: 1889, note: '紐約現代藝術博物館鎮館', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Van%20Gogh%20-%20Starry%20Night%20-%20Google%20Art%20Project.jpg' },
+      { title: '向日葵', year: 1888, note: '阿爾勒時期的陽光連作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Vincent%20van%20Gogh%20-%20Sunflowers%20%281888%2C%20National%20Gallery%20London%29.jpg' },
+      { title: '麥田群鴉', year: 1890, note: '最後時期的悲愴之作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Korenveld%20met%20kraaien%20-%20s0149V1962%20-%20Van%20Gogh%20Museum.jpg' },
     ],
   },
   {
@@ -468,9 +468,9 @@ const CHARACTERS = [
       ultra: { name: '我們從哪裡來', desc: '生命長卷徐徐展開' },
     },
     works: [
-      { title: '我們從哪裡來?我們是誰?我們往哪裡去?', year: 1897, note: '大溪地時期的哲學鉅作' },
-      { title: '黃色基督', year: 1889, note: '綜合主義代表作' },
-      { title: '沙灘上的大溪地女人', year: 1891, note: '南島樂園系列' },
+      { title: '我們從哪裡來?我們是誰?我們往哪裡去?', year: 1897, note: '大溪地時期的哲學鉅作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Paul%20Gauguin%20142.jpg' },
+      { title: '黃色基督', year: 1889, note: '綜合主義代表作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Gauguin%20Il%20Cristo%20giallo.jpg' },
+      { title: '沙灘上的大溪地女人', year: 1891, note: '南島樂園系列', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Paul%20Gauguin%20056.jpg' },
     ],
   },
 
@@ -488,9 +488,9 @@ const CHARACTERS = [
       ultra: { name: '吶喊', desc: '血色天空下的無聲尖叫' },
     },
     works: [
-      { title: '吶喊', year: 1893, note: '共四個版本傳世' },
-      { title: '病中的孩子', year: 1886, note: '童年傷痛的告白' },
-      { title: '生命之舞', year: 1900, note: '生命循環的寓言' },
+      { title: '吶喊', year: 1893, note: '共四個版本傳世', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Edvard%20Munch%20-%20The%20Scream%20-%20Google%20Art%20Project.jpg' },
+      { title: '病中的孩子', year: 1886, note: '童年傷痛的告白', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Edvard%20Munch%20-%20The%20Sick%20Child%20I%20-%20Google%20Art%20Project.jpg' },
+      { title: '生命之舞', year: 1900, note: '生命循環的寓言', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Edvard%20Munch%20-%20The%20dance%20of%20life%20%281899-1900%29.jpg' },
     ],
   },
   {
@@ -506,9 +506,9 @@ const CHARACTERS = [
       ultra: { name: '剪刀之舞・藍色裸女', desc: '剪紙飛舞,色彩解放' },
     },
     works: [
-      { title: '戴帽子的女人', year: 1905, note: '野獸派的驚世之作' },
-      { title: '舞蹈', year: 1910, note: '紅色人環的原始節奏' },
-      { title: '藍色裸女剪紙', year: 1952, note: '晚年剪紙系列' },
+      { title: '戴帽子的女人', year: 1905, note: '野獸派的驚世之作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Matisse-Woman-with-a-Hat.jpg' },
+      { title: '舞蹈', year: 1910, note: '紅色人環的原始節奏', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Henri%20Matisse%20-%20Dance%201910.jpg' },
+      { title: '藍色裸女剪紙', year: 1952, note: '晚年剪紙系列', img: 'https://en.wikipedia.org/wiki/Special:FilePath/Blue_Nudes_Henri_Matisse.jpg' },
     ],
   },
   {
@@ -524,9 +524,9 @@ const CHARACTERS = [
       ultra: { name: '格爾尼卡', desc: '黑白巨牆轟然壓下' },
     },
     works: [
-      { title: '亞維儂的少女', year: 1907, note: '立體派的開山之作' },
-      { title: '格爾尼卡', year: 1937, note: '控訴轟炸的世紀壁畫' },
-      { title: '夢', year: 1932, note: '金髮繆思的柔軟肖像' },
+      { title: '亞維儂的少女', year: 1907, note: '立體派的開山之作', img: 'https://en.wikipedia.org/wiki/Special:FilePath/Les%20Demoiselles%20d%27Avignon.jpg' },
+      { title: '格爾尼卡', year: 1937, note: '控訴轟炸的世紀壁畫', img: 'https://en.wikipedia.org/wiki/Special:FilePath/PicassoGuernica.jpg' },
+      { title: '夢', year: 1932, note: '金髮繆思的柔軟肖像', img: 'https://en.wikipedia.org/wiki/Special:FilePath/Le-reve-1932.jpg' },
     ],
   },
   {
@@ -542,9 +542,9 @@ const CHARACTERS = [
       ultra: { name: '即興交響', desc: '色彩化為音樂風暴' },
     },
     works: [
-      { title: '構成第七號', year: 1913, note: '抽象繪畫的巔峰巨構' },
-      { title: '即興第28號', year: 1912, note: '音樂性的色彩實驗' },
-      { title: '構成第八號', year: 1923, note: '包浩斯時期的幾何交響' },
+      { title: '構成第七號', year: 1913, note: '抽象繪畫的巔峰巨構', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Composition%20VII%20-%20Wassily%20Kandinsky%2C%20GAC.jpg' },
+      { title: '即興第28號', year: 1912, note: '音樂性的色彩實驗', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Vasily%20Kandinsky%20Improvisation%2028%20%28second%20version%29.jpg' },
+      { title: '構成第八號', year: 1923, note: '包浩斯時期的幾何交響', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Kandinsky%20-%20Composition%208%2C%20July%201923.jpg' },
     ],
   },
   {
@@ -560,9 +560,9 @@ const CHARACTERS = [
       ultra: { name: '記憶的堅持', desc: '時鐘融化,時間扭曲' },
     },
     works: [
-      { title: '記憶的堅持', year: 1931, note: '融化時鐘的代名詞' },
-      { title: '內戰的預感', year: 1936, note: '西班牙內戰的夢魘' },
-      { title: '聖十字若望的基督', year: 1951, note: '俯瞰視角的神聖' },
+      { title: '記憶的堅持', year: 1931, note: '融化時鐘的代名詞', img: 'https://en.wikipedia.org/wiki/Special:FilePath/The%20Persistence%20of%20Memory.jpg' },
+      { title: '內戰的預感', year: 1936, note: '西班牙內戰的夢魘', img: 'https://en.wikipedia.org/wiki/Special:FilePath/SalvadorDali-SoftConstructionWithBeans.jpg' },
+      { title: '聖十字若望的基督', year: 1951, note: '俯瞰視角的神聖', img: 'https://en.wikipedia.org/wiki/Special:FilePath/Christ_of_Saint_John_of_the_Cross.jpg' },
     ],
   },
   {
@@ -578,9 +578,9 @@ const CHARACTERS = [
       ultra: { name: '破碎的圓柱', desc: '鋼釘與淚水,不屈綻放' },
     },
     works: [
-      { title: '兩個芙烈達', year: 1939, note: '雙重自我的對望' },
-      { title: '戴荊棘項鍊的自畫像', year: 1940, note: '最著名的自畫像之一' },
-      { title: '破碎的圓柱', year: 1944, note: '傷痛與意志的告白' },
+      { title: '兩個芙烈達', year: 1939, note: '雙重自我的對望', img: 'https://en.wikipedia.org/wiki/Special:FilePath/The%20Two%20Fridas.jpg' },
+      { title: '戴荊棘項鍊的自畫像', year: 1940, note: '最著名的自畫像之一', img: 'https://en.wikipedia.org/wiki/Special:FilePath/Frida_Kahlo_%28self_portrait%29.jpg' },
+      { title: '破碎的圓柱', year: 1944, note: '傷痛與意志的告白', img: 'https://en.wikipedia.org/wiki/Special:FilePath/The_Broken_Column.jpg' },
     ],
   },
   {
@@ -596,9 +596,9 @@ const CHARACTERS = [
       ultra: { name: '滴彩風暴', desc: '全畫布轟炸,線條奔流' },
     },
     works: [
-      { title: '第5號,1948', year: 1948, note: '曾創天價紀錄的滴畫' },
-      { title: '秋韻:第30號', year: 1950, note: '行動繪畫代表作' },
-      { title: '壁畫', year: 1943, note: '佩姬・古根漢委託的突破之作' },
+      { title: '第5號,1948', year: 1948, note: '曾創天價紀錄的滴畫', img: 'https://en.wikipedia.org/wiki/Special:FilePath/No.%205%2C%201948.jpg' },
+      { title: '秋韻:第30號', year: 1950, note: '行動繪畫代表作', img: 'https://publicdelivery.org/wp-content/uploads/2021/02/Jackson-Pollock-Autumn-Rhythm-Number-30-1950-enamel-on-canvas-266.7-x-525.8-cm-8-ft.-9-in.-x-17-ft.-3-in.-scaled.jpg' },
+      { title: '壁畫', year: 1943, note: '佩姬・古根漢委託的突破之作', img: 'https://en.wikipedia.org/wiki/Special:FilePath/Jackson_Pollock_Mural_1943_Oil_and_casein_on_canvas.jpg' },
     ],
   },
   {
@@ -614,9 +614,9 @@ const CHARACTERS = [
       ultra: { name: '普普爆炸・金色瑪麗蓮', desc: '霓虹網點吞沒世界' },
     },
     works: [
-      { title: '康寶濃湯罐頭', year: 1962, note: '32 罐改變藝術史' },
-      { title: '瑪麗蓮・夢露絹印', year: 1962, note: '普普偶像的誕生' },
-      { title: '布里洛盒', year: 1964, note: '讓哲學家驚呼「藝術終結」的普普雕塑' },
+      { title: '康寶濃湯罐頭', year: 1962, note: '32 罐改變藝術史', img: 'https://en.wikipedia.org/wiki/Special:FilePath/Campbell%27s%20Soup%20Cans%20by%20Andy%20Warhol.jpg' },
+      { title: '瑪麗蓮・夢露絹印', year: 1962, note: '普普偶像的誕生', img: 'https://en.wikipedia.org/wiki/Special:FilePath/Marilyndiptych.jpg' },
+      { title: '布里洛盒', year: 1964, note: '讓哲學家驚呼「藝術終結」的普普雕塑', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Andy-Warhol-Stockholm-1968.jpg' },
     ],
   },
   {
@@ -632,9 +632,9 @@ const CHARACTERS = [
       ultra: { name: '吻・黃金擁抱', desc: '金光滿溢,萬物臣服' },
     },
     works: [
-      { title: '吻', year: 1908, note: '維也納美景宮鎮館之寶' },
-      { title: '阿黛爾肖像一號', year: 1907, note: '「黃金女士」,曾創拍賣天價' },
-      { title: '貝多芬橫飾帶', year: 1902, note: '分離派會館的壁畫鉅作' },
+      { title: '吻', year: 1908, note: '維也納美景宮鎮館之寶', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/The%20Kiss%20-%20Gustav%20Klimt%20-%20Google%20Cultural%20Institute.jpg' },
+      { title: '阿黛爾肖像一號', year: 1907, note: '「黃金女士」,曾創拍賣天價', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Gustav%20Klimt%2C%201907%2C%20Adele%20Bloch-Bauer%20I%2C%20Neue%20Galerie%20New%20York.jpg' },
+      { title: '貝多芬橫飾帶', year: 1902, note: '分離派會館的壁畫鉅作', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Beethovenfries4.jpg' },
     ],
   },
 ];

@@ -668,7 +668,8 @@ const UI = {
         <h3>名作鑑定 · 十件真跡</h3>
         <p class="hint-text" style="text-align:center;max-width:520px;margin:0 auto 22px">
           藝術之神從 ${CHARACTERS.length} 位大師的收藏中取出十件名作。<br>
-          每件限時 12 秒,鑑定它出自哪位大師之手——答得越快、連對越多,分數越高!
+          每件真跡只給你畫面——12 秒內鑑定出自哪位大師之手,答對才揭曉作品名與典故。<br>
+          答得越快、連對越多,分數越高!(計時於圖片載入完成後開始)
         </p>
         <div class="practice-diff-row" style="max-width:380px;margin:0 auto">
           <button class="mode-card sm" id="museum-start"><span class="mode-icon">🏺</span><span class="mode-name">開始鑑定</span><span class="mode-desc">10 件 · 每件 12 秒</span></button>
@@ -681,12 +682,14 @@ const UI = {
     const pool = [];
     CHARACTERS.forEach(c => c.works.forEach(w => pool.push({ artist: c, w })));
     const m = this.museum;
+    this.stopMuseumTimer();
     m.qs = shuffled(pool).slice(0, 10);
     m.idx = 0; m.score = 0; m.correct = 0; m.streak = 0;
     this.museumNext();
   },
 
   museumNext() {
+    this.stopMuseumTimer();
     const m = this.museum;
     if (m.idx >= m.qs.length) return this.museumEnd();
     const { artist, w } = m.qs[m.idx];
@@ -703,8 +706,8 @@ const UI = {
           <span class="q-cat">名作鑑定</span>
           <span class="q-diff" id="museum-timer">⏱ 12</span>
         </div>
-        <div class="q-text">《${w.title}》<span style="color:var(--paper-dim)">(${w.year})</span><br>
-          <span style="font-size:.72em;color:var(--paper-dim)">這件作品出自哪位大師之手?</span></div>
+        ${w.img ? `<div class="museum-art"><img id="museum-art-img" src="${w.img}${w.img.includes('?') ? '&' : '?'}width=900" alt="名作鑑定"></div>` : `<div class="q-text">《${w.title}》<span style="color:var(--paper-dim)">(${w.year})</span></div>`}
+        <div class="q-text" style="font-size:.82em">這件真跡出自哪位大師之手?</div>
         <div class="q-choices">
           ${choices.map((c, idx) => `
             <button class="q-choice" data-ok="${c.id === artist.id ? 1 : 0}">
@@ -742,14 +745,25 @@ const UI = {
       b.addEventListener('mouseenter', () => AudioEngine.play('hover'));
       b.addEventListener('click', () => { AudioEngine.play('click'); finish(b); });
     });
-    this.museum.timer = setInterval(() => {
-      if (!document.getElementById('screen-museum').classList.contains('active')) { this.stopMuseumTimer(); return; }
-      left--;
-      const t = $('museum-timer');
-      if (t) t.textContent = '⏱ ' + Math.max(0, left);
-      if (left <= 3 && left > 0) AudioEngine.play('tick');
-      if (left <= 0) finish(null);
-    }, 1000);
+    const startCountdown = () => {
+      if (this.museum.timer || done) return;
+      this.museum.timer = setInterval(() => {
+        if (!document.getElementById('screen-museum').classList.contains('active')) { this.stopMuseumTimer(); return; }
+        left--;
+        const t = $('museum-timer');
+        if (t) t.textContent = '⏱ ' + Math.max(0, left);
+        if (left <= 3 && left > 0) AudioEngine.play('tick');
+        if (left <= 0) finish(null);
+      }, 1000);
+    };
+    const artImg = document.getElementById('museum-art-img');
+    if (artImg) {
+      artImg.addEventListener('load', () => { artImg.classList.add('loaded'); artImg.parentElement.classList.add('ok'); startCountdown(); });
+      artImg.addEventListener('error', () => { artImg.parentElement.classList.add('failed'); startCountdown(); });
+      setTimeout(startCountdown, 4000); // 載入逾時保險
+    } else {
+      startCountdown();
+    }
   },
 
   museumEnd() {
