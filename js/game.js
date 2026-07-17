@@ -57,9 +57,10 @@ const Battle = {
     let p2hp = 100;
     if (config.mode === 'boss') p2hp = 240;
     if (config.mode === 'survival') p2hp = 100 + wave * 18;
+    if (config.p2Hp) p2hp = config.p2Hp;
 
     this.s = {
-      mode: config.mode, wave,
+      mode: config.mode, wave, stageIdx: config.stageIdx,
       round: 1, turn: 0, over: false,
       p: [mkFighter(config.p1Char, false, config.p1Hp || 100), mkFighter(config.p2Char, config.mode !== 'versus', p2hp)],
     };
@@ -70,7 +71,7 @@ const Battle = {
     this.renderFighters();
     this.updateHUD();
     $('battle-bottom').innerHTML = '';
-    this.announce(config.mode === 'boss' ? 'BOSS 降臨' : config.mode === 'survival' ? `第 ${wave + 1} 陣` : '對決開始', 'big');
+    this.announce(config.mode === 'boss' ? 'BOSS 降臨' : config.mode === 'survival' ? `第 ${wave + 1} 陣` : config.stageName ? config.stageName : '對決開始', 'big');
     AudioEngine.play('turn');
     setTimeout(() => this.beginTurn(), 1400);
   },
@@ -496,5 +497,195 @@ const Battle = {
       }
       setTimeout(() => UI.showResult(this.s, winnerIdx), 1600);
     }, 1500);
+  },
+};
+
+/* ═══════════════════════════════════════════════
+   卡牌對決引擎 — 五張作品卡 × 媒材相剋 × 答題加成
+   ═══════════════════════════════════════════════ */
+const CardGame = {
+  s: null,
+  usedQ: new Set(),
+  qTimer: null,
+
+  cardHTML(card, opts = {}) {
+    return `
+      <div class="wcard ${opts.cls || ''}" ${opts.data ? `data-id="${card.id}"` : ''} style="--h:${card.hue};--h2:${card.hue2}">
+        <div class="wcard-head"><img src="${card.img}" alt="${card.name}" loading="lazy"><span>${card.name}</span></div>
+        <div class="wcard-title">《${card.title}》</div>
+        <div class="wcard-year">${card.year}</div>
+        <div class="wcard-foot">
+          <span class="wcard-medium m-${MEDIUMS.indexOf(card.medium)}">${card.medium === '雕塑與現代藝術' ? '雕塑現代' : card.medium}</span>
+          <span class="wcard-power">力 ${card.power}</span>
+        </div>
+      </div>`;
+  },
+
+  start(deckIds, aiLevel) {
+    const deck = deckIds.map(id => CARDS.find(c => c.id === id)).filter(Boolean);
+    if (deck.length !== 5) { UI.toast('牌組需要恰好 5 張卡'); return; }
+    /* CPU 牌組:全收藏隨機抽 5,偏好高力卡 */
+    const cpuDeck = shuffled(CARDS).sort((a, b) => (b.power + Math.random() * 6) - (a.power + Math.random() * 6)).slice(0, 5);
+    this.s = {
+      round: 1, score: [0, 0], hand: deck.slice(), cpuHand: shuffled(cpuDeck),
+      aiLevel, correct: 0, total: 0, over: false, log: [],
+    };
+    this.usedQ.clear();
+    UI.show('screen-cardbattle');
+    this.renderRound();
+  },
+
+  scoreHTML() {
+    const s = this.s;
+    const pip = (n, who) => Array.from({ length: 3 }, (_, i) => `<i class="${i < n ? 'on ' + who : ''}"></i>`).join('');
+    return `
+      <div class="cb-score">
+        <div class="cb-side"><b>你</b><div class="cb-pips">${pip(s.score[0], 'p')}</div></div>
+        <div class="cb-round">第 ${Math.min(s.round, 5)} / 5 回合</div>
+        <div class="cb-side right"><div class="cb-pips">${pip(s.score[1], 'c')}</div><b>策展人</b></div>
+      </div>`;
+  },
+
+  renderRound() {
+    const s = this.s;
+    $('cb-arena').innerHTML = `
+      ${this.scoreHTML()}
+      <div class="cb-duel">
+        <div class="cb-slot" id="cb-slot-p"><div class="cb-slot-empty">你的出牌</div></div>
+        <div class="cb-vs">對</div>
+        <div class="cb-slot" id="cb-slot-c"><div class="wcard wcard-back">?</div></div>
+      </div>
+      <div class="cb-bottom">
+        <div class="cb-hint">選一張作品卡出戰 — 相剋 +4 · 答對 +5 · 答錯 −3</div>
+        <div class="cb-hand">
+          ${s.hand.map(c => this.cardHTML(c, { cls: 'in-hand', data: true })).join('')}
+        </div>
+      </div>`;
+    $('cb-arena').querySelectorAll('.wcard.in-hand').forEach(el => {
+      el.addEventListener('mouseenter', () => AudioEngine.play('hover'));
+      el.addEventListener('click', () => { AudioEngine.play('confirm'); this.playCard(el.dataset.id); });
+    });
+  },
+
+  playCard(cardId) {
+    const s = this.s;
+    if (s.over) return;
+    const pCard = s.hand.find(c => c.id === cardId);
+    s.hand = s.hand.filter(c => c.id !== cardId);
+    const cCard = s.cpuHand.shift();
+    s.pCard = pCard; s.cCard = cCard;
+
+    /* 顯示我方出牌,CPU 蓋牌,進入答題 */
+    $('cb-slot-p').innerHTML = this.cardHTML(pCard, { cls: 'played' });
+    this.askQuestion(res => this.reveal(res));
+  },
+
+  askQuestion(cb) {
+    const s = this.s;
+    let pool = Bank.byDiff(2).filter(q => !this.usedQ.has(q.q));
+    if (!pool.length) { this.usedQ.clear(); pool = Bank.byDiff(2); }
+    const q = pool[Math.floor(Math.random() * pool.length)];
+    this.usedQ.add(q.q);
+    const order = shuffled([0, 1, 2, 3]);
+    const answer = order.indexOf(q.a);
+    const TIME = 20;
+
+    const bottom = document.querySelector('#cb-arena .cb-bottom');
+    bottom.innerHTML = `
+      <div class="q-panel cb-q fade-up">
+        <div class="q-meta">
+          <span class="q-cat">${q.cat || '知識'}</span>
+          <span class="q-diff">★★☆</span>
+          <span class="q-sub">答對 +5 力 · 答錯 −3 力</span>
+        </div>
+        <div class="cb-qtimer"><div id="cb-qbar" style="animation-duration:${TIME}s"></div></div>
+        <div class="q-text">${q.q}</div>
+        <div class="q-choices">
+          ${order.map((o, idx) => `<button class="q-choice" data-i="${idx}"><span class="q-key">${'ABCD'[idx]}</span><span>${q.c[o]}</span></button>`).join('')}
+        </div>
+        <div class="q-exp hidden" id="cb-exp"></div>
+      </div>`;
+
+    let done = false;
+    const finish = (chosen, timedOut = false) => {
+      if (done) return; done = true;
+      clearTimeout(this.qTimer);
+      const correct = !timedOut && chosen === answer;
+      s.total++; if (correct) s.correct++;
+      bottom.querySelectorAll('.q-choice').forEach((b, idx) => {
+        b.disabled = true;
+        if (idx === answer) b.classList.add('reveal-correct');
+        if (idx === chosen && !correct) b.classList.add('reveal-wrong');
+      });
+      const exp = $('cb-exp');
+      if (q.exp) { exp.textContent = (correct ? '✦ ' : '✧ ') + q.exp; exp.classList.remove('hidden'); }
+      AudioEngine.play(correct ? 'correct' : 'wrong');
+      setTimeout(() => cb({ correct }), q.exp ? 1700 : 1000);
+    };
+
+    bottom.querySelectorAll('.q-choice').forEach(b => {
+      b.addEventListener('mouseenter', () => AudioEngine.play('hover'));
+      b.addEventListener('click', () => { AudioEngine.play('click'); finish(+b.dataset.i); });
+    });
+    this.qTimer = setTimeout(() => finish(-1, true), TIME * 1000);
+  },
+
+  calcPower(card, other, quizCorrect) {
+    let p = card.power;
+    const detail = [`基礎 ${card.power}`];
+    if (MEDIUM_BEATS[card.medium] === other.medium) { p += 4; detail.push('相剋 +4'); }
+    else if (card.medium === '雕塑與現代藝術') { p += 1; detail.push('恆定 +1'); }
+    if (quizCorrect === true) { p += 5; detail.push('答對 +5'); }
+    if (quizCorrect === false) { p -= 3; detail.push('答錯 −3'); }
+    return { p, detail: detail.join(' · ') };
+  },
+
+  reveal(res) {
+    const s = this.s;
+    const lvl = AI_LEVELS.find(l => l.id === s.aiLevel) || AI_LEVELS[1];
+    const cpuCorrect = Math.random() < lvl.acc;
+    const P = this.calcPower(s.pCard, s.cCard, res.correct);
+    const C = this.calcPower(s.cCard, s.pCard, cpuCorrect);
+
+    /* 翻牌演出 */
+    $('cb-slot-c').innerHTML = this.cardHTML(s.cCard, { cls: 'played flip-in' });
+    AudioEngine.play('attackL');
+
+    setTimeout(() => {
+      const pWin = P.p > C.p, cWin = C.p > P.p;
+      if (pWin) s.score[0]++; else if (cWin) s.score[1]++;
+      $('cb-slot-p').insertAdjacentHTML('beforeend', `<div class="cb-power ${pWin ? 'win' : cWin ? 'lose' : ''}">${P.p}<i>${P.detail}${res.correct ? '' : ''}</i></div>`);
+      $('cb-slot-c').insertAdjacentHTML('beforeend', `<div class="cb-power ${cWin ? 'win' : pWin ? 'lose' : ''}">${C.p}<i>${C.detail} · 策展人${cpuCorrect ? '答對' : '答錯'}</i></div>`);
+      AudioEngine.play(pWin ? 'crit' : cWin ? 'hit' : 'miss');
+      BattleFX && pWin && AudioEngine.play('energy');
+
+      const bottom = document.querySelector('#cb-arena .cb-bottom');
+      bottom.innerHTML = `
+        <div class="cb-roundresult fade-up">
+          <b>${pWin ? '你拿下這一回合!' : cWin ? '策展人拿下這回合…' : '平分秋色'}</b>
+          <button class="btn btn-gold" id="cb-next">${s.round >= 5 || s.hand.length === 0 ? '看最終結果 ▸' : '下一回合 ▸'}</button>
+        </div>`;
+      /* 更新比分 */
+      document.querySelector('#cb-arena .cb-score').outerHTML = this.scoreHTML();
+      $('cb-next').onclick = () => {
+        AudioEngine.play('click');
+        s.round++;
+        if (s.round > 5 || !s.hand.length) this.finish();
+        else this.renderRound();
+      };
+    }, 900);
+  },
+
+  finish() {
+    const s = this.s;
+    s.over = true;
+    const win = s.score[0] > s.score[1];
+    const tie = s.score[0] === s.score[1];
+    UI.finishCardGame({ win, tie, score: s.score, correct: s.correct, total: s.total });
+  },
+
+  quit() {
+    clearTimeout(this.qTimer);
+    if (this.s) this.s.over = true;
   },
 };

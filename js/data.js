@@ -849,6 +849,32 @@ const MODES = [
   { id: 'boss',     icon: '👹', name: 'BOSS 戰', desc: '挑戰吞噬記憶的「遺忘之霧」', ready: true },
   { id: 'teacher',  icon: '🎓', name: '教師模式', desc: '建立題庫、CSV 匯入、課堂應用', ready: true },
   { id: 'gallery',  icon: '🖼', name: '角色圖鑑', desc: '瀏覽藝術家生平與解鎖作品', ready: true },
-  { id: 'campaign', icon: '🗺', name: '闖關模式', desc: '沿著藝術家生命地圖冒險(開發中)', ready: false },
-  { id: 'cards',    icon: '🃏', name: '卡牌模式', desc: '收集作品卡牌組成牌組(開發中)', ready: false },
+  { id: 'campaign', icon: '🗺', name: '闖關模式', desc: '沿臺灣美術史地圖逐關推進', ready: true },
+  { id: 'cards',    icon: '🃏', name: '卡牌模式', desc: '收集作品卡牌,五張成陣對決', ready: true },
 ];
+
+/* ═══════════ 闖關模式:美術史行旅 ═══════════ */
+const CAMPAIGN_STAGES = [
+  { id: 'c1',  chapter: '第一章 · 啟蒙之光', name: '水彩的種子',   enemy: 'ni-chianghuai', ai: 'easy',   hp: 80,  intro: '石川欽一郎在臺灣播下第一顆種子。先勝過點燈的人,才有資格繼承火光。' },
+  { id: 'c2',  chapter: '第一章 · 啟蒙之光', name: '狂飆的青春',   enemy: 'chen-chihchi',  ai: 'easy',   hp: 90,  intro: '被退學的天才少年攔住去路,他的畫布燃燒著 25 歲的全部生命。' },
+  { id: 'c3',  chapter: '第二章 · 出航東京', name: '油彩的化身',   enemy: 'chen-chengpo',  ai: 'normal', hp: 100, intro: '嘉義之子以熾熱的筆觸迎戰。首位帝展臺灣人的驕傲,不容輕越。' },
+  { id: 'c4',  chapter: '第二章 · 出航東京', name: '鑿刀與甘露',   enemy: 'huang-tushui',  ai: 'normal', hp: 110, intro: '雕魂之聖靜候多時。想通過,先接下《水牛群像》的大地之力。' },
+  { id: 'c5',  chapter: '第三章 · 臺展風雲', name: '南街的繁華',   enemy: 'kuo-hsuehhu',   ai: 'normal', hp: 120, intro: '臺展三少年之首擺開膠彩陣勢,大稻埕的燈火為他助威。' },
+  { id: 'c6',  chapter: '第三章 · 臺展風雲', name: '閨秀的鋒芒',   enemy: 'chen-chin',     ai: 'hard',   hp: 120, intro: '優雅即是力量。臺灣第一位女畫家的細筆,比刀鋒更利。' },
+  { id: 'c7',  chapter: '第三章 · 臺展風雲', name: '泰斗的試煉',   enemy: 'lu-tiehchou',   ai: 'hard',   hp: 130, intro: '臺展泰斗呂鐵州放出滿園花鳥。特選連霸的威光,正面襲來。' },
+  { id: 'c8',  chapter: '第四章 · 戰後新生', name: '時代之眼',     enemy: 'li-shihchiao',  ai: 'hard',   hp: 140, intro: '《市場口》的眾生凝視著你。想走向新時代,先通過寫實大師的檢驗。' },
+  { id: 'c9',  chapter: '第四章 · 戰後新生', name: '鋼鐵鳳凰',     enemy: 'yang-yingfeng', ai: 'expert', hp: 150, intro: '不鏽鋼的鳳凰自萬博展翅歸來,映照出你至今累積的一切知識。' },
+  { id: 'c10', chapter: '終章 · 對抗遺忘',   name: '遺忘之霧',     enemy: 'boss',          ai: 'expert', hp: 220, intro: '吞噬記憶的巨獸現身了。以三十先驅之名,守住臺灣美術的百年記憶!', boss: true },
+];
+
+/* ═══════════ 卡牌模式 ═══════════ */
+/* 媒材相剋:油畫剋膠彩、膠彩剋水彩、水彩剋油畫;雕塑與現代藝術不剋不被剋(固定 +1) */
+const MEDIUM_BEATS = { '油畫': '膠彩', '膠彩': '水彩', '水彩': '油畫' };
+
+/* 90 張作品卡:每位藝術家 3 件代表作 */
+const CARDS = CHARACTERS.flatMap(c => c.works.map((w, i) => ({
+  id: `${c.id}~${i}`, charId: c.id, wi: i,
+  title: w.title, year: w.year, note: w.note,
+  medium: c.medium, power: c.stats.atk + c.stats.wis,
+  img: c.img, name: c.name, hue: c.hue, hue2: c.hue2,
+})));

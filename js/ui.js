@@ -6,6 +6,9 @@ const UI = {
   sel: { mode: null, picks: [], aiLevel: 'normal', pickIndex: 0 },
   unlocks: JSON.parse(localStorage.getItem('mh_unlocks') || '{}'),
   board: JSON.parse(localStorage.getItem('mh_board') || '[]'),
+  campaign: JSON.parse(localStorage.getItem('mh_campaign') || '{"unlocked":0,"stars":{}}'),
+  cardCol: new Set(JSON.parse(localStorage.getItem('mh_cardcol') || '[]')),
+  deck: JSON.parse(localStorage.getItem('mh_deck') || '[]'),
 
   /* ── 導航 ── */
   show(id) {
@@ -65,6 +68,8 @@ const UI = {
     if (id === 'teacher') { this.renderTeacher(); this.show('screen-teacher'); return; }
     if (id === 'gallery') { this.renderGallery(); this.show('screen-gallery'); return; }
     if (id === 'practice') { this.renderPracticeSetup(); this.show('screen-practice'); return; }
+    if (id === 'campaign') { this.renderCampaign(); this.show('screen-campaign'); return; }
+    if (id === 'cards') { this.renderCards(); this.show('screen-cards'); return; }
     this.renderCharSelect();
     this.show('screen-select');
   },
@@ -72,11 +77,13 @@ const UI = {
   /* ── 角色選擇 ── */
   renderCharSelect() {
     const mode = this.sel.mode;
-    const titles = { solo: '選擇你的藝術家', versus: '雙人選角', survival: '生存試煉 · 選角', boss: '討伐遺忘之霧 · 選角' };
+    const titles = { solo: '選擇你的藝術家', versus: '雙人選角', survival: '生存試煉 · 選角', boss: '討伐遺忘之霧 · 選角', campaign: '闖關試煉 · 選擇出戰者' };
     $('select-title').textContent = titles[mode] || '選擇角色';
     $('select-hint').textContent = mode === 'versus'
       ? (this.sel.pickIndex === 0 ? '— P1 請選擇角色 —' : '— P2 請選擇角色 —')
-      : '點選角色卡查看詳情並選定出戰者';
+      : mode === 'campaign' && this.sel.stage
+        ? `${this.sel.stage.chapter}「${this.sel.stage.name}」— 對手:${this.sel.stage.boss ? BOSS_CHAR.name : CHARACTERS.find(c => c.id === this.sel.stage.enemy)?.name}`
+        : '點選角色卡查看詳情並選定出戰者';
     $('char-detail').classList.add('hidden');
 
     const grid = $('char-grid');
@@ -194,6 +201,12 @@ const UI = {
     const mode = this.sel.mode;
     const p1Char = CHARACTERS.find(c => c.id === this.sel.picks[0]);
     let p2Char, aiLevel = this.sel.aiLevel;
+    if (mode === 'campaign') {
+      const st = this.sel.stage;
+      p2Char = st.boss ? BOSS_CHAR : CHARACTERS.find(c => c.id === st.enemy);
+      Battle.start({ mode, p1Char, p2Char, aiLevel: st.ai, wave: 0, p2Hp: st.hp, stageIdx: CAMPAIGN_STAGES.indexOf(st), stageName: st.name });
+      return;
+    }
     if (mode === 'versus') p2Char = CHARACTERS.find(c => c.id === this.sel.picks[1]);
     else if (mode === 'boss') { p2Char = BOSS_CHAR; aiLevel = this.sel.aiLevel; }
     else if (mode === 'survival') {
@@ -255,17 +268,34 @@ const UI = {
       </div>`;
 
     const survival = state.mode === 'survival';
+    const campaign = state.mode === 'campaign';
     const title = isVersus ? `${win.char.name} 勝利!` : playerWon ? 'VICTORY' : 'DEFEAT';
+
+    /* 闖關進度與星級 */
+    let stageBanner = '';
+    const st = campaign && state.stageIdx != null ? CAMPAIGN_STAGES[state.stageIdx] : null;
+    if (st && playerWon) {
+      const a = acc(p1);
+      const stars = a >= 80 ? 3 : a >= 60 ? 2 : 1;
+      this.campaign.stars[st.id] = Math.max(this.campaign.stars[st.id] || 0, stars);
+      if (state.stageIdx + 1 > this.campaign.unlocked) this.campaign.unlocked = state.stageIdx + 1;
+      localStorage.setItem('mh_campaign', JSON.stringify(this.campaign));
+      const allClear = this.campaign.unlocked >= CAMPAIGN_STAGES.length;
+      stageBanner = `<div class="unlock-banner">🗺 「${st.name}」通關 ${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}${allClear && st.boss ? ' — 美術史行旅 全章制霸!' : ''}</div>`;
+    }
 
     const card = $('result-card');
     card.innerHTML = `
       <div class="result-title ${playerWon || isVersus ? 'win' : 'lose'}">${title}</div>
-      <div class="result-sub">${survival ? `第 ${state.wave + 1} 陣 ${playerWon ? '通過' : '止步'}` : isVersus ? '雙人對決結束' : playerWon ? win.char.skills.ultra.name + ' · 藝魂長存' : '莫氣餒,再讀再戰!'}</div>
+      <div class="result-sub">${campaign && st ? `${st.chapter}「${st.name}」${playerWon ? '通過' : '受阻'}` : survival ? `第 ${state.wave + 1} 陣 ${playerWon ? '通過' : '止步'}` : isVersus ? '雙人對決結束' : playerWon ? win.char.skills.ultra.name + ' · 藝魂長存' : '莫氣餒,再讀再戰!'}</div>
+      ${stageBanner}
       ${unlockMsg}
       <div class="result-cols">${statCol(p1, isVersus ? 'P1' : '玩家')}${isVersus || true ? statCol(p2, isVersus ? 'P2' : '對手') : ''}</div>
       <div class="result-actions">
         ${survival && playerWon ? '<button class="btn btn-gold btn-lg" id="btn-next-wave">下一陣 ▸</button>' : ''}
-        <button class="btn btn-gold" id="btn-rematch">${survival && playerWon ? '見好就收' : '再戰一場'}</button>
+        ${campaign && playerWon && state.stageIdx + 1 < CAMPAIGN_STAGES.length ? '<button class="btn btn-gold btn-lg" id="btn-next-stage">下一關 ▸</button>' : ''}
+        <button class="btn btn-gold" id="btn-rematch">${survival && playerWon ? '見好就收' : campaign ? '重選角色再戰' : '再戰一場'}</button>
+        ${campaign ? '<button class="btn btn-ghost" id="btn-to-map">關卡地圖</button>' : ''}
         <button class="btn btn-ghost" id="btn-to-modes">返回模式</button>
         <button class="btn btn-ghost" id="btn-to-home">回首頁</button>
       </div>`;
@@ -295,6 +325,19 @@ const UI = {
         this.renderCharSelect(); this.show('screen-select');
       };
     }
+    const nextStageBtn = $('btn-next-stage');
+    if (nextStageBtn) nextStageBtn.onclick = () => {
+      AudioEngine.play('confirm'); close();
+      const nst = CAMPAIGN_STAGES[state.stageIdx + 1];
+      this.sel = { mode: 'campaign', stage: nst, picks: [p1.char.id], aiLevel: this.sel.aiLevel, pickIndex: 0 };
+      Battle.start({
+        mode: 'campaign', p1Char: p1.char,
+        p2Char: nst.boss ? BOSS_CHAR : CHARACTERS.find(c => c.id === nst.enemy),
+        aiLevel: nst.ai, p2Hp: nst.hp, stageIdx: state.stageIdx + 1, stageName: nst.name,
+      });
+    };
+    const mapBtn = $('btn-to-map');
+    if (mapBtn) mapBtn.onclick = () => { AudioEngine.play('click'); close(); this.renderCampaign(); this.show('screen-campaign'); };
     $('btn-to-modes').onclick = () => { AudioEngine.play('click'); close(); this.show('screen-modes'); };
     $('btn-to-home').onclick = () => { AudioEngine.play('click'); close(); this.show('screen-home'); };
   },
@@ -577,9 +620,186 @@ const UI = {
     $('gallery-wrap').innerHTML = gHtml;
   },
 
+  /* ── 闖關模式:美術史行旅 ── */
+  renderCampaign() {
+    const prog = this.campaign;
+    const totalStars = Object.values(prog.stars).reduce((s, n) => s + n, 0);
+    $('campaign-progress').innerHTML = `<span class="prac-score">進度 ${Math.min(prog.unlocked, CAMPAIGN_STAGES.length)} / ${CAMPAIGN_STAGES.length} 關 · ★ ${totalStars} / ${CAMPAIGN_STAGES.length * 3}</span>`;
+
+    let html = '', lastChapter = '';
+    CAMPAIGN_STAGES.forEach((st, i) => {
+      if (st.chapter !== lastChapter) {
+        lastChapter = st.chapter;
+        html += `<div class="chapter-header"><span>${st.chapter}</span></div>`;
+      }
+      const enemy = st.boss ? BOSS_CHAR : CHARACTERS.find(c => c.id === st.enemy);
+      const cleared = i < prog.unlocked;
+      const current = i === prog.unlocked;
+      const locked = i > prog.unlocked;
+      const stars = prog.stars[st.id] || 0;
+      html += `
+        <button class="stage-node ${cleared ? 'cleared' : ''} ${current ? 'current' : ''} ${locked ? 'locked' : ''} ${st.boss ? 'boss' : ''}"
+                data-idx="${i}" ${locked ? 'disabled' : ''} style="--h:${enemy.hue};--h2:${enemy.hue2}">
+          <span class="sn-no">${st.boss ? '👹' : i + 1}</span>
+          <span class="sn-thumb">${enemy.img ? `<img src="${enemy.img}" alt="${enemy.name}" loading="lazy">` : `<b class="sn-mono">${enemy.mono}</b>`}</span>
+          <span class="sn-body">
+            <b class="sn-name">${st.name}</b>
+            <i class="sn-enemy">${locked ? '???' : `對手 · ${enemy.name}`} · ${AI_LEVELS.find(l => l.id === st.ai)?.label || ''} · HP ${st.hp}</i>
+            <i class="sn-intro">${locked ? '完成前一關後解鎖' : st.intro}</i>
+          </span>
+          <span class="sn-stars">${cleared ? '★'.repeat(stars) + '☆'.repeat(3 - stars) : current ? '▶ 挑戰' : '🔒'}</span>
+        </button>`;
+    });
+    $('campaign-wrap').innerHTML = html;
+
+    $('campaign-wrap').querySelectorAll('.stage-node:not(.locked)').forEach(node => {
+      node.addEventListener('mouseenter', () => AudioEngine.play('hover'));
+      node.addEventListener('click', () => {
+        AudioEngine.play('confirm');
+        const st = CAMPAIGN_STAGES[+node.dataset.idx];
+        this.sel = { mode: 'campaign', stage: st, picks: [], aiLevel: this.sel.aiLevel, pickIndex: 0 };
+        this.renderCharSelect();
+        this.show('screen-select');
+      });
+    });
+  },
+
+  /* ── 卡牌模式 ── */
+  cardCollected(card) {
+    return card.wi === 0 || this.unlocks[card.charId] || this.cardCol.has(card.id);
+  },
+
+  renderCards() {
+    const collected = CARDS.filter(c => this.cardCollected(c));
+    /* 清掉牌組中已失效的卡 */
+    this.deck = this.deck.filter(id => { const c = CARDS.find(x => x.id === id); return c && this.cardCollected(c); });
+    $('cards-progress').innerHTML = `<span class="prac-score">收藏 ${collected.length} / ${CARDS.length} 張</span>`;
+
+    const deckSlots = Array.from({ length: 5 }, (_, i) => {
+      const card = CARDS.find(c => c.id === this.deck[i]);
+      return card
+        ? `<div class="deck-slot filled" data-id="${card.id}" style="--h:${card.hue}"><img src="${card.img}" alt=""><span>《${card.title}》</span><i>力 ${card.power}</i></div>`
+        : `<div class="deck-slot"><span>空位</span></div>`;
+    }).join('');
+
+    let listHtml = '';
+    for (const med of MEDIUMS) {
+      const group = CARDS.filter(c => c.medium === med);
+      listHtml += `<div class="medium-header"><span>${med}</span><i>${group.filter(c => this.cardCollected(c)).length} / ${group.length} 張</i></div>`;
+      listHtml += `<div class="wcard-grid">` + group.map(c => {
+        const got = this.cardCollected(c);
+        const inDeck = this.deck.includes(c.id);
+        return `
+        <div class="wcard collectible ${got ? '' : 'locked'} ${inDeck ? 'in-deck' : ''}" data-id="${c.id}" style="--h:${c.hue};--h2:${c.hue2}">
+          ${inDeck ? '<span class="wcard-badge">牌組</span>' : ''}
+          <div class="wcard-head"><img src="${c.img}" alt="" loading="lazy"><span>${got ? c.name : '???'}</span></div>
+          <div class="wcard-title">${got ? `《${c.title}》` : '尚未收藏'}</div>
+          <div class="wcard-year">${got ? c.year : `以${c.name}獲勝或卡牌獎勵解鎖`}</div>
+          <div class="wcard-foot">
+            <span class="wcard-medium m-${MEDIUMS.indexOf(c.medium)}">${c.medium === '雕塑與現代藝術' ? '雕塑現代' : c.medium}</span>
+            <span class="wcard-power">力 ${c.power}</span>
+          </div>
+        </div>`;
+      }).join('') + `</div>`;
+    }
+
+    $('cards-wrap').innerHTML = `
+      <div class="deck-bar glass-box">
+        <div class="deck-bar-head">
+          <h3>我的牌組(${this.deck.length} / 5)</h3>
+          <div class="deck-rules">媒材相剋:油畫 ▶ 膠彩 ▶ 水彩 ▶ 油畫(+4)· 雕塑現代恆定 +1 · 每回合答題:對 +5 / 錯 −3 · 五回合定勝負</div>
+        </div>
+        <div class="deck-slots">${deckSlots}</div>
+        <div class="deck-actions">
+          <div class="difficulty-row"><span class="diff-label">對手</span>
+            <div class="diff-btns" id="card-diff-btns">${AI_LEVELS.map(l => `<button class="diff-btn ${l.id === this.sel.aiLevel ? 'on' : ''}" data-lvl="${l.id}">${l.name}<i>${l.label}</i></button>`).join('')}</div>
+          </div>
+          <button class="btn btn-gold btn-lg ${this.deck.length === 5 ? '' : 'hidden'}" id="btn-card-battle">開始對決</button>
+        </div>
+      </div>
+      <div class="cards-list">${listHtml}</div>`;
+
+    /* 收藏卡點擊 → 加入/移出牌組 */
+    $('cards-wrap').querySelectorAll('.wcard.collectible:not(.locked)').forEach(el => {
+      el.addEventListener('mouseenter', () => AudioEngine.play('hover'));
+      el.addEventListener('click', () => {
+        const id = el.dataset.id;
+        if (this.deck.includes(id)) { this.deck = this.deck.filter(x => x !== id); AudioEngine.play('cancel'); }
+        else if (this.deck.length >= 5) { this.toast('牌組已滿 5 張,先點掉一張'); AudioEngine.play('cancel'); return; }
+        else { this.deck.push(id); AudioEngine.play('select'); }
+        localStorage.setItem('mh_deck', JSON.stringify(this.deck));
+        this.renderCards();
+      });
+    });
+    /* 牌組槽點擊移除 */
+    $('cards-wrap').querySelectorAll('.deck-slot.filled').forEach(el => {
+      el.addEventListener('click', () => {
+        this.deck = this.deck.filter(x => x !== el.dataset.id);
+        localStorage.setItem('mh_deck', JSON.stringify(this.deck));
+        AudioEngine.play('cancel');
+        this.renderCards();
+      });
+    });
+    $('card-diff-btns').querySelectorAll('.diff-btn').forEach(b => {
+      b.addEventListener('click', () => {
+        AudioEngine.play('click');
+        this.sel.aiLevel = b.dataset.lvl;
+        $('card-diff-btns').querySelectorAll('.diff-btn').forEach(x => x.classList.toggle('on', x === b));
+      });
+    });
+    const battleBtn = $('btn-card-battle');
+    if (battleBtn) battleBtn.onclick = () => { AudioEngine.play('confirm'); CardGame.start(this.deck, this.sel.aiLevel); };
+  },
+
+  finishCardGame(res) {
+    /* 勝利抽一張新卡 */
+    let boosterMsg = '';
+    if (res.win) {
+      const pool = CARDS.filter(c => !this.cardCollected(c));
+      if (pool.length) {
+        const newCard = pool[Math.floor(Math.random() * pool.length)];
+        this.cardCol.add(newCard.id);
+        localStorage.setItem('mh_cardcol', JSON.stringify([...this.cardCol]));
+        boosterMsg = `<div class="unlock-banner">🃏 獲得新卡:${newCard.name}《${newCard.title}》!</div>`;
+      } else {
+        boosterMsg = '<div class="unlock-banner">🃏 九十張作品卡已全數收藏,策展人向你致敬!</div>';
+      }
+      AudioEngine.play('victory');
+      BattleFX.fireworks(null, 5);
+    } else {
+      AudioEngine.play(res.tie ? 'miss' : 'defeat');
+    }
+
+    const score = res.score[0] * 100 + res.correct * 50;
+    if (res.win) {
+      this.board.push({ name: '卡牌策展人', mode: 'cards', score, date: new Date().toISOString().slice(0, 10) });
+      this.board.sort((a, b) => b.score - a.score);
+      this.board = this.board.slice(0, 20);
+      localStorage.setItem('mh_board', JSON.stringify(this.board));
+    }
+
+    const card = $('result-card');
+    card.innerHTML = `
+      <div class="result-title ${res.win ? 'win' : 'lose'}">${res.win ? 'VICTORY' : res.tie ? 'DRAW' : 'DEFEAT'}</div>
+      <div class="result-sub">卡牌對決 ${res.score[0]} : ${res.score[1]} · 答對 ${res.correct} / ${res.total}${res.win ? ` · 知識分數 ${score}` : ''}</div>
+      ${boosterMsg}
+      <div class="result-actions">
+        <button class="btn btn-gold" id="btn-card-again">再來一局</button>
+        <button class="btn btn-ghost" id="btn-card-deck">回牌組</button>
+        <button class="btn btn-ghost" id="btn-card-home">回首頁</button>
+      </div>`;
+    const bd = $('result-modal');
+    bd.classList.remove('hidden');
+    requestAnimationFrame(() => bd.classList.add('open'));
+    const close = () => { bd.classList.remove('open'); setTimeout(() => bd.classList.add('hidden'), 250); };
+    $('btn-card-again').onclick = () => { AudioEngine.play('confirm'); close(); CardGame.start(this.deck, this.sel.aiLevel); };
+    $('btn-card-deck').onclick = () => { AudioEngine.play('click'); close(); this.renderCards(); this.show('screen-cards'); };
+    $('btn-card-home').onclick = () => { AudioEngine.play('click'); close(); this.show('screen-home'); };
+  },
+
   /* ── 排行榜 ── */
   showLeaderboard() {
-    const modeName = { solo: '單人', versus: '雙人', survival: '生存', boss: 'BOSS' };
+    const modeName = { solo: '單人', versus: '雙人', survival: '生存', boss: 'BOSS', campaign: '闖關', cards: '卡牌' };
     const rows = this.board.slice(0, 10).map((r, i) => `
       <tr class="${i < 3 ? 'top' + (i + 1) : ''}">
         <td>${i + 1}</td><td>${r.name}</td>
@@ -611,8 +831,9 @@ const UI = {
       card.querySelector('#set-sfx').onchange = () => { AudioEngine.toggleSFX(); this.syncAudioBtns(); };
       card.querySelector('#set-reset').onclick = () => {
         if (!confirm('確定重置全部進度?圖鑑、排行榜與自訂題庫都會清空。')) return;
-        ['mh_unlocks', 'mh_board', 'mh_custom_q', 'mh_custom_only'].forEach(k => localStorage.removeItem(k));
+        ['mh_unlocks', 'mh_board', 'mh_custom_q', 'mh_custom_only', 'mh_campaign', 'mh_cardcol', 'mh_deck'].forEach(k => localStorage.removeItem(k));
         this.unlocks = {}; this.board = []; Bank.custom = []; Bank.useCustomOnly = false;
+        this.campaign = { unlocked: 0, stars: {} }; this.cardCol = new Set(); this.deck = [];
         this.closeModal(); this.toast('已重置全部進度');
       };
     });
@@ -647,6 +868,14 @@ const UI = {
     });
 
     $('btn-battle-start').onclick = () => { AudioEngine.play('confirm'); this.launchBattle(); };
+
+    $('cb-quit').onclick = () => {
+      if (CardGame.s && !CardGame.s.over && !confirm('確定放棄這場卡牌對決?')) return;
+      CardGame.quit();
+      AudioEngine.play('cancel');
+      this.renderCards();
+      this.show('screen-cards');
+    };
 
     $('btn-flee').onclick = () => {
       if (!confirm('確定離開這場戰鬥?進度不會保存。')) return;

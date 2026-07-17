@@ -1,5 +1,5 @@
 /* 墨魂對決 Service Worker — 離線快取 */
-const CACHE = 'mohun-v5';
+const CACHE = 'mohun-v6';
 const ASSETS = [
   '.', 'index.html', 'css/style.css',
   'js/data.js', 'js/audio.js', 'js/fx.js', 'js/game.js', 'js/ui.js',
