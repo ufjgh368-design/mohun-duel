@@ -234,7 +234,7 @@ const CHARACTERS = [
     works: [
       { title: '夜巡', year: 1642, note: '阿姆斯特丹國家博物館鎮館' },
       { title: '杜爾普醫師的解剖課', year: 1632, note: '一舉成名的群像畫' },
-      { title: '自畫像系列', year: 1669, note: '一生的靈魂履歷' },
+      { title: '猶太新娘', year: 1665, note: '梵谷願折十年壽命換兩週凝視的傑作' },
     ],
   },
   {
@@ -379,8 +379,8 @@ const CHARACTERS = [
     },
     works: [
       { title: '印象・日出', year: 1872, note: '為整個畫派命名之作' },
-      { title: '睡蓮系列', year: 1916, note: '橘園美術館的環形巨作' },
-      { title: '乾草堆系列', year: 1891, note: '光的連作實驗' },
+      { title: '睡蓮', year: 1916, note: '橘園美術館的環形巨作' },
+      { title: '乾草堆', year: 1891, note: '光的連作實驗' },
     ],
   },
   {
@@ -432,7 +432,7 @@ const CHARACTERS = [
       ultra: { name: '聖維克多山', desc: '山體解構,大地重組' },
     },
     works: [
-      { title: '聖維克多山系列', year: 1904, note: '畢生反覆探索的母題' },
+      { title: '聖維克多山', year: 1904, note: '畢生反覆探索的母題' },
       { title: '玩紙牌的人', year: 1893, note: '曾創世界最高價名畫紀錄' },
       { title: '蘋果籃靜物', year: 1893, note: '顛覆透視的靜物' },
     ],
@@ -543,8 +543,8 @@ const CHARACTERS = [
     },
     works: [
       { title: '構成第七號', year: 1913, note: '抽象繪畫的巔峰巨構' },
-      { title: '即興系列', year: 1912, note: '音樂性的色彩實驗' },
-      { title: '藍騎士年鑑', year: 1912, note: '與馬爾克共同創立' },
+      { title: '即興第28號', year: 1912, note: '音樂性的色彩實驗' },
+      { title: '構成第八號', year: 1923, note: '包浩斯時期的幾何交響' },
     ],
   },
   {
@@ -616,7 +616,7 @@ const CHARACTERS = [
     works: [
       { title: '康寶濃湯罐頭', year: 1962, note: '32 罐改變藝術史' },
       { title: '瑪麗蓮・夢露絹印', year: 1962, note: '普普偶像的誕生' },
-      { title: '銀色工廠', year: 1964, note: '紐約的傳奇工作室' },
+      { title: '布里洛盒', year: 1964, note: '讓哲學家驚呼「藝術終結」的普普雕塑' },
     ],
   },
   {
