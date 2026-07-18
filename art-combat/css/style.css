@@ -427,6 +427,39 @@ input, textarea, select { font-family: inherit; }
     radial-gradient(85% 55% at 85% 105%, rgba(40, 70, 120, 0.15), transparent 62%),
     linear-gradient(rgba(7, 8, 14, 0.5), rgba(7, 8, 14, 0.36) 40%, rgba(7, 8, 14, 0.72)),
     url('../assets/hero-bg.jpg') center 62% / cover no-repeat;
+  transition: background-image 0.5s ease;
+}
+.stage-bg.stage-renaissance {
+  background:
+    radial-gradient(60% 46% at 50% 30%, rgba(120, 100, 200, 0.09), transparent 70%),
+    radial-gradient(85% 55% at 15% 105%, rgba(140, 60, 40, 0.15), transparent 62%),
+    radial-gradient(85% 55% at 85% 105%, rgba(40, 70, 120, 0.15), transparent 62%),
+    linear-gradient(rgba(7, 8, 14, 0.5), rgba(7, 8, 14, 0.36) 40%, rgba(7, 8, 14, 0.72)),
+    url('../assets/stage/renaissance.jpg') center 42% / cover no-repeat;
+}
+.stage-bg.stage-baroque {
+  background:
+    radial-gradient(60% 46% at 50% 30%, rgba(120, 100, 200, 0.09), transparent 70%),
+    radial-gradient(85% 55% at 15% 105%, rgba(140, 60, 40, 0.15), transparent 62%),
+    radial-gradient(85% 55% at 85% 105%, rgba(40, 70, 120, 0.15), transparent 62%),
+    linear-gradient(rgba(7, 8, 14, 0.5), rgba(7, 8, 14, 0.36) 40%, rgba(7, 8, 14, 0.72)),
+    url('../assets/stage/baroque.jpg') center 40% / cover no-repeat;
+}
+.stage-bg.stage-impressionism {
+  background:
+    radial-gradient(60% 46% at 50% 30%, rgba(120, 100, 200, 0.09), transparent 70%),
+    radial-gradient(85% 55% at 15% 105%, rgba(140, 60, 40, 0.15), transparent 62%),
+    radial-gradient(85% 55% at 85% 105%, rgba(40, 70, 120, 0.15), transparent 62%),
+    linear-gradient(rgba(7, 8, 14, 0.5), rgba(7, 8, 14, 0.36) 40%, rgba(7, 8, 14, 0.72)),
+    url('../assets/stage/impressionism.jpg') center 38% / cover no-repeat;
+}
+.stage-bg.stage-modern {
+  background:
+    radial-gradient(60% 46% at 50% 30%, rgba(120, 100, 200, 0.09), transparent 70%),
+    radial-gradient(85% 55% at 15% 105%, rgba(140, 60, 40, 0.15), transparent 62%),
+    radial-gradient(85% 55% at 85% 105%, rgba(40, 70, 120, 0.15), transparent 62%),
+    linear-gradient(rgba(7, 8, 14, 0.5), rgba(7, 8, 14, 0.36) 40%, rgba(7, 8, 14, 0.72)),
+    url('../assets/stage/modern.jpg') center 40% / cover no-repeat;
 }
 .stage-bg::after {
   content: ''; position: absolute; inset: 0;

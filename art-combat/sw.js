@@ -1,9 +1,11 @@
 /* Canvas Combat Service Worker — 離線快取 */
-const CACHE = 'art-combat-v4';
+const CACHE = 'art-combat-v5';
 const ASSETS = [
   '.', 'index.html', 'css/style.css',
   'js/data.js', 'js/questions.js', 'js/audio.js', 'js/fx.js', 'js/game.js', 'js/ui.js',
   'manifest.json', 'assets/hero-bg.jpg', 'assets/audio/bgm.mp3',
+  'assets/stage/renaissance.jpg', 'assets/stage/baroque.jpg',
+  'assets/stage/impressionism.jpg', 'assets/stage/modern.jpg',
   'assets/char/leonardo.png', 'assets/char/michelangelo.png', 'assets/char/raphael.png',
   'assets/char/caravaggio.png', 'assets/char/vermeer.png', 'assets/char/rembrandt.png', 'assets/char/goya.png',
   'assets/char/turner.png', 'assets/char/monet.png', 'assets/char/degas.png',

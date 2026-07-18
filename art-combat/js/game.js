@@ -35,6 +35,13 @@ function shuffled(arr) {
 }
 
 /* ── 技能參數 ── */
+const STAGE_BG = {
+  '文藝復興': 'stage-renaissance',
+  '巴洛克與浪漫': 'stage-baroque',
+  '印象與後印象': 'stage-impressionism',
+  '現代藝術革命': 'stage-modern',
+};
+
 const SKILL_DEF = {
   light: { key: 'light', label: '輕擊', diff: 1, base: 10, time: 20, energy: 25, crit: 0,    counter: 0,  hint: '簡單題 · 必中 · 低傷害' },
   heavy: { key: 'heavy', label: '重擊', diff: 2, base: 20, time: 25, energy: 35, crit: 0.25, counter: 8,  hint: '中等題 · 可暴擊 · 答錯遭反擊' },
@@ -68,6 +75,7 @@ const Battle = {
     this.stopTimer();
     this.usedQ.clear();
     UI.show('screen-battle');
+    this.setStageBg();
     this.renderFighters();
     this.updateHUD();
     $('battle-bottom').innerHTML = '';
@@ -77,6 +85,14 @@ const Battle = {
   },
 
   fighterEl(i) { return $(i === 0 ? 'fighter-p1' : 'fighter-p2'); },
+
+  setStageBg() {
+    const el = $('battle-stage')?.querySelector('.stage-bg');
+    if (!el) return;
+    el.classList.remove('stage-renaissance', 'stage-baroque', 'stage-impressionism', 'stage-modern');
+    const cls = STAGE_BG[this.s.p[1].char.medium];
+    if (cls) el.classList.add(cls);
+  },
 
   renderFighters() {
     [0, 1].forEach(i => {
