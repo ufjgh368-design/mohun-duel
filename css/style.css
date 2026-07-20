@@ -176,6 +176,10 @@ input, textarea, select { font-family: inherit; }
 
 .hero-actions { margin-top: 40px; animation: fadeUp 1s 0.9s var(--ease) both; }
 .hero-subactions { margin-top: 18px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.sister-links { margin-top: 26px; text-align: center; }
+.sister-label { display: block; font-size: 11px; letter-spacing: 0.24em; color: var(--paper-dim); opacity: 0.5; margin-bottom: 10px; }
+.sister-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-sister { display: inline-block; text-decoration: none; font-size: 14px; padding: 9px 18px; }
 .hero-footer {
   position: absolute; bottom: 22px; left: 0; right: 0; z-index: 4;
   display: flex; align-items: center; justify-content: center; gap: 22px;
