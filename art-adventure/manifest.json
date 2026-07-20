@@ -1,0 +1,11 @@
+{
+  "name": "藝術尋寶大冒險：成為藝術創作大師",
+  "short_name": "藝術尋寶",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fef6e4",
+  "theme_color": "#3aa6a0",
+  "lang": "zh-Hant",
+  "description": "從藝術學徒成長為藝術創作大師的教育冒險 RPG。",
+  "icons": []
+}
