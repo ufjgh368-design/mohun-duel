@@ -1,8 +1,8 @@
 /* ═══════════════════════════════════════════════
    藝術尋寶大冒險：成為藝術創作大師
    ── 內容資料（藝術家、真跡、關卡）
-   立繪複用墨魂對決 ../assets/char/*.jpg
-   真跡圖以 Wikimedia Commons FilePath 執行時載入
+   立繪與真跡皆為本機素材(assets/)，支援 PWA 離線
+   work.src 指向本機圖；file 欄保留 Commons 檔名作為來源記錄
    ═══════════════════════════════════════════════ */
 
 /* 玩家等級稱號（依 EXP 升級） */
@@ -18,31 +18,31 @@ const AA_RANKS = [
 /* 藝術家（NPC）。img 複用墨魂立繪 */
 const AA_ARTISTS = {
   'chen-chengpo': {
-    name: '陳澄波', mono: '澄', medium: '油畫', img: '../assets/char/chen-chengpo.jpg',
+    name: '陳澄波', mono: '澄', medium: '油畫', img: 'assets/char/chen-chengpo.jpg',
     hue: 18,
     greet: '試著……把光,畫進你的作品裡。',
     story: '我是陳澄波,嘉義之子。我是第一位以油畫入選日本帝展的臺灣人。我一生追著陽光跑,把故鄉的街道與玉山,都畫成了熾熱的色彩。',
   },
   'huang-tushui': {
-    name: '黃土水', mono: '土', medium: '雕塑', img: '../assets/char/huang-tushui.jpg',
+    name: '黃土水', mono: '土', medium: '雕塑', img: 'assets/char/huang-tushui.jpg',
     hue: 35,
     greet: '雕塑,不只是石頭。',
     story: '我是黃土水,來自臺北艋舺。我用鑿刀,刻出臺灣的水牛與少女,盼望有一天迎來「藝術上的福爾摩沙時代」。石頭裡,住著生命。',
   },
   'kuo-hsuehhu': {
-    name: '郭雪湖', mono: '雪', medium: '膠彩', img: '../assets/char/kuo-hsuehhu.jpg',
+    name: '郭雪湖', mono: '雪', medium: '膠彩', img: 'assets/char/kuo-hsuehhu.jpg',
     hue: 160,
     greet: '你看,大稻埕的街,有多熱鬧。',
     story: '我是郭雪湖,自學成才的膠彩畫家。十九歲我畫了《圓山附近》,後來又把迪化街節慶的繁華,一筆一筆點染成《南街殷賑》。',
   },
   'li-meishu': {
-    name: '李梅樹', mono: '梅', medium: '油畫', img: '../assets/char/li-meishu.jpg',
+    name: '李梅樹', mono: '梅', medium: '油畫', img: 'assets/char/li-meishu.jpg',
     hue: 8,
     greet: '慢慢看,寫實裡藏著溫度。',
     story: '我是李梅樹,一生扎根三峽。我用寫實的油畫記錄鄉親的生活,也花了三十多年重建三峽祖師廟,把廟宇當成一件藝術品雕琢。',
   },
   'lan-yinding': {
-    name: '藍蔭鼎', mono: '蔭', medium: '水彩', img: '../assets/char/lan-yinding.jpg',
+    name: '藍蔭鼎', mono: '蔭', medium: '水彩', img: 'assets/char/lan-yinding.jpg',
     hue: 205,
     greet: '鄉土,就是最美的風景。',
     story: '我是藍蔭鼎,臺灣的水彩大師。我喜歡畫農村、廟會與市街,用淡淡的水彩渲染,把臺灣人平凡日子裡的詩意留下來。',
@@ -53,16 +53,19 @@ const AA_ARTISTS = {
 const AA_WORKS = {
   'tamsui': {
     artist: 'chen-chengpo', title: '淡水', year: 1936,
+    src: 'assets/works/tamsui.jpg',
     file: 'Chen Chengpo 1936 Tamsui Middle School.jpg',
     caption: '紅瓦屋頂層層疊疊的山城,俯瞰的視角把整座淡水收進畫裡。',
   },
   'chiayi-park': {
     artist: 'chen-chengpo', title: '嘉義公園', year: 1937,
+    src: 'assets/works/chiayi-park.jpg',
     file: 'Chen Chengpo 1937 Jiayi Park.jpg',
     caption: '綠意盎然的故鄉公園,是陳澄波一畫再畫的心頭風景。',
   },
   'mt-yu': {
     artist: 'chen-chengpo', title: '玉山積雪', year: 1947,
+    src: 'assets/works/mt-yu.jpg',
     file: 'Chen Chengpo 1947 Mt Yu.jpg',
     caption: '白雪覆蓋的聖山,是陳澄波生前最後的遺作之一。',
   },
@@ -79,16 +82,19 @@ const AA_WORKS = {
   },
   'nanjie': {
     artist: 'kuo-hsuehhu', title: '南街殷賑', year: 1930,
+    src: 'assets/works/nanjie.jpg',
     file: '南街殷賑 郭雪湖.jpg',
     caption: '大稻埕迪化街霞海城隍祭典,商店招牌林立、人潮擁擠的繁華一瞬。',
   },
   'holiday': {
     artist: 'li-meishu', title: '假日閒情', year: 1975,
+    src: 'assets/works/holiday.jpg',
     file: 'Relaxing On A Holiday, by Li Mei-shu.jpg',
     caption: '假日午後,身穿鮮豔花洋裝的女子悠然閒坐,李梅樹寫實筆下的溫暖日常。',
   },
   'street-1927': {
     artist: 'lan-yinding', title: '臺灣街景', year: 1927,
+    src: 'assets/works/street-1927.jpg',
     file: 'Painting of scene of streets in Taiwan 1927.jpg',
     caption: '淡彩暈染的老街風光,藍蔭鼎筆下平凡而詩意的臺灣鄉土。',
   },
