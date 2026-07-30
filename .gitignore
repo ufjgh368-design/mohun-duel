@@ -1,2 +1,6 @@
 .claude/
 qbank-temp.csv
+
+# six-lenses 是獨立的 repo（github.com/ufjgh368-design/six-lenses），
+# 在此忽略以免被誤加成 gitlink
+six-lenses/
