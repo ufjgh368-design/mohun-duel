@@ -9,10 +9,10 @@
    ═══════════════════════════════════════════════ */
 
 const FIREBASE_CONFIG = {
-  apiKey: '',
+  apiKey: 'AIzaSyAM76ATeO62jDIuQhfYgp_eFvQAYmSWRAE',
   authDomain: 'taiwan-art-fighter.firebaseapp.com',
   projectId: 'taiwan-art-fighter',
-  appId: '',
+  appId: '1:98400085052:web:82720fad3ed918e7984f39',
 };
 
 /* Firebase JS SDK 版本(從 gstatic CDN 載入) */
