@@ -1094,7 +1094,11 @@ const UI = {
         const code = (err && err.code) || '';
         AudioEngine.play('cancel');
         if (code.includes('cancelled-popup') || code.includes('popup-closed')) {
-          this.toast('已取消登入');
+          this.toast(err.fastClose
+            ? '登入視窗異常關閉 — 請檢查 Firebase 金鑰的網域設定'
+            : '已取消登入');
+        } else if (code.includes('operation-not-allowed')) {
+          this.toast('Firebase 尚未啟用 Google 登入');
         } else if (code.includes('unauthorized-domain')) {
           this.toast('此網域尚未加入 Firebase 授權清單');
         } else {

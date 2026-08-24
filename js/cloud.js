@@ -77,11 +77,15 @@ const Cloud = {
     const { GoogleAuthProvider, signInWithPopup, signInWithRedirect } = this.fb;
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
+    const t0 = Date.now();
     try {
       const res = await signInWithPopup(this.auth, provider);
       return res.user;
     } catch (err) {
       const code = err && err.code || '';
+      /* 彈窗一開就關,多半是 auth handler 頁面自己出錯(例如 API 金鑰
+         的 referrer 限制沒放行 authDomain),而不是使用者主動取消 */
+      if (err) err.fastClose = (Date.now() - t0) < 4000;
       /* 彈窗被擋或環境不支援 → 改用轉址 */
       if (code.includes('popup-blocked') || code.includes('popup-closed') || code.includes('operation-not-supported')) {
         await signInWithRedirect(this.auth, provider);
