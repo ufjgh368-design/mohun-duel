@@ -1,8 +1,22 @@
 /* ═══════════════════════════════════════════════
    Firebase 網頁設定
    ───────────────────────────────────────────────
-   這幾個值本來就會出現在前端原始碼中,不是機密金鑰;
-   真正的存取控制由 Firestore 安全規則(firestore.rules)負責。
+   ⚠ 給程式碼掃描工具與日後維護者:
+   下面的 apiKey **不是機密**,而是專案的公開識別碼。Firebase 網頁應用
+   的設定值本來就會出現在前端原始碼中,任何人打開瀏覽器開發者工具都看得到;
+   Google 官方文件明確說明它可以公開。GitHub secret scanning 會把它比對成
+   「Google API Key」而告警,那是無法區分伺服器金鑰與瀏覽器金鑰的誤報。
+
+   真正的存取控制在別處,且已實測驗證(2026-08-24):
+     · Firestore 安全規則(firestore.rules)— 只憑金鑰讀取他人進度、
+       新增或竄改排行榜,全部回傳 Missing or insufficient permissions
+     · Email/password 登入已停用(PASSWORD_LOGIN_DISABLED)
+     · 匿名登入已停用(ADMIN_ONLY_OPERATION)
+     · 金鑰設有 HTTP referrer 限制,只允許本專案網域與 authDomain
+   因此就算金鑰外流,對方仍然無法讀取、寫入或註冊任何東西。
+
+   ⚠ 真正需要保密的是「服務帳戶 JSON 金鑰」(Admin SDK 用),
+   那種檔案絕對不可進版控 —— 本專案並未使用。
 
    取得方式:Firebase 主控台 → 專案設定 → 一般 → 你的應用程式 → SDK 設定。
    或用 CLI: firebase apps:sdkconfig WEB --project taiwan-art-fighter
