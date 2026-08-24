@@ -1,7 +1,8 @@
 /* 墨魂對決 Service Worker — 離線快取 */
-const CACHE = 'mohun-v6';
+const CACHE = 'mohun-v7';
 const ASSETS = [
   '.', 'index.html', 'css/style.css',
+  'js/firebase-config.js', 'js/cloud.js',
   'js/data.js', 'js/audio.js', 'js/fx.js', 'js/game.js', 'js/ui.js',
   'manifest.json', 'assets/hero-bg.jpg', 'assets/audio/bgm.mp3',
   'assets/char/chen-chengpo.jpg', 'assets/char/huang-tushui.jpg',
@@ -32,16 +33,26 @@ self.addEventListener('activate', e => {
   );
 });
 
-/* 網路優先:上線永遠拿最新版,離線時退回快取 */
+/* 網路優先:上線永遠拿最新版,離線時退回快取。
+   跨網域請求(Firebase SDK、Google 登入、字型)完全不攔截,
+   交給瀏覽器原生處理,以免快取干擾登入流程。 */
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  let url;
+  try { url = new URL(e.request.url); } catch (_) { return; }
+  if (url.origin !== self.location.origin) return;
+
   e.respondWith(
     fetch(e.request).then(res => {
-      if (res.ok && e.request.url.startsWith(self.location.origin)) {
+      if (res.ok) {
         const copy = res.clone();
         caches.open(CACHE).then(c => c.put(e.request, copy));
       }
       return res;
-    }).catch(() => caches.match(e.request).then(hit => hit || caches.match('index.html')))
+    }).catch(() => caches.match(e.request).then(hit => {
+      if (hit) return hit;
+      /* 只有頁面導覽才退回首頁,其他資源讓它自然失敗 */
+      return e.request.mode === 'navigate' ? caches.match('index.html') : Response.error();
+    }))
   );
 });

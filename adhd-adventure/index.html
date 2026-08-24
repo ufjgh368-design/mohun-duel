@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#6c63ff">
+<title>我的 ADHD 大腦冒險</title>
+<meta name="description" content="不是打敗自己，而是學會和自己的大腦合作。一款給孩子與家長一起玩的大腦探險遊戲。">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header id="hud" class="hidden">
+  <button id="hud-map" class="hud-btn" title="回到控制中心">🧠</button>
+  <div class="hud-mid">
+    <div id="hud-title">大腦探險家</div>
+    <div class="hud-bar"><div id="hud-fill"></div></div>
+  </div>
+  <button id="hud-cards" class="hud-cards" title="我的策略卡">🎴 <span id="hud-cardcount">0</span></button>
+</header>
+
+<main id="stage"></main>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  navigator.serviceWorker.register('sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

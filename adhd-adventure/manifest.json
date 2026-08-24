@@ -1,0 +1,12 @@
+{
+  "name": "我的 ADHD 大腦冒險",
+  "short_name": "大腦冒險",
+  "description": "不是打敗自己，而是學會和自己的大腦合作。",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f2f0ff",
+  "theme_color": "#6c63ff",
+  "lang": "zh-Hant",
+  "icons": []
+}

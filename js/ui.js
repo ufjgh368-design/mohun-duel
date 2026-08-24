@@ -255,6 +255,7 @@ const UI = {
       this.board = this.board.slice(0, 20);
       localStorage.setItem('mh_board', JSON.stringify(this.board));
     }
+    this.cloudSync();
 
     const statCol = (f, label) => `
       <div class="result-col">
@@ -777,6 +778,7 @@ const UI = {
       this.board = this.board.slice(0, 20);
       localStorage.setItem('mh_board', JSON.stringify(this.board));
     }
+    this.cloudSync();
 
     const card = $('result-card');
     card.innerHTML = `
@@ -797,23 +799,200 @@ const UI = {
     $('btn-card-home').onclick = () => { AudioEngine.play('click'); close(); this.show('screen-home'); };
   },
 
+  /* ═══════════ 雲端(Firebase)═══════════ */
+
+  /* 本機進度快照 */
+  progressSnapshot() {
+    return {
+      unlocks: this.unlocks,
+      campaign: this.campaign,
+      cardCol: [...this.cardCol],
+      deck: this.deck,
+      board: this.board,
+    };
+  },
+
+  saveAll() {
+    localStorage.setItem('mh_unlocks', JSON.stringify(this.unlocks));
+    localStorage.setItem('mh_campaign', JSON.stringify(this.campaign));
+    localStorage.setItem('mh_cardcol', JSON.stringify([...this.cardCol]));
+    localStorage.setItem('mh_deck', JSON.stringify(this.deck));
+    localStorage.setItem('mh_board', JSON.stringify(this.board));
+  },
+
+  /* 雲端進度併回本機:一律取「較好的」那一邊,不會弄丟任何進度 */
+  mergeProgress(c) {
+    if (!c) return false;
+    if (c.unlocks) Object.keys(c.unlocks).forEach(k => { if (c.unlocks[k]) this.unlocks[k] = true; });
+    if (c.campaign) {
+      this.campaign.unlocked = Math.max(this.campaign.unlocked || 0, c.campaign.unlocked || 0);
+      const cs = c.campaign.stars || {};
+      Object.keys(cs).forEach(k => {
+        this.campaign.stars[k] = Math.max(this.campaign.stars[k] || 0, cs[k] || 0);
+      });
+    }
+    (c.cardCol || []).forEach(id => this.cardCol.add(id));
+    if ((!this.deck || !this.deck.length) && Array.isArray(c.deck)) this.deck = c.deck.slice();
+    if (Array.isArray(c.board)) {
+      const key = r => `${r.date}|${r.name}|${r.mode}|${r.score}`;
+      const seen = new Set(this.board.map(key));
+      c.board.forEach(r => { if (!seen.has(key(r))) { this.board.push(r); seen.add(key(r)); } });
+      this.board.sort((a, b) => b.score - a.score);
+      this.board = this.board.slice(0, 20);
+    }
+    this.saveAll();
+    return true;
+  },
+
+  cloudScoreEntry() {
+    const best = this.board.length ? this.board[0] : null;
+    return {
+      score: best ? best.score : 0,
+      mode: best ? best.mode : '',
+      char: best ? best.name : '',
+      stars: Object.values(this.campaign.stars || {}).reduce((s, n) => s + n, 0),
+      cards: CARDS.filter(c => this.cardCollected(c)).length,
+    };
+  },
+
+  /* 每次戰鬥/對局結束後呼叫 */
+  cloudSync() {
+    if (!Cloud.user) return;
+    Cloud.pushSoon(this.progressSnapshot());
+    Cloud.submitScore(this.cloudScoreEntry());
+  },
+
+  /* 登入成功後:拉雲端 → 合併 → 推回 */
+  async afterSignIn() {
+    const cloudProgress = await Cloud.pull();
+    if (cloudProgress) {
+      this.mergeProgress(cloudProgress);
+      this.toast(`歡迎回來,${Cloud.user.name}!雲端進度已同步`);
+    } else {
+      this.toast(`${Cloud.user.name},雲端存檔已建立`);
+    }
+    await Cloud.push(this.progressSnapshot());
+    Cloud.submitScore(this.cloudScoreEntry());
+  },
+
+  /* 首頁登入區與玩家徽章 */
+  renderCloudUI() {
+    const bar = $('player-bar');
+    const note = $('login-note');
+    const gtext = $('btn-google-text');
+    const modesUser = $('modes-user');
+    if (!bar || !note || !gtext) return;
+
+    if (Cloud.user) {
+      const u = Cloud.user;
+      const avatar = u.photo
+        ? `<img src="${u.photo}" alt="" referrerpolicy="no-referrer">`
+        : `<span class="pb-initial">${(u.name || '?').slice(0, 1)}</span>`;
+      bar.classList.remove('hidden');
+      bar.innerHTML = `
+        <div class="pb-face">${avatar}</div>
+        <div class="pb-info"><b>${u.name}</b><i>雲端進度已連線</i></div>
+        <button class="btn btn-ghost btn-sm" id="btn-signout">登出</button>`;
+      $('btn-signout').onclick = async () => {
+        AudioEngine.play('cancel');
+        await Cloud.signOut();
+        this.toast('已登出,進度仍保留在本機');
+      };
+      gtext.textContent = `以 ${u.name} 的身分進入`;
+      note.textContent = '進度會自動同步到雲端,換一台裝置也能接著玩。';
+      if (modesUser) modesUser.innerHTML = `<span class="prac-score">☁ ${u.name}</span>`;
+    } else {
+      bar.classList.add('hidden');
+      bar.innerHTML = '';
+      gtext.textContent = '用 Google 帳號登入';
+      note.textContent = !Cloud.configured()
+        ? '雲端尚未設定 — 可直接離線進入,進度存在這台裝置'
+        : Cloud.status === 'loading' ? '雲端連線中…'
+        : Cloud.status === 'unavailable' ? '目前連不上雲端 — 可先離線進入,之後再登入同步'
+        : '登入後進度雲端同步,並登上班級排行榜';
+      if (modesUser) modesUser.innerHTML = '<span class="prac-score">離線模式</span>';
+    }
+  },
+
+  enterGame() {
+    this.renderModes();
+    this.show('screen-modes');
+  },
+
   /* ── 排行榜 ── */
   showLeaderboard() {
     const modeName = { solo: '單人', versus: '雙人', survival: '生存', boss: 'BOSS', campaign: '闖關', cards: '卡牌' };
-    const rows = this.board.slice(0, 10).map((r, i) => `
+    const localRows = this.board.slice(0, 10).map((r, i) => `
       <tr class="${i < 3 ? 'top' + (i + 1) : ''}">
         <td>${i + 1}</td><td>${r.name}</td>
         <td>${modeName[r.mode] || r.mode}${r.mode === 'survival' ? ` · ${(r.wave ?? 0) + 1} 陣` : ''}</td>
         <td class="score-cell">${r.score}</td><td>${r.date}</td>
       </tr>`).join('');
+    const localHTML = this.board.length ? `
+      <table class="board-table">
+        <thead><tr><th>#</th><th>出戰角色</th><th>模式</th><th>知識分數</th><th>日期</th></tr></thead>
+        <tbody>${localRows}</tbody>
+      </table>` : '<p class="hint-text" style="text-align:center;padding:24px 0">尚無紀錄 — 打一場勝仗,名留藝史!</p>';
+
     this.modal(`
       <h3 class="modal-title">排行榜</h3>
-      ${this.board.length ? `
-        <table class="board-table">
-          <thead><tr><th>#</th><th>出戰角色</th><th>模式</th><th>知識分數</th><th>日期</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table>` : '<p class="hint-text" style="text-align:center;padding:24px 0">尚無紀錄 — 打一場勝仗,名留藝史!</p>'}
-    `);
+      <div class="board-tabs">
+        <button class="board-tab on" data-tab="cloud">☁ 雲端榜</button>
+        <button class="board-tab" data-tab="local">本機紀錄</button>
+      </div>
+      <div id="board-cloud" class="board-pane"><p class="hint-text" style="text-align:center;padding:24px 0">讀取中…</p></div>
+      <div id="board-local" class="board-pane hidden">${localHTML}</div>
+    `, card => {
+      card.querySelectorAll('.board-tab').forEach(t => {
+        t.onclick = () => {
+          AudioEngine.play('click');
+          card.querySelectorAll('.board-tab').forEach(x => x.classList.toggle('on', x === t));
+          $('board-cloud').classList.toggle('hidden', t.dataset.tab !== 'cloud');
+          $('board-local').classList.toggle('hidden', t.dataset.tab !== 'local');
+        };
+      });
+      this.loadCloudBoard(modeName);
+    });
+  },
+
+  async loadCloudBoard(modeName) {
+    const pane = $('board-cloud');
+    if (!pane) return;
+    if (!Cloud.configured()) {
+      pane.innerHTML = '<p class="hint-text" style="text-align:center;padding:24px 0">雲端排行榜尚未設定。<br>設定後,同一個 Google 帳號在任何裝置都能累積成績。</p>';
+      return;
+    }
+    if (!(await Cloud.load())) {
+      pane.innerHTML = '<p class="hint-text" style="text-align:center;padding:24px 0">目前連不上雲端(可能是離線)。<br>可先看「本機紀錄」。</p>';
+      return;
+    }
+    const rows = await Cloud.topScores(20);
+    if (!pane.isConnected) return;
+    if (!rows) {
+      pane.innerHTML = '<p class="hint-text" style="text-align:center;padding:24px 0">讀取排行榜失敗,請稍後再試。</p>';
+      return;
+    }
+    if (!rows.length) {
+      pane.innerHTML = '<p class="hint-text" style="text-align:center;padding:24px 0">雲端榜還是空的 — 登入後打一場勝仗,搶下第一名!</p>';
+      return;
+    }
+    const me = Cloud.user && Cloud.user.uid;
+    pane.innerHTML = `
+      <table class="board-table">
+        <thead><tr><th>#</th><th>玩家</th><th>最佳成績</th><th>★</th><th>卡牌</th></tr></thead>
+        <tbody>${rows.map((r, i) => `
+          <tr class="${i < 3 ? 'top' + (i + 1) : ''} ${r.uid === me ? 'is-me' : ''}">
+            <td>${i + 1}</td>
+            <td class="board-player">
+              ${r.photo ? `<img src="${r.photo}" alt="" referrerpolicy="no-referrer">` : '<span class="pb-initial sm">?</span>'}
+              <span>${(r.name || '無名畫師')}${r.uid === me ? ' <i class="me-tag">你</i>' : ''}</span>
+            </td>
+            <td class="score-cell">${r.best || 0}<i class="board-mode">${modeName[r.mode] || ''}</i></td>
+            <td>${r.stars || 0}</td>
+            <td>${r.cards || 0}</td>
+          </tr>`).join('')}</tbody>
+      </table>
+      <p class="hint-text" style="text-align:center;margin-top:10px">全班共用同一個雲端榜 · 每位玩家顯示個人最佳成績</p>`;
   },
 
   /* ── 設定 ── */
@@ -824,16 +1003,36 @@ const UI = {
         <label class="switch-row"><input type="checkbox" id="set-bgm" ${AudioEngine.bgmOn ? 'checked' : ''}><span>背景音樂</span></label>
         <label class="switch-row"><input type="checkbox" id="set-sfx" ${AudioEngine.sfxOn ? 'checked' : ''}><span>介面與戰鬥音效</span></label>
         <hr class="settings-hr">
+        <div class="cloud-status">
+          <b>雲端進度</b>
+          <span>${Cloud.user
+            ? `已登入:${Cloud.user.name} — 進度自動同步`
+            : !Cloud.configured() ? '尚未設定 Firebase — 目前只存在這台裝置'
+            : Cloud.status === 'unavailable' ? '目前連不上雲端 — 進度暫存本機'
+            : '未登入 — 進度只存在這台裝置'}</span>
+        </div>
+        ${Cloud.user ? '<button class="btn btn-ghost btn-sm" id="set-signout">登出 Google 帳號</button>' : ''}
+        <hr class="settings-hr">
         <button class="btn btn-danger btn-sm" id="set-reset">重置全部進度(圖鑑 / 排行榜 / 題庫)</button>
       </div>
     `, card => {
       card.querySelector('#set-bgm').onchange = () => { AudioEngine.toggleBGM(); this.syncAudioBtns(); };
       card.querySelector('#set-sfx').onchange = () => { AudioEngine.toggleSFX(); this.syncAudioBtns(); };
+      const soBtn = card.querySelector('#set-signout');
+      if (soBtn) soBtn.onclick = async () => {
+        AudioEngine.play('cancel');
+        await Cloud.signOut();
+        this.closeModal();
+        this.toast('已登出,進度仍保留在本機');
+      };
       card.querySelector('#set-reset').onclick = () => {
-        if (!confirm('確定重置全部進度?圖鑑、排行榜與自訂題庫都會清空。')) return;
+        if (!confirm(Cloud.user
+          ? '確定重置全部進度?圖鑑、排行榜與自訂題庫都會清空,雲端存檔也會一併覆寫。'
+          : '確定重置全部進度?圖鑑、排行榜與自訂題庫都會清空。')) return;
         ['mh_unlocks', 'mh_board', 'mh_custom_q', 'mh_custom_only', 'mh_campaign', 'mh_cardcol', 'mh_deck'].forEach(k => localStorage.removeItem(k));
         this.unlocks = {}; this.board = []; Bank.custom = []; Bank.useCustomOnly = false;
         this.campaign = { unlocked: 0, stars: {} }; this.cardCol = new Set(); this.deck = [];
+        if (Cloud.user) Cloud.push(this.progressSnapshot());
         this.closeModal(); this.toast('已重置全部進度');
       };
     });
@@ -851,7 +1050,62 @@ const UI = {
     const boot = () => { AudioEngine.init(); document.removeEventListener('pointerdown', boot); };
     document.addEventListener('pointerdown', boot);
 
-    $('btn-start').onclick = () => { AudioEngine.play('confirm'); this.renderModes(); this.show('screen-modes'); };
+    /* ── 首頁登入:Google 登入 / 離線進入 ──
+       登入後的同步一律由 onChange 負責(popup 與轉址兩種流程共用),
+       按鈕只負責等待同步完成再進場,避免重複拉取。 */
+    Cloud.onChange = () => {
+      this.renderCloudUI();
+      if (Cloud.user) {
+        if (this._syncedUid !== Cloud.user.uid) {
+          this._syncedUid = Cloud.user.uid;
+          this._syncPromise = this.afterSignIn().catch(() => {});
+        }
+      } else {
+        this._syncedUid = null;
+        this._syncPromise = null;
+      }
+    };
+    this.renderCloudUI();
+    if (Cloud.configured()) Cloud.load().then(() => this.renderCloudUI());
+
+    $('btn-offline').onclick = () => { AudioEngine.play('confirm'); this.enterGame(); };
+
+    $('btn-google').onclick = async () => {
+      AudioEngine.play('confirm');
+      /* 已登入 → 直接進入主畫面 */
+      if (Cloud.user) { this.enterGame(); return; }
+      if (!Cloud.configured()) {
+        this.toast('雲端尚未設定,先以離線模式進入');
+        this.enterGame();
+        return;
+      }
+      const btn = $('btn-google');
+      btn.disabled = true;
+      $('btn-google-text').textContent = '登入中…';
+      try {
+        const user = await Cloud.signIn();
+        if (user) {
+          AudioEngine.play('victory');
+          await this._syncPromise;   /* 同步由 onChange 啟動,這裡只等它完成 */
+          this.enterGame();
+        }
+        /* user 為 null 代表走轉址流程,頁面會自行重整 */
+      } catch (err) {
+        const code = (err && err.code) || '';
+        AudioEngine.play('cancel');
+        if (code.includes('cancelled-popup') || code.includes('popup-closed')) {
+          this.toast('已取消登入');
+        } else if (code.includes('unauthorized-domain')) {
+          this.toast('此網域尚未加入 Firebase 授權清單');
+        } else {
+          this.toast('登入失敗,可先用離線模式遊玩');
+        }
+      } finally {
+        btn.disabled = false;
+        this.renderCloudUI();
+      }
+    };
+
     $('btn-gallery-home').onclick = () => { AudioEngine.play('click'); this.renderGallery(); this.show('screen-gallery'); };
     $('btn-leaderboard').onclick = () => { AudioEngine.play('click'); this.showLeaderboard(); };
     $('btn-settings').onclick = () => { AudioEngine.play('click'); this.showSettings(); };

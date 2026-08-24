@@ -1,0 +1,49 @@
+rules_version = '2';
+
+/* ═══════════════════════════════════════════════
+   墨魂對決 / 思影藝術工作室 — Firestore 安全規則
+   ───────────────────────────────────────────────
+   同一個 Firebase 專案由 ufjgh368-design.github.io 底下的作品共用。
+   資料結構:
+     users/{uid}                          玩家檔案(跨作品共用)
+     users/{uid}/games/{gameId}           各遊戲進度(只有本人可讀寫)
+     leaderboards/{gameId}/scores/{uid}   各遊戲排行榜(大家可讀,只能寫自己那列)
+   部署:firebase deploy --only firestore:rules
+   ═══════════════════════════════════════════════ */
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    /* ── 玩家檔案與各遊戲進度:僅本人可存取 ── */
+    match /users/{uid} {
+      allow read, write: if isOwner(uid);
+
+      match /games/{gameId} {
+        allow read, write: if isOwner(uid);
+      }
+    }
+
+    /* ── 排行榜:公開可讀,只能寫自己那一列 ── */
+    match /leaderboards/{gameId}/scores/{uid} {
+      allow read: if true;
+      allow write: if isOwner(uid)
+        && request.resource.data.name is string
+        && request.resource.data.name.size() <= 60
+        && request.resource.data.best is number
+        && request.resource.data.best >= 0
+        && request.resource.data.best <= 1000000;
+    }
+
+    /* ── 其餘一律拒絕 ── */
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

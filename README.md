@@ -34,6 +34,44 @@ python -m http.server 8123
 2. repo → Settings → Pages → Source 選 `main` 分支根目錄
 3. 完成,網址為 `https://<帳號>.github.io/<repo>/`
 
+## 雲端存檔與排行榜(Firebase)
+
+首頁提供兩種進入方式:**用 Google 帳號登入**(進度雲端同步 + 班級排行榜)或**離線進入對決戰場**(進度只存在本機)。
+沒登入、沒設定、連不上網路時,遊戲一律以離線模式完整運作 —— 雲端是加分項,不是必要條件。
+
+- 只使用 Firebase **免費方案**:Authentication(Google 登入)與 Cloud Firestore
+- **不使用** Cloud Functions 與 Firebase Storage(兩者需付費方案)
+- Firebase JS SDK 由 gstatic CDN 動態載入,專案本身仍是零建置的純靜態網站
+
+### 資料結構(同專案由 `ufjgh368-design.github.io` 共用)
+
+```
+users/{uid}                          玩家檔案(名稱、頭像;跨作品共用)
+users/{uid}/games/{gameId}           各遊戲進度(圖鑑、闖關星數、卡牌、牌組、紀錄)
+leaderboards/{gameId}/scores/{uid}   各遊戲排行榜(公開可讀,只能寫自己那列)
+```
+
+本作的 `gameId` 是 `mohun`(定義在 [js/firebase-config.js](js/firebase-config.js) 的 `CLOUD_GAME_ID`)。
+姊妹作只要複製 `js/firebase-config.js` + `js/cloud.js` 並改 `CLOUD_GAME_ID`,就能共用同一組帳號與資料庫,各自的進度互不干擾。
+
+進度採**合併**而非覆寫:圖鑑取聯集、闖關關卡與星數取較高者、卡牌取聯集,所以在多台裝置玩不會弄丟任何進度。
+
+### 設定步驟
+
+1. Firebase 主控台 → 專案 `taiwan-art-fighter` → **Authentication → Sign-in method → 啟用 Google**
+2. **Authentication → Settings → Authorized domains** 加入 `ufjgh368-design.github.io`
+3. **Firestore Database → 建立資料庫**(選正式模式即可,規則由下一步覆寫)
+4. 取得網頁 SDK 設定填入 [js/firebase-config.js](js/firebase-config.js):
+   ```bash
+   firebase apps:sdkconfig WEB --project taiwan-art-fighter
+   ```
+5. 部署安全規則([firestore.rules](firestore.rules)):
+   ```bash
+   firebase deploy --only firestore:rules
+   ```
+
+`apiKey` 等值本來就會出現在前端原始碼中,**不是機密**;真正的存取控制由 Firestore 安全規則負責。
+
 ## 教師 CSV 題庫格式
 
 欄位順序(教師模式內可下載範本):

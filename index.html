@@ -25,6 +25,7 @@
 <section id="screen-home" class="screen active">
   <div class="hero">
     <div class="hero-art"></div>
+    <div class="player-bar hidden" id="player-bar"></div>
     <div class="hero-center">
       <div class="logo-seal">藝</div>
       <h1 class="logo-title">墨魂對決</h1>
@@ -32,7 +33,19 @@
       <div class="logo-divider"><span>◆</span></div>
       <p class="hero-tag">以知識為刃 · 以藝術為魂 · 三十先驅 山河再會</p>
       <div class="hero-actions">
-        <button class="btn btn-gold btn-xl" id="btn-start">開始遊戲</button>
+        <div class="login-actions" id="login-actions">
+          <button class="btn btn-gold btn-xl btn-google" id="btn-google">
+            <svg class="g-mark" viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            <span id="btn-google-text">用 Google 帳號登入</span>
+          </button>
+          <button class="btn btn-ghost btn-xl" id="btn-offline">離線進入對決戰場</button>
+        </div>
+        <p class="login-note" id="login-note"></p>
         <div class="hero-subactions">
           <button class="btn btn-ghost" id="btn-gallery-home">角色圖鑑</button>
           <button class="btn btn-ghost" id="btn-leaderboard">排行榜</button>
@@ -43,6 +56,7 @@
           <div class="sister-row">
             <a class="btn btn-ghost btn-sister" href="art-combat/index.html">🖼️ 西洋藝術大亂鬥</a>
             <a class="btn btn-ghost btn-sister" href="art-adventure/index.html">🗺️ 藝術尋寶大冒險</a>
+            <a class="btn btn-ghost btn-sister" href="adhd-adventure/index.html">🧠 我的 ADHD 大腦冒險</a>
           </div>
         </div>
       </div>
@@ -60,7 +74,7 @@
   <header class="screen-header">
     <button class="btn btn-back" data-back="screen-home">‹ 返回</button>
     <h2 class="screen-title">選擇模式</h2>
-    <div class="header-spacer"></div>
+    <div class="header-spacer" id="modes-user"></div>
   </header>
   <div id="mode-grid" class="mode-grid"></div>
 </section>
@@ -197,6 +211,8 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="js/firebase-config.js"></script>
+<script src="js/cloud.js"></script>
 <script src="js/data.js"></script>
 <script src="js/audio.js"></script>
 <script src="js/fx.js"></script>
